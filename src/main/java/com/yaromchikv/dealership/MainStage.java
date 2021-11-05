@@ -34,6 +34,7 @@ public class MainStage extends Application {
     private void fillTheScreenController() throws IOException {
         ScreenController.setMainScene(new Scene(getPaneByPath("/screens/empty-screen.fxml")));
 
+        ScreenController.addScreen(ADMIN_ACCOUNTS_DASHBOARD, getPaneByPath("/screens/admin-accounts-dashboard.fxml"));
         ScreenController.addScreen(ADMIN_EMPLOYEES_DASHBOARD, getPaneByPath("/screens/admin-employees-dashboard.fxml"));
         ScreenController.addScreen(ADMIN_POSITIONS_DASHBOARD, getPaneByPath("/screens/admin-positions-dashboard.fxml"));
         ScreenController.addScreen(AUTH_SCREEN, getPaneByPath("/screens/auth-screen.fxml"));

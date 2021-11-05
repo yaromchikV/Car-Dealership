@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static com.yaromchikv.dealership.Constants.*;
@@ -35,6 +34,11 @@ public class Repository {
             ex.printStackTrace();
         }
         return list;
+    }
+
+    public ObservableList<Account> getAllAccounts() {
+        return getAll("SELECT * FROM " + ACCOUNTS_TABLE,
+                rs -> new Account(rs.getInt(ID), rs.getString(USERNAME), rs.getString(PASSWORD)));
     }
 
     public ObservableList<Car> getAllCars() {
@@ -65,11 +69,6 @@ public class Repository {
     public ObservableList<Style> getAllStyles() {
         return getAll("SELECT * FROM " + STYLES_TABLE,
                 rs -> new Style(rs.getInt(ID), rs.getString(NAME)));
-    }
-
-    public ObservableList<User> getAllUsers() {
-        return getAll("SELECT * FROM " + USERS_TABLE,
-                rs -> new User(rs.getInt(ID), rs.getString(USERNAME), rs.getString(PASSWORD)));
     }
 }
 

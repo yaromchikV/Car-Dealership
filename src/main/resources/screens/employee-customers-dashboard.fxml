@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane id="employees" maxHeight="730.0" maxWidth="1080.0" minHeight="730.0" minWidth="1080.0" prefHeight="730.0"
-            prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.yaromchikv.dealership.сontrollers.EmployeeModuleCustomersController">
+            prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.yaromchikv.dealership.сontrollers.EmployeeCustomersController">
     <Button fx:id="applyButton" defaultButton="true" layoutX="138.0" layoutY="671.0" mnemonicParsing="false"
-            prefHeight="40.0" prefWidth="926.0" text="Применить">
+            prefHeight="40.0" prefWidth="926.0" text="Добавить" onAction="#applyButtonClick">
         <font>
             <Font size="15.0"/>
         </font>
     </Button>
     <Button fx:id="backButton" layoutX="22.0" layoutY="671.0" mnemonicParsing="false" prefHeight="40.0"
-            prefWidth="40.0">
+            prefWidth="40.0" onAction="#backButtonClick">
         <graphic>
             <ImageView fitHeight="26.0" fitWidth="26.0">
-                <image>
-                    <Image url="@/images/back-icon.png"/>
-                </image>
+                <Image url="@/images/back-icon.png"/>
             </ImageView>
         </graphic>
     </Button>
@@ -47,377 +35,353 @@
         </columns>
     </TableView>
     <VBox layoutX="5.0" layoutY="14.0" prefHeight="400.0" prefWidth="130.0" spacing="10.0">
-        <children>
-            <Button fx:id="stylesMenuButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="130.0"
-                    text="Типы кузовов">
-                <font>
-                    <Font size="13.0"/>
-                </font>
-                <VBox.margin>
-                    <Insets left="12.0" right="12.0"/>
-                </VBox.margin>
+        <Button fx:id="stylesMenuButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="130.0"
+                text="Типы кузовов" onAction="#stylesMenuButtonClick">
+            <font>
+                <Font size="13.0"/>
+            </font>
+            <VBox.margin>
+                <Insets left="12.0" right="12.0"/>
+            </VBox.margin>
+        </Button>
+        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
+            <Button fx:id="carsMenuButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0"
+                    onAction="#carsMenuButtonClick">
+                <graphic>
+                    <ImageView fitHeight="90.0" fitWidth="90.0">
+                        <Image url="@/images/icon-car.png"/>
+                    </ImageView>
+                </graphic>
             </Button>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-                <children>
-                    <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0">
-                        <graphic>
-                            <ImageView fx:id="carsMenuButton" fitHeight="90.0" fitWidth="90.0">
-                                <image>
-                                    <Image url="@/images/icon-car.png"/>
-                                </image>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Label text="Автомобили">
-                        <font>
-                            <Font size="14.0"/>
-                        </font>
-                    </Label>
-                </children>
-            </VBox>
-            <VBox alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-                <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0">
-                    <graphic>
-                        <ImageView fx:id="customersMenuButton" fitHeight="90.0" fitWidth="90.0">
-                            <Image url="@/images/icon-customer.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Label text="Клиенты">
-                    <font>
-                        <Font size="14.0"/>
-                    </font>
-                </Label>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-                <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0">
-                    <graphic>
-                        <ImageView fx:id="ordersMenuButton" fitHeight="90.0" fitWidth="90.0">
-                            <Image url="@/images/icon-order.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Label text="Заказы">
-                    <font>
-                        <Font size="14.0"/>
-                    </font>
-                </Label>
-            </VBox>
-            <VBox fx:id="employeesButtonModule" alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-                <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0">
-                    <graphic>
-                        <ImageView fx:id="employeesMenuButton" fitHeight="90.0" fitWidth="90.0">
-                            <Image url="@/images/icon-employee.png"/>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Label text="Сотрудники">
-                    <font>
-                        <Font size="14.0"/>
-                    </font>
-                </Label>
-            </VBox>
-            <Button fx:id="positionsMenuButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="105.0"
-                    text="Должности">
+            <Label text="Автомобили">
                 <font>
-                    <Font size="13.0"/>
+                    <Font size="14.0"/>
                 </font>
-                <VBox.margin>
-                    <Insets left="15.0" right="15.0"/>
-                </VBox.margin>
+            </Label>
+        </VBox>
+        <VBox alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
+            <Button fx:id="customersMenuButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0">
+                <graphic>
+                    <ImageView fitHeight="90.0" fitWidth="90.0">
+                        <Image url="@/images/icon-customer.png"/>
+                    </ImageView>
+                </graphic>
             </Button>
-        </children>
+            <Label text="Клиенты">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
+            <Button fx:id="ordersMenuButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0"
+                    onAction="#ordersMenuButtonClick">
+                <graphic>
+                    <ImageView fitHeight="90.0" fitWidth="90.0">
+                        <Image url="@/images/icon-order.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Label text="Заказы">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+        </VBox>
+        <VBox fx:id="employeesButtonModule" alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
+            <Button fx:id="employeesMenuButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0"
+                    onAction="#employeesMenuButtonClick">
+                <graphic>
+                    <ImageView fitHeight="90.0" fitWidth="90.0">
+                        <Image url="@/images/icon-employee.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Label text="Сотрудники">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Label>
+        </VBox>
+        <Button fx:id="positionsMenuButton" mnemonicParsing="false" prefHeight="90.0" prefWidth="105.0"
+                text="Должности" onAction="#positionsMenuButtonClick">
+            <font>
+                <Font size="13.0"/>
+            </font>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0"/>
+            </VBox.margin>
+        </Button>
+        <Button fx:id="accountsMenuButton" disable="false" mnemonicParsing="false" onAction="#accountsMenuButtonClick"
+                prefHeight="90.0" prefWidth="100.0" text="Аккаунты">
+            <font>
+                <Font size="13.0"/>
+            </font>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0"/>
+            </VBox.margin>
+        </Button>
     </VBox>
-    <HBox fx:id="updatingBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0" visible="false">
-        <children>
-            <VBox prefHeight="200.0" prefWidth="463.0">
-                <children>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="Фамилия:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="surnameTextField" prefHeight="30.0" prefWidth="362.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                        <VBox.margin>
-                            <Insets/>
-                        </VBox.margin>
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="Имя:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="393.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="Отчество:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="middleNameTextField" prefHeight="30.0" prefWidth="361.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                    </HBox>
-                </children>
-                <HBox.margin>
-                    <Insets left="5.0"/>
-                </HBox.margin>
-                <padding>
-                    <Insets right="25.0"/>
-                </padding>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="463.0">
-                <children>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="389.0" spacing="10.0">
-                        <children>
-                            <Label text="Дата рождения:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <Label text="от">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <DatePicker fx:id="minBirthDatePicker" prefHeight="30.0" prefWidth="142.0"/>
-                            <Label text="до">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <DatePicker fx:id="maxBirthDatePicker" prefHeight="30.0" prefWidth="142.0"/>
-                        </children>
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="Телефон:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="phoneNumberTextField" prefHeight="30.0" prefWidth="390.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="E-mail:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="emailTextField" prefHeight="30.0" prefWidth="406.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                    </HBox>
-                </children>
-                <HBox.margin>
-                    <Insets right="5.0"/>
-                </HBox.margin>
-            </VBox>
-        </children>
+    <Button fx:id="clearButton" layoutX="1018.0" layoutY="456.0" mnemonicParsing="false" onAction="#clearButtonClick"
+            prefHeight="35.0" prefWidth="35.0">
+        <graphic>
+            <ImageView fitHeight="27.0" fitWidth="27.0">
+                <Image url="@/images/broomstick_icon.png"/>
+            </ImageView>
+        </graphic>
+    </Button>
+    <HBox fx:id="filterBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0" visible="false">
+        <VBox prefHeight="200.0" prefWidth="463.0">
+            <HBox.margin>
+                <Insets left="5.0"/>
+            </HBox.margin>
+            <padding>
+                <Insets right="25.0"/>
+            </padding>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <VBox.margin>
+                    <Insets/>
+                </VBox.margin>
+                <Label text="Фамилия:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="surnameFilterTextField" prefHeight="30.0" prefWidth="362.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <Label text="Имя:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="nameFilterTextField" prefHeight="30.0" prefWidth="393.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <Label text="Отчество:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="middleNameFilterTextField" prefHeight="30.0" prefWidth="361.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="463.0">
+            <HBox.margin>
+                <Insets right="5.0"/>
+            </HBox.margin>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="389.0" spacing="10.0">
+                <Label text="Дата рождения:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <Label text="от">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <DatePicker fx:id="minBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0"/>
+                <Label text="до">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <DatePicker fx:id="maxBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <Label text="Телефон:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="phoneNumberFilterTextField" prefHeight="30.0" prefWidth="390.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <Label text="E-mail:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="emailFilterTextField" prefHeight="30.0" prefWidth="406.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+        </VBox>
     </HBox>
-    <HBox fx:id="filterBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0">
-        <children>
-            <VBox prefHeight="200.0" prefWidth="463.0">
-                <children>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="Фамилия:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="surnameFilterTextField" prefHeight="30.0" prefWidth="362.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                        <VBox.margin>
-                            <Insets/>
-                        </VBox.margin>
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="Имя:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="nameFilterTextField" prefHeight="30.0" prefWidth="393.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="Отчество:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="middleNameFilterTextField" prefHeight="30.0" prefWidth="361.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                    </HBox>
-                </children>
-                <HBox.margin>
-                    <Insets left="5.0"/>
-                </HBox.margin>
-                <padding>
-                    <Insets right="25.0"/>
-                </padding>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="463.0">
-                <children>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="389.0" spacing="10.0">
-                        <children>
-                            <Label text="Дата рождения:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <DatePicker fx:id="birthDateFilterDatePicker" prefHeight="30.0" prefWidth="346.0"/>
-                        </children>
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="Телефон:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="phoneNumberFilterTextField" prefHeight="30.0" prefWidth="390.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                    </HBox>
-                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
-                        <children>
-                            <Label text="E-mail:">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                                <padding>
-                                    <Insets bottom="5.0"/>
-                                </padding>
-                            </Label>
-                            <TextField fx:id="emailFilterTextField" prefHeight="30.0" prefWidth="406.0">
-                                <font>
-                                    <Font size="14.0"/>
-                                </font>
-                            </TextField>
-                        </children>
-                    </HBox>
-                </children>
-                <HBox.margin>
-                    <Insets right="5.0"/>
-                </HBox.margin>
-            </VBox>
-        </children>
+    <HBox fx:id="updatingBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0">
+        <VBox prefHeight="200.0" prefWidth="463.0">
+            <HBox.margin>
+                <Insets left="5.0"/>
+            </HBox.margin>
+            <padding>
+                <Insets right="25.0"/>
+            </padding>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <VBox.margin>
+                    <Insets/>
+                </VBox.margin>
+                <Label text="Фамилия:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="surnameTextField" prefHeight="30.0" prefWidth="362.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <Label text="Имя:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="393.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <Label text="Отчество:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="middleNameTextField" prefHeight="30.0" prefWidth="361.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="463.0">
+            <HBox.margin>
+                <Insets right="5.0"/>
+            </HBox.margin>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="389.0" spacing="10.0">
+                <Label text="Дата рождения:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <DatePicker fx:id="birthDateDatePicker" prefHeight="30.0" prefWidth="346.0"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <Label text="Телефон:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="phoneNumberTextField" prefHeight="30.0" prefWidth="390.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
+                <Label text="E-mail:">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="emailTextField" prefHeight="30.0" prefWidth="406.0">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextField>
+            </HBox>
+        </VBox>
     </HBox>
-    <HBox layoutX="139.0" layoutY="451.0" prefHeight="30.0" prefWidth="554.0" spacing="10.0">
-        <children>
-            <ToggleButton fx:id="addToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="128.0"
-                          selected="true" text="Добавить">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-                <toggleGroup>
-                    <ToggleGroup fx:id="actions"/>
-                </toggleGroup>
-            </ToggleButton>
-            <ToggleButton fx:id="editToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="128.0"
-                          text="Редактировать" toggleGroup="$actions">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </ToggleButton>
-            <ToggleButton fx:id="deleteToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="128.0"
-                          text="Удалить" toggleGroup="$actions">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </ToggleButton>
-            <ToggleButton fx:id="filterToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="128.0"
-                          text="Фильтр" toggleGroup="$actions">
-                <font>
-                    <Font size="14.0"/>
-                </font>
-            </ToggleButton>
-        </children>
+    <HBox layoutX="138.0" layoutY="452.0" prefHeight="30.0" prefWidth="554.0" spacing="10.0">
+        <ToggleButton fx:id="addToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="128.0"
+                      selected="true" text="Добавить" onAction="#addToggleButtonClick">
+            <font>
+                <Font size="14.0"/>
+            </font>
+            <toggleGroup>
+                <ToggleGroup fx:id="actions"/>
+            </toggleGroup>
+        </ToggleButton>
+        <ToggleButton fx:id="editToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="128.0"
+                      text="Редактировать" toggleGroup="$actions" onAction="#editToggleButtonClick">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </ToggleButton>
+        <ToggleButton fx:id="deleteToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="128.0"
+                      text="Удалить" toggleGroup="$actions" onAction="#deleteToggleButtonClick">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </ToggleButton>
+        <ToggleButton fx:id="filterToggleButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="128.0"
+                      text="Фильтр" toggleGroup="$actions" onAction="#filterToggleButtonClick">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </ToggleButton>
     </HBox>
 </AnchorPane>

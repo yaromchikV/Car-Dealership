@@ -11,13 +11,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.Constants.ADMIN_EMPLOYEES_DASHBOARD;
-import static com.yaromchikv.dealership.Constants.EMPLOYEE_CARS_DASHBOARD;
 
 public class AuthScreenController implements Initializable {
     
     public Button logInButton;
     public PasswordField passwordField;
-    public TextField loginField;
+    public TextField usernameField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="employees" maxHeight="730.0" maxWidth="1080.0" minHeight="730.0" minWidth="1080.0" prefHeight="730.0"
-            prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.yaromchikv.dealership.сontrollers.AdminModuleEmployeesController">
+            prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.yaromchikv.dealership.сontrollers.AdminEmployeesController">
     <Button fx:id="applyButton" defaultButton="true" layoutX="138.0" layoutY="671.0" mnemonicParsing="false"
-            onAction="#applyButtonClick" prefHeight="40.0" prefWidth="926.0" text="Применить">
+            onAction="#applyButtonClick" prefHeight="40.0" prefWidth="926.0" text="Добавить">
         <font>
             <Font size="15.0"/>
         </font>
@@ -93,8 +104,7 @@
         </VBox>
         <VBox fx:id="employeesButtonModule" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="130.0"
               spacing="5.0">
-            <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick"
-                    prefHeight="100.0" prefWidth="100.0">
+            <Button fx:id="employeesMenuButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
                         <Image url="@/images/icon-employee.png"/>
@@ -116,7 +126,24 @@
                 <Insets left="15.0" right="15.0"/>
             </VBox.margin>
         </Button>
+        <Button fx:id="accountsMenuButton" disable="false" mnemonicParsing="false" onAction="#accountsMenuButtonClick"
+                prefHeight="90.0" prefWidth="100.0" text="Аккаунты">
+            <font>
+                <Font size="13.0"/>
+            </font>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0"/>
+            </VBox.margin>
+        </Button>
     </VBox>
+    <Button fx:id="clearButton" layoutX="1018.0" layoutY="456.0" mnemonicParsing="false" onAction="#clearButtonClick"
+            prefHeight="35.0" prefWidth="35.0">
+        <graphic>
+            <ImageView fitHeight="27.0" fitWidth="27.0">
+                <Image url="@/images/broomstick_icon.png"/>
+            </ImageView>
+        </graphic>
+    </Button>
     <HBox fx:id="updatingBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0">
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>

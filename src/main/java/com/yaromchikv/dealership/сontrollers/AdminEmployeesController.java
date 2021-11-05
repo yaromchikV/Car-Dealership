@@ -2,13 +2,7 @@ package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Converter;
-import com.yaromchikv.dealership.data.Repository;
-import com.yaromchikv.dealership.data.models.Customer;
-import com.yaromchikv.dealership.data.models.Employee;
-import com.yaromchikv.dealership.data.models.Style;
 import com.yaromchikv.dealership.data.tableModels.TableEmployee;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,13 +11,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.Constants.*;
 
-public class AdminModuleEmployeesController implements Initializable {
+public class AdminEmployeesController implements Initializable {
 
     public TableView<TableEmployee> employeesTableView;
     public TableColumn<TableEmployee, Integer> idTableColumn;
@@ -58,13 +50,16 @@ public class AdminModuleEmployeesController implements Initializable {
     public DatePicker minStartDateFilterDatePicker;
     public DatePicker maxStartDateFilterDatePicker;
 
+    public Button applyButton;
+    public Button clearButton;
+
     public ToggleGroup actions;
     public ToggleButton addToggleButton;
     public ToggleButton editToggleButton;
     public ToggleButton deleteToggleButton;
     public ToggleButton filterToggleButton;
 
-    Converter converter;
+    private Converter converter;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -85,11 +80,6 @@ public class AdminModuleEmployeesController implements Initializable {
 
         ObservableList<TableEmployee> resultList = converter.getAllTableEmployees();
         employeesTableView.setItems(resultList);
-    }
-
-    @FXML
-    private void backButtonClick() {
-        ScreenController.activate(AUTH_SCREEN);
     }
 
     @FXML
@@ -123,6 +113,11 @@ public class AdminModuleEmployeesController implements Initializable {
     }
 
     @FXML
+    private void backButtonClick() {
+        ScreenController.activate(AUTH_SCREEN);
+    }
+
+    @FXML
     private void stylesMenuButtonClick() {
         ScreenController.activate(EMPLOYEE_STYLES_DASHBOARD);
     }
@@ -143,41 +138,51 @@ public class AdminModuleEmployeesController implements Initializable {
     }
 
     @FXML
-    private void employeesMenuButtonClick() {
-        ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
-    }
-
-    @FXML
-    private void positionsMenuButtonClick() {
+    public void positionsMenuButtonClick() {
         ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
     }
 
     @FXML
+    public void accountsMenuButtonClick() {
+        ScreenController.activate(ADMIN_ACCOUNTS_DASHBOARD);
+    }
+
+    @FXML
     private void addToggleButtonClick() {
+        applyButton.setText("Добавить");
         addToggleButton.setSelected(true);
         updatingBox.setVisible(true);
         filterBox.setVisible(false);
+        clearButton.setVisible(true);
         updatingBoxFieldsIsEnabled(true);
 
-        // Очищать все поля
+        clearUpdateFields();
     }
 
     @FXML
     private void editToggleButtonClick() {
+        applyButton.setText("Применить");
         editToggleButton.setSelected(true);
         updatingBox.setVisible(true);
         filterBox.setVisible(false);
+        clearButton.setVisible(false);
         updatingBoxFieldsIsEnabled(true);
+
+        clearUpdateFields();
 
         // Если не выбрана ячейка, enabled = false
     }
 
     @FXML
     private void deleteToggleButtonClick() {
+        applyButton.setText("Удалить");
         deleteToggleButton.setSelected(true);
         updatingBox.setVisible(true);
         filterBox.setVisible(false);
+        clearButton.setVisible(false);
         updatingBoxFieldsIsEnabled(false);
+
+        clearUpdateFields();
     }
 
     private void updatingBoxFieldsIsEnabled(boolean isEnabled) {
@@ -192,8 +197,42 @@ public class AdminModuleEmployeesController implements Initializable {
 
     @FXML
     private void filterToggleButtonClick() {
+        applyButton.setText("Показать");
         filterToggleButton.setSelected(true);
         updatingBox.setVisible(false);
         filterBox.setVisible(true);
+        clearButton.setVisible(true);
+    }
+
+    @FXML
+    private void clearButtonClick() {
+        Toggle selectedToggle = actions.getSelectedToggle();
+        if (addToggleButton.equals(selectedToggle)) {
+            clearUpdateFields();
+        } else if (filterToggleButton.equals(selectedToggle)) {
+            clearFilterFields();
+        }
+    }
+
+    private void clearUpdateFields() {
+        surnameTextField.clear();
+        nameTextField.clear();
+        middleNameTextField.clear();
+        birthDatePicker.getEditor().clear();
+        phoneNumberTextField.clear();
+        positionChoiceBox.valueProperty().set(null);
+        startDatePicker.getEditor().clear();
+    }
+
+    private void clearFilterFields() {
+        surnameFilterTextField.clear();
+        nameFilterTextField.clear();
+        middleNameFilterTextField.clear();
+        minBirthFilterDatePicker.getEditor().clear();
+        maxBirthFilterDatePicker.getEditor().clear();
+        phoneNumberFilterTextField.clear();
+        positionFilterChoiceBox.valueProperty().set(null);
+        minStartDateFilterDatePicker.getEditor().clear();
+        maxStartDateFilterDatePicker.getEditor().clear();
     }
 }

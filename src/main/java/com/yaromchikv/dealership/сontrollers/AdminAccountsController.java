@@ -2,50 +2,55 @@ package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Converter;
-import com.yaromchikv.dealership.data.tableModels.TablePosition;
+import com.yaromchikv.dealership.data.tableModels.TableAccount;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.Constants.*;
+import static com.yaromchikv.dealership.Constants.ADMIN_EMPLOYEES_DASHBOARD;
 
-public class AdminPositionsController implements Initializable {
+public class AdminAccountsController implements Initializable {
 
-    public TableView<TablePosition> positionsTableView;
-    public TableColumn<TablePosition, Integer> idTableColumn;
-    public TableColumn<TablePosition, String> nameTableColumn;
-    public TableColumn<TablePosition, Double> salaryTableColumn;
-
-    public TextField nameTextField;
-    public TextField salaryTextField;
+    public TableView<TableAccount> usersTableView;
+    public TableColumn<TableAccount, Integer> idTableColumn;
+    public TableColumn<TableAccount, String> usernameTableColumn;
+    public TableColumn<TableAccount, String> passwordTableColumn;
 
     public ToggleGroup actions;
     public ToggleButton addToggleButton;
     public ToggleButton editToggleButton;
     public ToggleButton deleteToggleButton;
+    public ToggleButton filterToggleButton;
 
     public Button applyButton;
     public Button clearButton;
+
+    public TextField usernameTextField;
+    public VBox passwordBox;
+    public TextField passwordTextField;
+    public TextField password2TextField;
 
     private Converter converter;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         converter = new Converter();
-        showPositions();
+        showAccounts();
     }
 
-    private void showPositions() {
+    private void showAccounts() {
         idTableColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
-        nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        salaryTableColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
+        usernameTableColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
+        passwordTableColumn.setCellValueFactory(cellData -> cellData.getValue().passwordProperty());
 
-        ObservableList<TablePosition> resultList = converter.getAllTablePositions();
-        positionsTableView.setItems(resultList);
+        ObservableList<TableAccount> resultList = converter.getAllTableAccounts();
+        usersTableView.setItems(resultList);
     }
 
     @FXML
@@ -57,6 +62,8 @@ public class AdminPositionsController implements Initializable {
             applyEditButton();
         } else if (deleteToggleButton.equals(selectedToggle)) {
             applyDeleteButton();
+        } else if (filterToggleButton.equals(selectedToggle)) {
+            applyFilterButton();
         }
     }
 
@@ -70,6 +77,10 @@ public class AdminPositionsController implements Initializable {
 
     private void applyDeleteButton() {
         // TODO
+    }
+
+    private void applyFilterButton() {
+        //
     }
 
     @FXML
@@ -103,8 +114,8 @@ public class AdminPositionsController implements Initializable {
     }
 
     @FXML
-    public void accountsMenuButtonClick() {
-        ScreenController.activate(ADMIN_ACCOUNTS_DASHBOARD);
+    public void positionsMenuButtonClick() {
+        ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
     }
 
     @FXML
@@ -112,11 +123,11 @@ public class AdminPositionsController implements Initializable {
         applyButton.setText("Добавить");
         addToggleButton.setSelected(true);
         clearButton.setVisible(true);
-        updatingBoxFieldsIsEnabled(true);
+
+        passwordBox.setVisible(true);
+        fieldsSetEnabled(true);
 
         clearFields();
-
-        // Очищать все поля
     }
 
     @FXML
@@ -124,7 +135,9 @@ public class AdminPositionsController implements Initializable {
         applyButton.setText("Применить");
         editToggleButton.setSelected(true);
         clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(true);
+
+        passwordBox.setVisible(true);
+        fieldsSetEnabled(true);
 
         clearFields();
 
@@ -136,14 +149,29 @@ public class AdminPositionsController implements Initializable {
         applyButton.setText("Удалить");
         deleteToggleButton.setSelected(true);
         clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(false);
+
+        passwordBox.setVisible(true);
+        fieldsSetEnabled(false);
 
         clearFields();
+
+        // Заполнить ячейки
     }
 
-    private void updatingBoxFieldsIsEnabled(boolean isEnabled) {
-        nameTextField.setDisable(!isEnabled);
-        salaryTextField.setDisable(!isEnabled);
+    private void fieldsSetEnabled(boolean isEnabled) {
+        usernameTextField.setDisable(!isEnabled);
+        passwordTextField.setDisable(!isEnabled);
+        password2TextField.setDisable(!isEnabled);
+    }
+
+    @FXML
+    public void filterToggleButtonClick() {
+        applyButton.setText("Показать");
+        filterToggleButton.setSelected(true);
+        clearButton.setVisible(true);
+
+        passwordBox.setVisible(false);
+        usernameTextField.clear();
     }
 
     @FXML
@@ -152,7 +180,8 @@ public class AdminPositionsController implements Initializable {
     }
 
     private void clearFields() {
-        nameTextField.clear();
-        salaryTextField.clear();
+        usernameTextField.clear();
+        passwordTextField.clear();
+        password2TextField.clear();
     }
 }

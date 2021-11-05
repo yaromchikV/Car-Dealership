@@ -2,7 +2,7 @@ package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Converter;
-import com.yaromchikv.dealership.data.tableModels.TablePosition;
+import com.yaromchikv.dealership.data.tableModels.TableStyle;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,16 +12,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.Constants.*;
+import static com.yaromchikv.dealership.Constants.ADMIN_ACCOUNTS_DASHBOARD;
 
-public class AdminPositionsController implements Initializable {
+public class EmployeeStylesController implements Initializable {
 
-    public TableView<TablePosition> positionsTableView;
-    public TableColumn<TablePosition, Integer> idTableColumn;
-    public TableColumn<TablePosition, String> nameTableColumn;
-    public TableColumn<TablePosition, Double> salaryTableColumn;
+    public TableView<TableStyle> stylesTableView;
+    public TableColumn<TableStyle, Integer> idTableColumn;
+    public TableColumn<TableStyle, String> nameTableColumn;
 
     public TextField nameTextField;
-    public TextField salaryTextField;
 
     public ToggleGroup actions;
     public ToggleButton addToggleButton;
@@ -36,16 +35,15 @@ public class AdminPositionsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         converter = new Converter();
-        showPositions();
+        showStyles();
     }
 
-    private void showPositions() {
+    private void showStyles() {
         idTableColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        salaryTableColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
 
-        ObservableList<TablePosition> resultList = converter.getAllTablePositions();
-        positionsTableView.setItems(resultList);
+        ObservableList<TableStyle> resultList = converter.getAllTableStyles();
+        stylesTableView.setItems(resultList);
     }
 
     @FXML
@@ -103,6 +101,11 @@ public class AdminPositionsController implements Initializable {
     }
 
     @FXML
+    public void positionsMenuButtonClick() {
+        ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+    }
+
+    @FXML
     public void accountsMenuButtonClick() {
         ScreenController.activate(ADMIN_ACCOUNTS_DASHBOARD);
     }
@@ -112,11 +115,9 @@ public class AdminPositionsController implements Initializable {
         applyButton.setText("Добавить");
         addToggleButton.setSelected(true);
         clearButton.setVisible(true);
-        updatingBoxFieldsIsEnabled(true);
+        nameTextField.setDisable(false);
 
         clearFields();
-
-        // Очищать все поля
     }
 
     @FXML
@@ -124,7 +125,7 @@ public class AdminPositionsController implements Initializable {
         applyButton.setText("Применить");
         editToggleButton.setSelected(true);
         clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(true);
+        nameTextField.setDisable(false);
 
         clearFields();
 
@@ -136,23 +137,17 @@ public class AdminPositionsController implements Initializable {
         applyButton.setText("Удалить");
         deleteToggleButton.setSelected(true);
         clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(false);
+        nameTextField.setDisable(true);
 
         clearFields();
-    }
-
-    private void updatingBoxFieldsIsEnabled(boolean isEnabled) {
-        nameTextField.setDisable(!isEnabled);
-        salaryTextField.setDisable(!isEnabled);
     }
 
     @FXML
-    private void clearButtonClick() {
-        clearFields();
+    public void clearButtonClick() {
+        nameTextField.clear();
     }
 
     private void clearFields() {
         nameTextField.clear();
-        salaryTextField.clear();
     }
 }
