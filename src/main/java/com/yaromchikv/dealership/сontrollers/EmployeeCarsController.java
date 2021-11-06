@@ -130,10 +130,7 @@ public class EmployeeCarsController implements Initializable {
         ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
     }
 
-    @FXML
-    public void accountsMenuButtonClick() {
-        ScreenController.activate(ADMIN_ACCOUNTS_DASHBOARD);
-    }
+
     @FXML
     private void addToggleButtonClick() {
         applyButton.setText("Добавить");

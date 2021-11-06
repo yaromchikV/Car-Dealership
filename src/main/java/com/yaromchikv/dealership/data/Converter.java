@@ -19,29 +19,24 @@ public class Converter {
         repository = new Repository();
     }
 
-    public ObservableList<TableAccount> getAllTableAccounts() {
-        ObservableList<Account> listOfAccounts = repository.getAllAccounts();
-
-        List<TableAccount> resultList = listOfAccounts.stream()
-                .map(account -> new TableAccount(account.getId(), account.getUsername(), account.getPassword()))
-                .collect(Collectors.toList());
-
-        return FXCollections.observableArrayList(resultList);
-    }
-
     public ObservableList<TableEmployee> getAllTableEmployees() {
         ObservableList<Employee> listOfEmployees = repository.getAllEmployees();
         ObservableList<Position> listOfPositions = repository.getAllPositions();
+        ObservableList<Account> listOfAccounts = repository.getAllAccounts();
+
         Map<Integer, Position> mapOfPositions = listOfPositions.stream().collect(Collectors.toMap(Position::getId, item -> item));
+        Map<Integer, Account> mapOfAccounts = listOfAccounts.stream().collect(Collectors.toMap(Account::getId, item -> item));
 
         List<TableEmployee> resultList = listOfEmployees.stream()
                 .map(employee -> {
                     String positionName = mapOfPositions.get(employee.getId()).getName();
                     double positionSalary = mapOfPositions.get(employee.getId()).getSalary();
+                    String username = mapOfAccounts.get(employee.getId()).getUsername();
+                    String password = mapOfAccounts.get(employee.getId()).getPassword();
 
                     return new TableEmployee(employee.getId(), employee.getSurname(), employee.getName(),
                             employee.getMiddleName(), toString(employee.getDateOfBirth()), employee.getPhoneNumber(),
-                            positionName, positionSalary, toString(employee.getStartDate()));
+                            positionName, positionSalary, toString(employee.getStartDate()), username, password);
                 })
                 .collect(Collectors.toList());
 

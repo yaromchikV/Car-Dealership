@@ -42,5 +42,4 @@ public class Constants {
     public static final String EMPLOYEE_ID = "EMPLOYEE_ID";
     public static final String IS_COMPLETED = "IS_COMPLETED";
     public static final String SALARY = "SALARY";
-
 }

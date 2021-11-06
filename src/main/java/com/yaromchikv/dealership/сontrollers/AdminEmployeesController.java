@@ -27,6 +27,8 @@ public class AdminEmployeesController implements Initializable {
     public TableColumn<TableEmployee, String> positionTableColumn;
     public TableColumn<TableEmployee, Double> salaryTableColumn;
     public TableColumn<TableEmployee, String> startDateTableColumn;
+    public TableColumn<TableEmployee, String> usernameTableColumn;
+    public TableColumn<TableEmployee, String> passwordTableColumn;
 
     public VBox employeesButtonModule;
 
@@ -38,6 +40,9 @@ public class AdminEmployeesController implements Initializable {
     public TextField phoneNumberTextField;
     public ChoiceBox<String> positionChoiceBox;
     public DatePicker startDatePicker;
+    public TextField usernameTextField;
+    public TextField passwordTextField;
+    public TextField password2TextField;
 
     public HBox filterBox;
     public TextField surnameFilterTextField;
@@ -49,6 +54,7 @@ public class AdminEmployeesController implements Initializable {
     public ChoiceBox<String> positionFilterChoiceBox;
     public DatePicker minStartDateFilterDatePicker;
     public DatePicker maxStartDateFilterDatePicker;
+    public TextField usernameFilterTextField;
 
     public Button applyButton;
     public Button clearButton;
@@ -77,6 +83,8 @@ public class AdminEmployeesController implements Initializable {
         positionTableColumn.setCellValueFactory(cellData -> cellData.getValue().positionNameProperty());
         salaryTableColumn.setCellValueFactory(cellData -> cellData.getValue().positionSalaryProperty().asObject());
         startDateTableColumn.setCellValueFactory(cellData -> cellData.getValue().startDateProperty());
+        usernameTableColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
+        passwordTableColumn.setCellValueFactory(cellData -> cellData.getValue().passwordProperty());
 
         ObservableList<TableEmployee> resultList = converter.getAllTableEmployees();
         employeesTableView.setItems(resultList);
@@ -193,6 +201,9 @@ public class AdminEmployeesController implements Initializable {
         phoneNumberTextField.setDisable(!isEnabled);
         positionChoiceBox.setDisable(!isEnabled);
         startDatePicker.setDisable(!isEnabled);
+        usernameTextField.setDisable(!isEnabled);
+        passwordTextField.setDisable(!isEnabled);
+        password2TextField.setDisable(!isEnabled);
     }
 
     @FXML
@@ -222,6 +233,9 @@ public class AdminEmployeesController implements Initializable {
         phoneNumberTextField.clear();
         positionChoiceBox.valueProperty().set(null);
         startDatePicker.getEditor().clear();
+        usernameTextField.clear();
+        passwordTextField.clear();
+        password2TextField.clear();
     }
 
     private void clearFilterFields() {
@@ -234,5 +248,6 @@ public class AdminEmployeesController implements Initializable {
         positionFilterChoiceBox.valueProperty().set(null);
         minStartDateFilterDatePicker.getEditor().clear();
         maxStartDateFilterDatePicker.getEditor().clear();
+        usernameFilterTextField.clear();
     }
 }

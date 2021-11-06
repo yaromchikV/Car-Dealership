@@ -8,29 +8,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="employees" maxHeight="730.0" maxWidth="1080.0" minHeight="730.0" minWidth="1080.0" prefHeight="730.0"
-            prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.yaromchikv.dealership.сontrollers.AuthScreenController">
-    <Button fx:id="logInButton" alignment="CENTER" defaultButton="true" layoutX="454.0" layoutY="526.0"
-            mnemonicParsing="false" onAction="#logInButtonClick" prefHeight="43.0" prefWidth="184.0" text="Войти">
+<AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yaromchikv.dealership.сontrollers.AuthScreenController">
+    <Button fx:id="logInButton" alignment="CENTER" defaultButton="true" layoutX="454.0" layoutY="543.0" mnemonicParsing="false" onAction="#logInButtonClick" prefHeight="43.0" prefWidth="184.0" text="Войти">
         <font>
-            <Font size="20.0"/>
+            <Font size="20.0" />
         </font>
     </Button>
-    <PasswordField fx:id="passwordField" layoutX="396.0" layoutY="446.0" prefHeight="38.0" prefWidth="300.0"
-                   promptText="Пароль">
+    <PasswordField fx:id="passwordField" layoutX="396.0" layoutY="463.0" prefHeight="38.0" prefWidth="300.0" promptText="Пароль">
         <font>
-            <Font size="18.0"/>
+            <Font size="18.0" />
         </font>
     </PasswordField>
-    <TextField fx:id="usernameField" layoutX="396.0" layoutY="388.0" prefHeight="38.0" prefWidth="300.0"
-               promptText="Логин">
+    <TextField fx:id="usernameField" layoutX="396.0" layoutY="405.0" prefHeight="38.0" prefWidth="300.0" promptText="Логин">
         <font>
-            <Font size="18.0"/>
+            <Font size="18.0" />
         </font>
     </TextField>
-    <ImageView fitHeight="203.0" fitWidth="466.0" layoutX="309.0" layoutY="129.0" pickOnBounds="true"
-               preserveRatio="true">
-        <Image url="@/images/logo.png"/>
+    <ImageView fitHeight="203.0" fitWidth="466.0" layoutX="309.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@/images/logo.png" />
     </ImageView>
 </AnchorPane>

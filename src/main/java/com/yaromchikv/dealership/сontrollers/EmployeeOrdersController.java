@@ -140,11 +140,6 @@ public class EmployeeOrdersController implements Initializable {
     }
 
     @FXML
-    public void accountsMenuButtonClick() {
-        ScreenController.activate(ADMIN_ACCOUNTS_DASHBOARD);
-    }
-
-    @FXML
     private void addToggleButtonClick() {
         applyButton.setText("Добавить");
         addToggleButton.setSelected(true);
