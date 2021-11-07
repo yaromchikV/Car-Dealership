@@ -42,4 +42,12 @@ public class Constants {
     public static final String EMPLOYEE_ID = "EMPLOYEE_ID";
     public static final String IS_COMPLETED = "IS_COMPLETED";
     public static final String SALARY = "SALARY";
+
+    public static final String CUSTOMER_FULLNAME = "CUSTOMER_FULLNAME";
+    public static final String EMPLOYEE_FULLNAME = "EMPLOYEE_FULLNAME";
+    public static final String CAR_NAME = "CAR_NAME";
+    public static final String STATUS = "STATUS";
+
+    public static final String POSITION = "POSITION";
+    public static final String STYLE = "STYLE";
 }

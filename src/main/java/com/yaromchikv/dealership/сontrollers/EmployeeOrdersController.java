@@ -1,7 +1,7 @@
 package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
-import com.yaromchikv.dealership.data.Converter;
+import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.tableModels.TableOrder;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +13,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.Constants.*;
-import static com.yaromchikv.dealership.Constants.ADMIN_ACCOUNTS_DASHBOARD;
 
 public class EmployeeOrdersController implements Initializable {
 
@@ -56,11 +55,11 @@ public class EmployeeOrdersController implements Initializable {
     public RadioButton completedFilterRadioButton;
     public RadioButton anyFilterRadioButton;
 
-    Converter converter;
+    Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        converter = new Converter();
+        repository = new Repository();
         showOrders();
     }
 
@@ -75,7 +74,7 @@ public class EmployeeOrdersController implements Initializable {
         employeeNameTableColumn.setCellValueFactory(cellData -> cellData.getValue().employeeFullNameProperty());
         statusTableColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
-        ObservableList<TableOrder> resultList = converter.getAllTableOrders();
+        ObservableList<TableOrder> resultList = repository.getTableOrders();
         ordersTableView.setItems(resultList);
     }
 

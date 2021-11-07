@@ -1,5 +1,7 @@
 package com.yaromchikv.dealership.data.models;
 
+import java.time.LocalDate;
+
 public class Position {
     private int id;
     private String name;

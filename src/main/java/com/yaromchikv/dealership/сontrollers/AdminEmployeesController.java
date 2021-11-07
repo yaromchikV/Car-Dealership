@@ -1,8 +1,9 @@
 package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
-import com.yaromchikv.dealership.data.Converter;
+import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.tableModels.TableEmployee;
+import com.yaromchikv.dealership.data.tableModels.TablePosition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.Constants.*;
@@ -56,6 +60,8 @@ public class AdminEmployeesController implements Initializable {
     public DatePicker maxStartDateFilterDatePicker;
     public TextField usernameFilterTextField;
 
+    ObservableList<String> listOfPositionsNames;
+
     public Button applyButton;
     public Button clearButton;
 
@@ -65,12 +71,24 @@ public class AdminEmployeesController implements Initializable {
     public ToggleButton deleteToggleButton;
     public ToggleButton filterToggleButton;
 
-    private Converter converter;
+    private Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        converter = new Converter();
+        repository = new Repository();
+        initChoiceBoxes();
         showEmployees();
+    }
+
+    private void initChoiceBoxes() {
+        listOfPositionsNames = repository.getTablePositionNames();
+        listOfPositionsNames.add(0, "Не выбрано");
+
+        positionChoiceBox.setItems(listOfPositionsNames);
+        positionFilterChoiceBox.setItems(listOfPositionsNames);
+
+        positionChoiceBox.valueProperty().setValue(listOfPositionsNames.get(0));
+        positionFilterChoiceBox.valueProperty().setValue(listOfPositionsNames.get(0));
     }
 
     private void showEmployees() {
@@ -86,7 +104,7 @@ public class AdminEmployeesController implements Initializable {
         usernameTableColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
         passwordTableColumn.setCellValueFactory(cellData -> cellData.getValue().passwordProperty());
 
-        ObservableList<TableEmployee> resultList = converter.getAllTableEmployees();
+        ObservableList<TableEmployee> resultList = repository.getTableEmployees(null);
         employeesTableView.setItems(resultList);
     }
 
@@ -105,54 +123,137 @@ public class AdminEmployeesController implements Initializable {
     }
 
     private void applyAddButton() {
-        // TODO
+        String surname = surnameTextField.getText();
+        String name = nameTextField.getText();
+        String middleName = middleNameTextField.getText();
+        LocalDate birthDate = birthDatePicker.getValue();
+        String phoneNumber = phoneNumberTextField.getText();
+        String positionName = positionChoiceBox.getValue();
+        Integer positionId = repository.getPositionIdByPositionName(positionName).get(0);
+        LocalDate startDate = startDatePicker.getValue();
+        String username = usernameTextField.getText();
+        String password = passwordTextField.getText();
+
+        //language=SQL
+        String employeeQuery = "INSERT INTO " + EMPLOYEES_TABLE + " VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + positionId + ", '" + startDate + "');";
+        //language=SQL
+        String accountQuery = "INSERT INTO " + ACCOUNTS_TABLE + " VALUES (last_insert_id(), '" + username + "', '" + password + "');";
+
+        repository.executeUpdate(employeeQuery);
+        repository.executeUpdate(accountQuery);
+
+        showEmployees();
     }
 
     private void applyEditButton() {
-        // TODO
+        int id = employeesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        String surname = surnameTextField.getText();
+        String name = nameTextField.getText();
+        String middleName = middleNameTextField.getText();
+        LocalDate birthDate = birthDatePicker.getValue();
+        String phoneNumber = phoneNumberTextField.getText();
+        String positionName = positionChoiceBox.getValue();
+        Integer positionId = repository.getPositionIdByPositionName(positionName).get(0);
+        LocalDate startDate = startDatePicker.getValue();
+        String username = usernameTextField.getText();
+        String password = passwordTextField.getText();
+
+        //language=SQL
+        String employeeQuery = "UPDATE " + EMPLOYEES_TABLE + " SET " +
+                SURNAME + " = '" + surname + "', " +
+                NAME + " = '" + name + "', " +
+                MIDDLE_NAME + " = '" + middleName + "', " +
+                DATE_OF_BIRTH + " = '" + birthDate + "', " +
+                PHONE_NUMBER + " = '" + phoneNumber + "', " +
+                POSITION_ID + " = " + positionId + ", " +
+                START_DATE + " = '" + startDate + "' " +
+                "WHERE " + ID + " = " + id + ";";
+
+        //language=SQL
+        String accountQuery = "UPDATE " + ACCOUNTS_TABLE + " SET " +
+                USERNAME + " = '" + username + "', " +
+                PASSWORD + " = '" + password + "' " +
+                "WHERE " + ID + " = " + id + ";";
+
+        repository.executeUpdate(employeeQuery);
+        repository.executeUpdate(accountQuery);
+        showEmployees();
     }
 
     private void applyDeleteButton() {
-        // TODO
+        int id = employeesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+
+        //language=SQL
+        String query = "DELETE FROM " + EMPLOYEES_TABLE + " WHERE " + ID + " = " + id;
+
+        repository.executeUpdate(query);
+        showEmployees();
     }
 
     private void applyFilterButton() {
-        // TODO
+        String surname = surnameFilterTextField.getText();
+        String name = nameFilterTextField.getText();
+        String middleName = middleNameFilterTextField.getText();
+        LocalDate minBirthDate = minBirthFilterDatePicker.getValue();
+        LocalDate maxBirthDate = maxBirthFilterDatePicker.getValue();
+        String phoneNumber = phoneNumberFilterTextField.getText();
+        String positionName = positionFilterChoiceBox.getValue();
+        LocalDate minStartDate = minStartDateFilterDatePicker.getValue();
+        LocalDate maxStartDate = maxStartDateFilterDatePicker.getValue();
+        String username = usernameFilterTextField.getText();
+
+        //language=SQL
+        StringBuilder filterBuilder = new StringBuilder("WHERE");
+        if (!surname.isEmpty()) filterBuilder.append(' ' + SURNAME + "='").append(surname).append("' AND");
+        if (!name.isEmpty()) filterBuilder.append(' ' + NAME + "='").append(name).append("' AND");
+        if (!middleName.isEmpty()) filterBuilder.append(' ' + MIDDLE_NAME + "='").append(middleName).append("' AND");
+        if (minBirthDate != null)
+            filterBuilder.append(' ' + DATE_OF_BIRTH + ">='").append(minBirthDate).append("' AND");
+        if (maxBirthDate != null)
+            filterBuilder.append(' ' + DATE_OF_BIRTH + "<='").append(maxBirthDate).append("' AND");
+        if (!phoneNumber.isEmpty()) filterBuilder.append(' ' + PHONE_NUMBER + "='").append(phoneNumber).append("' AND");
+        if (!Objects.equals(positionName, listOfPositionsNames.get(0)))
+            filterBuilder.append(' ' + POSITION + "='").append(positionName).append("' AND");
+        if (minStartDate != null) filterBuilder.append(' ' + START_DATE + ">='").append(minStartDate).append("' AND");
+        if (maxStartDate != null) filterBuilder.append(' ' + START_DATE + "<='").append(maxStartDate).append("' AND");
+        if (!username.isEmpty()) filterBuilder.append(' ' + USERNAME + "='").append(username).append("' AND");
+
+        String filter = null;
+        if (filterBuilder.length() > 5) {
+            filterBuilder.setLength(filterBuilder.length() - 3);
+            filter = filterBuilder.toString();
+        }
+
+        ObservableList<TableEmployee> resultList = repository.getTableEmployees(filter);
+        employeesTableView.setItems(resultList);
     }
 
     @FXML
-    private void backButtonClick() {
-        ScreenController.activate(AUTH_SCREEN);
+    public void tableItemSelect() {
+        TableEmployee employee = employeesTableView.getSelectionModel().getSelectedItem();
+        if (employee != null)
+            fillFieldsIfCellIsSelected(employee);
     }
 
-    @FXML
-    private void stylesMenuButtonClick() {
-        ScreenController.activate(EMPLOYEE_STYLES_DASHBOARD);
-    }
+    private void fillFieldsIfCellIsSelected(TableEmployee employee) {
+        Toggle selectedToggle = actions.getSelectedToggle();
+        boolean isEdit = editToggleButton.equals(selectedToggle);
+        boolean isDelete = deleteToggleButton.equals(selectedToggle);
+        if (isEdit || isDelete) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    @FXML
-    private void carsMenuButtonClick() {
-        ScreenController.activate(EMPLOYEE_CARS_DASHBOARD);
-    }
-
-    @FXML
-    private void customersMenuButtonClick() {
-        ScreenController.activate(EMPLOYEE_CUSTOMERS_DASHBOARD);
-    }
-
-    @FXML
-    private void ordersMenuButtonClick() {
-        ScreenController.activate(EMPLOYEE_ORDERS_DASHBOARD);
-    }
-
-    @FXML
-    public void positionsMenuButtonClick() {
-        ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
-    }
-
-    @FXML
-    public void accountsMenuButtonClick() {
-        ScreenController.activate(ADMIN_ACCOUNTS_DASHBOARD);
+            surnameTextField.setText(employee.surnameProperty().getValue());
+            nameTextField.setText(employee.nameProperty().getValue());
+            middleNameTextField.setText(employee.middleNameProperty().getValue());
+            birthDatePicker.setValue(LocalDate.parse(employee.dateOfBirthProperty().getValue(), formatter));
+            phoneNumberTextField.setText(employee.phoneNumberProperty().getValue());
+            positionChoiceBox.setValue(employee.positionNameProperty().getValue());
+            startDatePicker.setValue(LocalDate.parse(employee.startDateProperty().getValue(), formatter));
+            usernameTextField.setText(employee.usernameProperty().getValue());
+            passwordTextField.setText("");
+            password2TextField.setText("");
+            if (isEdit) updatingBoxFieldsIsEnabled(true);
+        }
     }
 
     @FXML
@@ -176,9 +277,14 @@ public class AdminEmployeesController implements Initializable {
         clearButton.setVisible(false);
         updatingBoxFieldsIsEnabled(true);
 
-        clearUpdateFields();
-
-        // Если не выбрана ячейка, enabled = false
+        TableEmployee employee = employeesTableView.getSelectionModel().getSelectedItem();
+        if (employee != null) {
+            updatingBoxFieldsIsEnabled(true);
+            fillFieldsIfCellIsSelected(employee);
+        } else {
+            updatingBoxFieldsIsEnabled(false);
+            clearUpdateFields();
+        }
     }
 
     @FXML
@@ -190,7 +296,11 @@ public class AdminEmployeesController implements Initializable {
         clearButton.setVisible(false);
         updatingBoxFieldsIsEnabled(false);
 
-        clearUpdateFields();
+        TableEmployee employee = employeesTableView.getSelectionModel().getSelectedItem();
+        if (employee != null)
+            fillFieldsIfCellIsSelected(employee);
+        else
+            clearUpdateFields();
     }
 
     private void updatingBoxFieldsIsEnabled(boolean isEnabled) {
@@ -230,9 +340,11 @@ public class AdminEmployeesController implements Initializable {
         nameTextField.clear();
         middleNameTextField.clear();
         birthDatePicker.getEditor().clear();
+        birthDatePicker.setValue(null);
         phoneNumberTextField.clear();
-        positionChoiceBox.valueProperty().set(null);
+        positionChoiceBox.valueProperty().setValue(listOfPositionsNames.get(0));
         startDatePicker.getEditor().clear();
+        startDatePicker.setValue(null);
         usernameTextField.clear();
         passwordTextField.clear();
         password2TextField.clear();
@@ -243,11 +355,46 @@ public class AdminEmployeesController implements Initializable {
         nameFilterTextField.clear();
         middleNameFilterTextField.clear();
         minBirthFilterDatePicker.getEditor().clear();
+        minBirthFilterDatePicker.setValue(null);
         maxBirthFilterDatePicker.getEditor().clear();
+        maxBirthFilterDatePicker.setValue(null);
         phoneNumberFilterTextField.clear();
-        positionFilterChoiceBox.valueProperty().set(null);
+        positionFilterChoiceBox.valueProperty().setValue(listOfPositionsNames.get(0));
         minStartDateFilterDatePicker.getEditor().clear();
+        minStartDateFilterDatePicker.setValue(null);
         maxStartDateFilterDatePicker.getEditor().clear();
+        maxStartDateFilterDatePicker.setValue(null);
         usernameFilterTextField.clear();
     }
+
+    @FXML
+    private void backButtonClick() {
+        ScreenController.activate(AUTH_SCREEN);
+    }
+
+    @FXML
+    private void stylesMenuButtonClick() {
+        ScreenController.activate(EMPLOYEE_STYLES_DASHBOARD);
+    }
+
+    @FXML
+    private void carsMenuButtonClick() {
+        ScreenController.activate(EMPLOYEE_CARS_DASHBOARD);
+    }
+
+    @FXML
+    private void customersMenuButtonClick() {
+        ScreenController.activate(EMPLOYEE_CUSTOMERS_DASHBOARD);
+    }
+
+    @FXML
+    private void ordersMenuButtonClick() {
+        ScreenController.activate(EMPLOYEE_ORDERS_DASHBOARD);
+    }
+
+    @FXML
+    public void positionsMenuButtonClick() {
+        ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+    }
+
 }

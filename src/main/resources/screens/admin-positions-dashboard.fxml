@@ -28,7 +28,8 @@
             </ImageView>
         </graphic>
     </Button>
-    <TableView fx:id="positionsTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0">
+    <TableView fx:id="positionsTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
+    onMouseClicked="#tableItemSelect">
         <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID" />
             <TableColumn fx:id="nameTableColumn" prefWidth="450" text="Название" />

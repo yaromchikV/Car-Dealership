@@ -1,7 +1,7 @@
 package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
-import com.yaromchikv.dealership.data.Converter;
+import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.tableModels.TableCustomer;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -52,11 +52,11 @@ public class EmployeeCustomersController implements Initializable {
     public TextField phoneNumberFilterTextField;
     public TextField emailFilterTextField;
 
-    Converter converter;
+    Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        converter = new Converter();
+        repository = new Repository();
         showCustomers();
     }
 
@@ -70,7 +70,7 @@ public class EmployeeCustomersController implements Initializable {
         phoneNumberTableColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
         emailTableColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
 
-        ObservableList<TableCustomer> resultList = converter.getAllTableCustomers();
+        ObservableList<TableCustomer> resultList = repository.getTableCustomers();
         customersTableView.setItems(resultList);
     }
 

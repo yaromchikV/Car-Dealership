@@ -6,9 +6,9 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class TableCar {
     private final SimpleIntegerProperty id;
-    private final SimpleStringProperty styleName;
     private final SimpleStringProperty make;
     private final SimpleStringProperty model;
+    private final SimpleStringProperty styleName;
     private final SimpleIntegerProperty year;
     private final SimpleDoubleProperty price;
 

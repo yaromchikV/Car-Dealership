@@ -1,7 +1,7 @@
 package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
-import com.yaromchikv.dealership.data.Converter;
+import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.tableModels.TablePosition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,11 +31,11 @@ public class AdminPositionsController implements Initializable {
     public Button applyButton;
     public Button clearButton;
 
-    private Converter converter;
+    private Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        converter = new Converter();
+        repository = new Repository();
         showPositions();
     }
 
@@ -44,7 +44,7 @@ public class AdminPositionsController implements Initializable {
         nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         salaryTableColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
 
-        ObservableList<TablePosition> resultList = converter.getAllTablePositions();
+        ObservableList<TablePosition> resultList = repository.getTablePositions();
         positionsTableView.setItems(resultList);
     }
 
@@ -61,15 +61,118 @@ public class AdminPositionsController implements Initializable {
     }
 
     private void applyAddButton() {
-        // TODO
+        String name = nameTextField.getText();
+        String salaryText = salaryTextField.getText();
+        double salary = Double.parseDouble(salaryText);
+
+        //language=SQL
+        String query = "INSERT INTO " + POSITIONS_TABLE + " VALUES (" +
+                null + ",'" + name + "'," + salary + ')';
+        repository.executeUpdate(query);
+
+        clearFields();
+        showPositions();
     }
 
     private void applyEditButton() {
-        // TODO
+        int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        String name = nameTextField.getText();
+        String salaryText = salaryTextField.getText();
+        double salary = Double.parseDouble(salaryText);
+
+        //language=SQL
+        String query = "UPDATE " + POSITIONS_TABLE + " SET " +
+                NAME + " = '" + name + "'," +
+                SALARY + " = " + salary +
+                " WHERE " + ID + " = " + id;
+        repository.executeUpdate(query);
+
+        clearFields();
+        showPositions();
     }
 
     private void applyDeleteButton() {
-        // TODO
+        int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+
+        //language=SQL
+        String query = "DELETE FROM " + POSITIONS_TABLE + " WHERE " + ID + " = " + id;
+        repository.executeUpdate(query);
+
+        clearFields();
+        showPositions();
+    }
+
+    @FXML
+    public void tableItemSelect() {
+        TablePosition position = positionsTableView.getSelectionModel().getSelectedItem();
+        if (position != null)
+            fillFieldsIfCellIsSelected(position);
+    }
+
+    private void fillFieldsIfCellIsSelected(TablePosition position) {
+        Toggle selectedToggle = actions.getSelectedToggle();
+        boolean isEdit = editToggleButton.equals(selectedToggle);
+        boolean isDelete = deleteToggleButton.equals(selectedToggle);
+        if (isEdit || isDelete) {
+            nameTextField.setText(position.nameProperty().getValue());
+            salaryTextField.setText(position.salaryProperty().getValue().toString());
+            if (isEdit) updatingBoxFieldsIsEnabled(true);
+        }
+    }
+
+    @FXML
+    private void addToggleButtonClick() {
+        applyButton.setText("Добавить");
+        addToggleButton.setSelected(true);
+        clearButton.setVisible(true);
+        updatingBoxFieldsIsEnabled(true);
+
+        clearFields();
+    }
+
+    @FXML
+    private void editToggleButtonClick() {
+        applyButton.setText("Применить");
+        editToggleButton.setSelected(true);
+        clearButton.setVisible(false);
+
+        TablePosition position = positionsTableView.getSelectionModel().getSelectedItem();
+        if (position != null) {
+            updatingBoxFieldsIsEnabled(true);
+            fillFieldsIfCellIsSelected(position);
+        } else {
+            updatingBoxFieldsIsEnabled(false);
+            clearFields();
+        }
+    }
+
+    @FXML
+    private void deleteToggleButtonClick() {
+        applyButton.setText("Удалить");
+        deleteToggleButton.setSelected(true);
+        clearButton.setVisible(false);
+        updatingBoxFieldsIsEnabled(false);
+
+        TablePosition position = positionsTableView.getSelectionModel().getSelectedItem();
+        if (position != null)
+            fillFieldsIfCellIsSelected(position);
+        else
+            clearFields();
+    }
+
+    private void updatingBoxFieldsIsEnabled(boolean isEnabled) {
+        nameTextField.setDisable(!isEnabled);
+        salaryTextField.setDisable(!isEnabled);
+    }
+
+    @FXML
+    private void clearButtonClick() {
+        clearFields();
+    }
+
+    private void clearFields() {
+        nameTextField.clear();
+        salaryTextField.clear();
     }
 
     @FXML
@@ -100,54 +203,5 @@ public class AdminPositionsController implements Initializable {
     @FXML
     private void employeesMenuButtonClick() {
         ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
-    }
-
-    @FXML
-    private void addToggleButtonClick() {
-        applyButton.setText("Добавить");
-        addToggleButton.setSelected(true);
-        clearButton.setVisible(true);
-        updatingBoxFieldsIsEnabled(true);
-
-        clearFields();
-
-        // Очищать все поля
-    }
-
-    @FXML
-    private void editToggleButtonClick() {
-        applyButton.setText("Применить");
-        editToggleButton.setSelected(true);
-        clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(true);
-
-        clearFields();
-
-        // Если не выбрана ячейка, enabled = false
-    }
-
-    @FXML
-    private void deleteToggleButtonClick() {
-        applyButton.setText("Удалить");
-        deleteToggleButton.setSelected(true);
-        clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(false);
-
-        clearFields();
-    }
-
-    private void updatingBoxFieldsIsEnabled(boolean isEnabled) {
-        nameTextField.setDisable(!isEnabled);
-        salaryTextField.setDisable(!isEnabled);
-    }
-
-    @FXML
-    private void clearButtonClick() {
-        clearFields();
-    }
-
-    private void clearFields() {
-        nameTextField.clear();
-        salaryTextField.clear();
     }
 }

@@ -1,7 +1,7 @@
 package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
-import com.yaromchikv.dealership.data.Converter;
+import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.tableModels.TableCar;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -50,11 +50,11 @@ public class EmployeeCarsController implements Initializable {
     public TextField minPriceFilterTextField;
     public TextField maxPriceFilterTextField;
 
-    Converter converter;
+    Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        converter = new Converter();
+        repository = new Repository();
         showCars();
     }
 
@@ -66,7 +66,7 @@ public class EmployeeCarsController implements Initializable {
         yearTableColumn.setCellValueFactory(cellData -> cellData.getValue().yearProperty().asObject());
         priceTableColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
 
-        ObservableList<TableCar> resultList = converter.getAllTableCars();
+        ObservableList<TableCar> resultList = repository.getTableCars();
         carsTableView.setItems(resultList);
     }
 

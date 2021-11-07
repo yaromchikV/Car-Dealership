@@ -1,7 +1,7 @@
 package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
-import com.yaromchikv.dealership.data.Converter;
+import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.tableModels.TableStyle;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.Constants.*;
-import static com.yaromchikv.dealership.Constants.ADMIN_ACCOUNTS_DASHBOARD;
 
 public class EmployeeStylesController implements Initializable {
 
@@ -30,11 +29,11 @@ public class EmployeeStylesController implements Initializable {
     public Button applyButton;
     public Button clearButton;
 
-    private Converter converter;
+    private Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        converter = new Converter();
+        repository = new Repository();
         showStyles();
     }
 
@@ -42,7 +41,7 @@ public class EmployeeStylesController implements Initializable {
         idTableColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 
-        ObservableList<TableStyle> resultList = converter.getAllTableStyles();
+        ObservableList<TableStyle> resultList = repository.getTableStyles();
         stylesTableView.setItems(resultList);
     }
 
@@ -104,7 +103,7 @@ public class EmployeeStylesController implements Initializable {
     public void positionsMenuButtonClick() {
         ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
     }
-    
+
     @FXML
     private void addToggleButtonClick() {
         applyButton.setText("Добавить");

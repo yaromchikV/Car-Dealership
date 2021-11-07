@@ -13,7 +13,7 @@ public class MyConnection {
         try {
             ResourceBundle reader = ResourceBundle.getBundle("database");
             Connection connection = DriverManager.getConnection(reader.getString("db.url"), reader.getString("db.username"), reader.getString("db.password"));
-            System.out.println("Connection to Dealership database succesfull!");
+            System.out.println("Connection to Dealership database successful!");
             MyConnection.connection = connection;
         } catch (Exception ex) {
             System.out.println("Connection failed..." + ex.getMessage());

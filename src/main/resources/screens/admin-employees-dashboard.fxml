@@ -30,7 +30,8 @@
             </ImageView>
         </graphic>
     </Button>
-    <TableView fx:id="employeesTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0">
+    <TableView fx:id="employeesTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
+    onMouseClicked="#tableItemSelect">
         <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID" />
             <TableColumn fx:id="surnameTableColumn" prefWidth="120" text="Фамилия" />
@@ -191,7 +192,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="birthDatePicker" prefHeight="30.0" prefWidth="321.0" />
+                <DatePicker fx:id="birthDatePicker" prefHeight="30.0" prefWidth="321.0" editable="false"/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Телефон:">
@@ -233,7 +234,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="startDatePicker" prefHeight="30.0" prefWidth="316.0" />
+                <DatePicker fx:id="startDatePicker" prefHeight="30.0" prefWidth="316.0" editable="false" />
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Логин:">
@@ -355,7 +356,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="minBirthFilterDatePicker" prefHeight="30.0" prefWidth="129.0" />
+                <DatePicker fx:id="minBirthFilterDatePicker" prefHeight="30.0" prefWidth="129.0" editable="false"/>
                 <Label text="до">
                     <font>
                         <Font size="14.0" />
@@ -364,7 +365,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="maxBirthFilterDatePicker" prefHeight="30.0" prefWidth="129.0" />
+                <DatePicker fx:id="maxBirthFilterDatePicker" prefHeight="30.0" prefWidth="129.0" editable="false" />
             </HBox>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="463.0">
@@ -414,7 +415,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="minStartDateFilterDatePicker" prefHeight="30.0" prefWidth="127.0" />
+                <DatePicker fx:id="minStartDateFilterDatePicker" prefHeight="30.0" prefWidth="127.0" editable="false"/>
                 <Label text="до">
                     <font>
                         <Font size="14.0" />
@@ -423,7 +424,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="maxStartDateFilterDatePicker" prefHeight="30.0" prefWidth="127.0" />
+                <DatePicker fx:id="maxStartDateFilterDatePicker" prefHeight="30.0" prefWidth="127.0" editable="false"/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Логин:">
