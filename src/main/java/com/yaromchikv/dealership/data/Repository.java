@@ -1,5 +1,6 @@
 package com.yaromchikv.dealership.data;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.connection.MyConnection;
 import com.yaromchikv.dealership.data.models.*;
 import com.yaromchikv.dealership.utils.AccessLevel;
@@ -132,24 +133,72 @@ public class Repository {
         }
     }
 
-    public AccessLevel checkUsernameAndPassword(String username, String password) {
-        if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD))
-            return AccessLevel.ADMIN;
+    public Integer getIdByUsername(String username) {
+        Integer id = null;
+        Connection connection = MyConnection.connection;
+        try {
+            //language=SQL
+            String query = "SELECT " + ID + " FROM " + ACCOUNTS_TABLE + " WHERE " + USERNAME + " = '" + username + "';";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
 
+            if (rs == null) return null;
+            while (rs.next()) {
+                id = rs.getInt(ID);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        System.out.println("idByUsername: " + id);
+        return id;
+    }
+
+    public Integer getLastUserId() {
+        Integer id = null;
+        Connection connection = MyConnection.connection;
+        try {
+            //language=SQL
+            String query = "SELECT " + ID + " FROM " + ACCOUNTS_TABLE + " ORDER BY ID DESC LIMIT 1";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            if (rs == null) return null;
+            while (rs.next()) {
+                id = rs.getInt(ID);
+                System.out.println("RS NEXT last id: " + id);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        System.out.println("lastID: " + id);
+        return id;
+    }
+
+    public AccessLevel checkUsernameAndPassword(String username, String password) {
+        AccessLevel accessLevel = null;
         Connection connection = MyConnection.connection;
         try {
             //language=SQL
             String query = "SELECT " + ID + " FROM " + ACCOUNTS_TABLE + " " +
                     "WHERE " + USERNAME + " = '" + username + "' AND " + PASSWORD + " = '" + password + "';";
+
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
             if (rs == null) return null;
-            else return AccessLevel.EMPLOYEE;
-
+            while (rs.next()) {
+                accessLevel = AccessLevel.EMPLOYEE;
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
+
+        System.out.println("check:" + accessLevel);
+        return accessLevel;
     }
 }

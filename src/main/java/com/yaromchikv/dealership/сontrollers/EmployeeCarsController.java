@@ -1,14 +1,17 @@
 package com.yaromchikv.dealership.сontrollers;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Car;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -51,16 +54,24 @@ public class EmployeeCarsController implements Initializable {
     public TextField minPriceFilterTextField;
     public TextField maxPriceFilterTextField;
 
-    ObservableList<String> listOfCarsNames;
-    ObservableList<Integer> listOfYears;
+    public VBox employeesButtonModule;
+    public Button positionsMenuButton;
 
-    Repository repository;
+    private ObservableList<String> listOfCarsNames;
+    private ObservableList<Integer> listOfYears;
+
+    private Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         repository = new Repository();
         initChoiceBoxes();
         showCars();
+    }
+
+    public void setAdminDashboardsVisible(boolean isVisible) {
+        employeesButtonModule.setVisible(isVisible);
+        positionsMenuButton.setVisible(isVisible);
     }
 
     private void initChoiceBoxes() {

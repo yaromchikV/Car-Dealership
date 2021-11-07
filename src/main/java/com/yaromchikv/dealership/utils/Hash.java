@@ -2,7 +2,7 @@ package com.yaromchikv.dealership.utils;
 
 public class Hash {
 
-    public String convert(int id, String pswd) {
+    public static String convert(int id, String pswd) {
         int salt = getControlSum(id, pswd);
         int hashSize = 32;
 
@@ -30,7 +30,7 @@ public class Hash {
         return hash.toString();
     }
 
-    private int getRequiredChar(int ch) {
+    private static char getRequiredChar(int ch) {
         ch += 256;
         while (!((ch >= 48 && ch <= 57) || (ch >= 97 && ch <= 122))) {
             if (ch < 48)
@@ -38,10 +38,10 @@ public class Hash {
             else
                 ch -= 80;
         }
-        return ch;
+        return (char) ch;
     }
 
-    private int getControlSum(int id, String password) {
+    private static int getControlSum(int id, String password) {
         int salt = 0;
         for (int i = 0; i < password.length(); i++) {
             salt += (id % 100) + password.charAt(i);

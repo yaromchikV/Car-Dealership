@@ -3,6 +3,7 @@ package com.yaromchikv.dealership;
 import com.yaromchikv.dealership.connection.MyConnection;
 import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -19,7 +20,7 @@ public class Main extends Application {
         launch();
     }
 
-    public static AccessLevel myAccessLevel = null;
+    public static AccessLevel myAccessLevel;
 
     @Override
     public void start(Stage primaryStage) throws IOException {

@@ -3,6 +3,7 @@ package com.yaromchikv.dealership.сontrollers;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Employee;
+import com.yaromchikv.dealership.utils.Hash;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -130,9 +131,13 @@ public class AdminEmployeesController implements Initializable {
         LocalDate startDate = startDatePicker.getValue();
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
+        int id = repository.getLastUserId() + 1;
+        password = Hash.convert(id, password);
+
+        System.out.println("addId:" + id);
 
         //language=SQL
-        String employeeQuery = "INSERT INTO " + EMPLOYEES_TABLE + " VALUES (null, '" + surname + "', '" + name + "', '" +
+        String employeeQuery = "INSERT INTO " + EMPLOYEES_TABLE + " VALUES (" + id + ", '" + surname + "', '" + name + "', '" +
                 middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + "(SELECT " + ID + " FROM " + POSITIONS_TABLE
                 + " WHERE " + NAME + " = '" + positionName + "' LIMIT 1)" + ", '" + startDate + "');";
         //language=SQL

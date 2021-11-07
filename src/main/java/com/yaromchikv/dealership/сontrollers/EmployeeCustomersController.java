@@ -1,13 +1,16 @@
 package com.yaromchikv.dealership.сontrollers;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Customer;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -54,12 +57,20 @@ public class EmployeeCustomersController implements Initializable {
     public TextField phoneNumberFilterTextField;
     public TextField emailFilterTextField;
 
-    Repository repository;
+    public VBox employeesButtonModule;
+    public Button positionsMenuButton;
+
+    private Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         repository = new Repository();
         showCustomers();
+    }
+
+    public void setAdminDashboardsVisible(boolean isVisible) {
+        employeesButtonModule.setVisible(isVisible);
+        positionsMenuButton.setVisible(isVisible);
     }
 
     private void showCustomers() {

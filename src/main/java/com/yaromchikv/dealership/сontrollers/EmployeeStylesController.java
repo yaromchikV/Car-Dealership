@@ -1,12 +1,15 @@
 package com.yaromchikv.dealership.сontrollers;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Style;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,12 +32,20 @@ public class EmployeeStylesController implements Initializable {
     public Button applyButton;
     public Button clearButton;
 
+    public VBox employeesButtonModule;
+    public Button positionsMenuButton;
+
     private Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         repository = new Repository();
         showStyles();
+    }
+
+    public void setAdminDashboardsVisible(boolean isVisible) {
+        employeesButtonModule.setVisible(isVisible);
+        positionsMenuButton.setVisible(isVisible);
     }
 
     private void showStyles() {
