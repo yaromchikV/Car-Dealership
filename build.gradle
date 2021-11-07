@@ -11,16 +11,13 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
-
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
 application {
     mainModule = 'com.yaromchikv.dealership'
-    mainClass = 'com.yaromchikv.dealership.HelloApplication'
+    mainClass = 'com.yaromchikv.dealership.MainStage'
 }
 
 javafx {
@@ -29,11 +26,5 @@ javafx {
 }
 
 dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter-api:'5.8.1'"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:'5.8.1'"
     implementation 'mysql:mysql-connector-java:8.0.25'
-}
-
-test {
-    useJUnitPlatform()
 }

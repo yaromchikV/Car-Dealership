@@ -1,4 +1,4 @@
-package com.yaromchikv.dealership;
+package com.yaromchikv.dealership.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

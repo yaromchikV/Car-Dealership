@@ -15,152 +15,163 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yaromchikv.dealership.сontrollers.AdminPositionsController">
-    <Button fx:id="applyButton" defaultButton="true" layoutX="138.0" layoutY="701.0" mnemonicParsing="false" onAction="#applyButtonClick" prefHeight="40.0" prefWidth="926.0" text="Добавить">
+<AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0"
+            prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.yaromchikv.dealership.сontrollers.AdminPositionsController">
+    <Button fx:id="applyButton" defaultButton="true" layoutX="138.0" layoutY="701.0" mnemonicParsing="false"
+            onAction="#applyButtonClick" prefHeight="40.0" prefWidth="926.0" text="Добавить">
         <font>
-            <Font size="15.0" />
+            <Font size="15.0"/>
         </font>
     </Button>
-    <Button fx:id="backButton" layoutX="22.0" layoutY="701.0" mnemonicParsing="false" onAction="#backButtonClick" prefHeight="40.0" prefWidth="40.0">
+    <Button fx:id="backButton" layoutX="22.0" layoutY="701.0" mnemonicParsing="false" onAction="#backButtonClick"
+            prefHeight="40.0" prefWidth="40.0">
         <graphic>
             <ImageView fitHeight="26.0" fitWidth="26.0">
-                <Image url="@/images/back-icon.png" />
+                <Image url="@/images/back-icon.png"/>
             </ImageView>
         </graphic>
     </Button>
     <TableView fx:id="positionsTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
-    onMouseClicked="#tableItemSelect">
+               onMouseClicked="#tableItemSelect">
         <columns>
-            <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID" />
-            <TableColumn fx:id="nameTableColumn" prefWidth="450" text="Название" />
-            <TableColumn fx:id="salaryTableColumn" prefWidth="400" text="Зарплата" />
+            <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID"/>
+            <TableColumn fx:id="nameTableColumn" prefWidth="450" text="Название"/>
+            <TableColumn fx:id="salaryTableColumn" prefWidth="400" text="Зарплата"/>
         </columns>
     </TableView>
     <VBox layoutX="5.0" layoutY="14.0" prefHeight="400.0" prefWidth="130.0" spacing="10.0">
-        <Button fx:id="stylesMenuButton" mnemonicParsing="false" onAction="#stylesMenuButtonClick" prefHeight="90.0" prefWidth="130.0" text="Типы кузовов">
+        <Button fx:id="stylesMenuButton" mnemonicParsing="false" onAction="#stylesMenuButtonClick" prefHeight="90.0"
+                prefWidth="130.0" text="Типы кузовов">
             <font>
-                <Font size="13.0" />
+                <Font size="13.0"/>
             </font>
             <VBox.margin>
-                <Insets left="12.0" right="12.0" />
+                <Insets left="12.0" right="12.0"/>
             </VBox.margin>
         </Button>
         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-            <Button fx:id="carsMenuButton" mnemonicParsing="false" onAction="#carsMenuButtonClick" prefHeight="100.0" prefWidth="100.0">
+            <Button fx:id="carsMenuButton" mnemonicParsing="false" onAction="#carsMenuButtonClick" prefHeight="100.0"
+                    prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
-                        <Image url="@/images/icon-car.png" />
+                        <Image url="@/images/icon-car.png"/>
                     </ImageView>
                 </graphic>
             </Button>
             <Label text="Автомобили">
                 <font>
-                    <Font size="14.0" />
+                    <Font size="14.0"/>
                 </font>
             </Label>
         </VBox>
         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-            <Button fx:id="customersMenuButton" mnemonicParsing="false" onAction="#customersMenuButtonClick" prefHeight="100.0" prefWidth="100.0">
+            <Button fx:id="customersMenuButton" mnemonicParsing="false" onAction="#customersMenuButtonClick"
+                    prefHeight="100.0" prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
-                        <Image url="@/images/icon-customer.png" />
+                        <Image url="@/images/icon-customer.png"/>
                     </ImageView>
                 </graphic>
             </Button>
             <Label text="Клиенты">
                 <font>
-                    <Font size="14.0" />
+                    <Font size="14.0"/>
                 </font>
             </Label>
         </VBox>
         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-            <Button fx:id="ordersMenuButton" mnemonicParsing="false" onAction="#ordersMenuButtonClick" prefHeight="100.0" prefWidth="100.0">
+            <Button fx:id="ordersMenuButton" mnemonicParsing="false" onAction="#ordersMenuButtonClick"
+                    prefHeight="100.0" prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
-                        <Image url="@/images/icon-order.png" />
+                        <Image url="@/images/icon-order.png"/>
                     </ImageView>
                 </graphic>
             </Button>
             <Label text="Заказы">
                 <font>
-                    <Font size="14.0" />
+                    <Font size="14.0"/>
                 </font>
             </Label>
         </VBox>
         <VBox fx:id="employeesButtonModule" alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-            <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick" prefHeight="100.0" prefWidth="100.0">
+            <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick"
+                    prefHeight="100.0" prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
-                        <Image url="@/images/icon-employee.png" />
+                        <Image url="@/images/icon-employee.png"/>
                     </ImageView>
                 </graphic>
             </Button>
             <Label text="Сотрудники">
                 <font>
-                    <Font size="14.0" />
+                    <Font size="14.0"/>
                 </font>
             </Label>
         </VBox>
-        <Button fx:id="positionsMenuButton" disable="true" mnemonicParsing="false" prefHeight="90.0" prefWidth="105.0" text="Должности">
+        <Button fx:id="positionsMenuButton" disable="true" mnemonicParsing="false" prefHeight="90.0" prefWidth="105.0"
+                text="Должности">
             <font>
-                <Font size="13.0" />
+                <Font size="13.0"/>
             </font>
             <VBox.margin>
-                <Insets left="15.0" right="15.0" />
+                <Insets left="15.0" right="15.0"/>
             </VBox.margin>
         </Button>
     </VBox>
-    <Button fx:id="clearButton" layoutX="1018.0" layoutY="456.0" mnemonicParsing="false" onAction="#clearButtonClick" prefHeight="35.0" prefWidth="35.0">
+    <Button fx:id="clearButton" layoutX="1018.0" layoutY="456.0" mnemonicParsing="false" onAction="#clearButtonClick"
+            prefHeight="35.0" prefWidth="35.0">
         <graphic>
             <ImageView fitHeight="27.0" fitWidth="27.0">
-                <Image url="@/images/broomstick_icon.png" />
+                <Image url="@/images/broomstick_icon.png"/>
             </ImageView>
         </graphic>
     </Button>
     <HBox fx:id="updatingBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0">
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>
-                <Insets left="5.0" />
+                <Insets left="5.0"/>
             </HBox.margin>
             <padding>
-                <Insets right="25.0" />
+                <Insets right="25.0"/>
             </padding>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <VBox.margin>
-                    <Insets />
+                    <Insets/>
                 </VBox.margin>
                 <Label text="Название:">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                     <padding>
-                        <Insets bottom="5.0" />
+                        <Insets bottom="5.0"/>
                     </padding>
                 </Label>
                 <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="359.0">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                 </TextField>
             </HBox>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>
-                <Insets right="5.0" />
+                <Insets right="5.0"/>
             </HBox.margin>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="468.0" spacing="10.0">
                     <Label text="Зарплата:">
                         <font>
-                            <Font size="14.0" />
+                            <Font size="14.0"/>
                         </font>
                         <padding>
-                            <Insets bottom="5.0" />
+                            <Insets bottom="5.0"/>
                         </padding>
                     </Label>
                     <TextField fx:id="salaryTextField" prefHeight="30.0" prefWidth="387.0">
                         <font>
-                            <Font size="14.0" />
+                            <Font size="14.0"/>
                         </font>
                     </TextField>
                 </HBox>
@@ -168,22 +179,25 @@
         </VBox>
     </HBox>
     <HBox layoutX="138.0" layoutY="452.0" prefHeight="30.0" prefWidth="409.0" spacing="10.0">
-        <ToggleButton fx:id="addToggleButton" mnemonicParsing="false" onAction="#addToggleButtonClick" prefHeight="26.0" prefWidth="128.0" selected="true" text="Добавить">
+        <ToggleButton fx:id="addToggleButton" mnemonicParsing="false" onAction="#addToggleButtonClick" prefHeight="26.0"
+                      prefWidth="128.0" selected="true" text="Добавить">
             <font>
-                <Font size="14.0" />
+                <Font size="14.0"/>
             </font>
             <toggleGroup>
-                <ToggleGroup fx:id="actions" />
+                <ToggleGroup fx:id="actions"/>
             </toggleGroup>
         </ToggleButton>
-        <ToggleButton fx:id="editToggleButton" mnemonicParsing="false" onAction="#editToggleButtonClick" prefHeight="26.0" prefWidth="128.0" text="Редактировать" toggleGroup="$actions">
+        <ToggleButton fx:id="editToggleButton" mnemonicParsing="false" onAction="#editToggleButtonClick"
+                      prefHeight="26.0" prefWidth="128.0" text="Редактировать" toggleGroup="$actions">
             <font>
-                <Font size="14.0" />
+                <Font size="14.0"/>
             </font>
         </ToggleButton>
-        <ToggleButton fx:id="deleteToggleButton" mnemonicParsing="false" onAction="#deleteToggleButtonClick" prefHeight="26.0" prefWidth="128.0" text="Удалить" toggleGroup="$actions">
+        <ToggleButton fx:id="deleteToggleButton" mnemonicParsing="false" onAction="#deleteToggleButtonClick"
+                      prefHeight="26.0" prefWidth="128.0" text="Удалить" toggleGroup="$actions">
             <font>
-                <Font size="14.0" />
+                <Font size="14.0"/>
             </font>
         </ToggleButton>
     </HBox>

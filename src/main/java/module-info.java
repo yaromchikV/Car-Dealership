@@ -8,6 +8,9 @@ module com.yaromchikv.dealership {
     opens com.yaromchikv.dealership.сontrollers to javafx.fxml;
     exports com.yaromchikv.dealership.data;
     exports com.yaromchikv.dealership.data.models;
-    exports com.yaromchikv.dealership.data.tableModels;
     opens com.yaromchikv.dealership.data to javafx.fxml;
+    exports com.yaromchikv.dealership.connection;
+    opens com.yaromchikv.dealership.connection to javafx.fxml;
+    exports com.yaromchikv.dealership.utils;
+    opens com.yaromchikv.dealership.utils to javafx.fxml;
 }

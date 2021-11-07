@@ -2,7 +2,7 @@ package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
-import com.yaromchikv.dealership.data.tableModels.TableCustomer;
+import com.yaromchikv.dealership.data.models.Customer;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,21 +10,23 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-import static com.yaromchikv.dealership.Constants.*;
-import static com.yaromchikv.dealership.Constants.ADMIN_POSITIONS_DASHBOARD;
+import static com.yaromchikv.dealership.utils.Constants.*;
+import static com.yaromchikv.dealership.utils.Constants.ADMIN_POSITIONS_DASHBOARD;
 
 public class EmployeeCustomersController implements Initializable {
 
-    public TableView<TableCustomer> customersTableView;
-    public TableColumn<TableCustomer, Integer> idTableColumn;
-    public TableColumn<TableCustomer, String> surnameTableColumn;
-    public TableColumn<TableCustomer, String> nameTableColumn;
-    public TableColumn<TableCustomer, String> middleNameTableColumn;
-    public TableColumn<TableCustomer, String> birthDateTableColumn;
-    public TableColumn<TableCustomer, String> phoneNumberTableColumn;
-    public TableColumn<TableCustomer, String> emailTableColumn;
+    public TableView<Customer> customersTableView;
+    public TableColumn<Customer, Integer> idTableColumn;
+    public TableColumn<Customer, String> surnameTableColumn;
+    public TableColumn<Customer, String> nameTableColumn;
+    public TableColumn<Customer, String> middleNameTableColumn;
+    public TableColumn<Customer, String> birthDateTableColumn;
+    public TableColumn<Customer, String> phoneNumberTableColumn;
+    public TableColumn<Customer, String> emailTableColumn;
 
     public Button applyButton;
     public Button clearButton;
@@ -38,8 +40,8 @@ public class EmployeeCustomersController implements Initializable {
     public HBox updatingBox;
     public TextField surnameTextField;
     public TextField nameTextField;
-    public DatePicker birthDateDatePicker;
     public TextField middleNameTextField;
+    public DatePicker birthDatePicker;
     public TextField phoneNumberTextField;
     public TextField emailTextField;
 
@@ -61,7 +63,6 @@ public class EmployeeCustomersController implements Initializable {
     }
 
     private void showCustomers() {
-
         idTableColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         surnameTableColumn.setCellValueFactory(cellData -> cellData.getValue().surnameProperty());
         nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
@@ -70,7 +71,7 @@ public class EmployeeCustomersController implements Initializable {
         phoneNumberTableColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
         emailTableColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
 
-        ObservableList<TableCustomer> resultList = repository.getTableCustomers();
+        ObservableList<Customer> resultList = repository.getTableCustomers(null);
         customersTableView.setItems(resultList);
     }
 
@@ -89,19 +90,200 @@ public class EmployeeCustomersController implements Initializable {
     }
 
     private void applyAddButton() {
-        // TODO
+        String surname = surnameTextField.getText();
+        String name = nameTextField.getText();
+        String middleName = middleNameTextField.getText();
+        LocalDate birthDate = birthDatePicker.getValue();
+        String phoneNumber = phoneNumberTextField.getText();
+        String email = emailTextField.getText();
+
+        //language=SQL
+        String query = "INSERT INTO " + CUSTOMERS_TABLE + " VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', '" + email + "');";
+
+        repository.executeUpdate(query);
+        showCustomers();
     }
 
     private void applyEditButton() {
-        // TODO
+        int id = customersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        String surname = surnameTextField.getText();
+        String name = nameTextField.getText();
+        String middleName = middleNameTextField.getText();
+        LocalDate birthDate = birthDatePicker.getValue();
+        String phoneNumber = phoneNumberTextField.getText();
+        String email = emailTextField.getText();
+
+        //language=SQL
+        String query = "UPDATE " + CUSTOMERS_TABLE + " SET " +
+                SURNAME + " = '" + surname + "', " +
+                NAME + " = '" + name + "', " +
+                MIDDLE_NAME + " = '" + middleName + "', " +
+                DATE_OF_BIRTH + " = '" + birthDate + "', " +
+                PHONE_NUMBER + " = '" + phoneNumber + "', " +
+                EMAIL + " = '" + email + "' " +
+                "WHERE " + ID + " = " + id + ";";
+
+        repository.executeUpdate(query);
+        showCustomers();
     }
 
     private void applyDeleteButton() {
-        // TODO
+        int id = customersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+
+        //language=SQL
+        String query = "DELETE FROM " + CUSTOMERS_TABLE + " WHERE " + ID + " = " + id;
+
+        repository.executeUpdate(query);
+        showCustomers();
     }
 
     private void applyFilterButton() {
-        // TODO
+        String surname = surnameFilterTextField.getText();
+        String name = nameFilterTextField.getText();
+        String middleName = middleNameFilterTextField.getText();
+        LocalDate minBirthDate = minBirthDateFilterDatePicker.getValue();
+        LocalDate maxBirthDate = maxBirthDateFilterDatePicker.getValue();
+        String phoneNumber = phoneNumberFilterTextField.getText();
+        String email = emailFilterTextField.getText();
+
+        //language=SQL
+        StringBuilder filterBuilder = new StringBuilder("WHERE");
+        if (!surname.isEmpty()) filterBuilder.append(' ' + SURNAME + "='").append(surname).append("' AND");
+        if (!name.isEmpty()) filterBuilder.append(' ' + NAME + "='").append(name).append("' AND");
+        if (!middleName.isEmpty()) filterBuilder.append(' ' + MIDDLE_NAME + "='").append(middleName).append("' AND");
+        if (minBirthDate != null)
+            filterBuilder.append(' ' + DATE_OF_BIRTH + ">='").append(minBirthDate).append("' AND");
+        if (maxBirthDate != null)
+            filterBuilder.append(' ' + DATE_OF_BIRTH + "<='").append(maxBirthDate).append("' AND");
+        if (!phoneNumber.isEmpty()) filterBuilder.append(' ' + PHONE_NUMBER + "='").append(phoneNumber).append("' AND");
+        if (!email.isEmpty()) filterBuilder.append(' ' + USERNAME + "='").append(email).append("' AND");
+
+        String filter = null;
+        if (filterBuilder.length() > 5) {
+            filterBuilder.setLength(filterBuilder.length() - 3);
+            filter = filterBuilder.toString();
+        }
+
+        ObservableList<Customer> resultList = repository.getTableCustomers(filter);
+        customersTableView.setItems(resultList);
+    }
+
+    @FXML
+    public void tableItemSelect() {
+        Customer customer = customersTableView.getSelectionModel().getSelectedItem();
+        if (customer != null)
+            fillFieldsIfCellIsSelected(customer);
+    }
+
+    private void fillFieldsIfCellIsSelected(Customer customer) {
+        Toggle selectedToggle = actions.getSelectedToggle();
+        boolean isEdit = editToggleButton.equals(selectedToggle);
+        boolean isDelete = deleteToggleButton.equals(selectedToggle);
+        if (isEdit || isDelete) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+            surnameTextField.setText(customer.surnameProperty().getValue());
+            nameTextField.setText(customer.nameProperty().getValue());
+            middleNameTextField.setText(customer.middleNameProperty().getValue());
+            birthDatePicker.setValue(LocalDate.parse(customer.dateOfBirthProperty().getValue(), formatter));
+            birthDatePicker.getEditor().setText(customer.dateOfBirthProperty().getValue());
+            phoneNumberTextField.setText(customer.phoneNumberProperty().getValue());
+            emailTextField.setText(customer.emailProperty().getValue());
+            if (isEdit) updatingBoxFieldsIsEnabled(true);
+        }
+    }
+
+    @FXML
+    private void addToggleButtonClick() {
+        applyButton.setText("Добавить");
+        addToggleButton.setSelected(true);
+        updatingBox.setVisible(true);
+        filterBox.setVisible(false);
+        clearButton.setVisible(true);
+        updatingBoxFieldsIsEnabled(true);
+
+        clearUpdateFields();
+    }
+
+    @FXML
+    private void editToggleButtonClick() {
+        applyButton.setText("Применить");
+        editToggleButton.setSelected(true);
+        updatingBox.setVisible(true);
+        filterBox.setVisible(false);
+        clearButton.setVisible(false);
+
+        Customer customer = customersTableView.getSelectionModel().getSelectedItem();
+        if (customer != null) {
+            updatingBoxFieldsIsEnabled(true);
+            fillFieldsIfCellIsSelected(customer);
+        } else {
+            updatingBoxFieldsIsEnabled(false);
+            clearUpdateFields();
+        }
+    }
+
+    @FXML
+    private void deleteToggleButtonClick() {
+        applyButton.setText("Удалить");
+        deleteToggleButton.setSelected(true);
+        updatingBox.setVisible(true);
+        filterBox.setVisible(false);
+        clearButton.setVisible(false);
+        updatingBoxFieldsIsEnabled(false);
+
+        Customer customer = customersTableView.getSelectionModel().getSelectedItem();
+        if (customer != null)
+            fillFieldsIfCellIsSelected(customer);
+        else
+            clearUpdateFields();
+    }
+
+    private void updatingBoxFieldsIsEnabled(boolean isEnabled) {
+        surnameTextField.setDisable(!isEnabled);
+        nameTextField.setDisable(!isEnabled);
+        middleNameTextField.setDisable(!isEnabled);
+        birthDatePicker.setDisable(!isEnabled);
+        phoneNumberTextField.setDisable(!isEnabled);
+        emailTextField.setDisable(!isEnabled);
+    }
+
+    @FXML
+    private void filterToggleButtonClick() {
+        applyButton.setText("Показать");
+        filterToggleButton.setSelected(true);
+        updatingBox.setVisible(false);
+        filterBox.setVisible(true);
+        clearButton.setVisible(true);
+    }
+
+    @FXML
+    private void clearButtonClick() {
+        Toggle selectedToggle = actions.getSelectedToggle();
+        if (addToggleButton.equals(selectedToggle)) {
+            clearUpdateFields();
+        } else if (filterToggleButton.equals(selectedToggle)) {
+            clearFilterFields();
+        }
+    }
+
+    private void clearUpdateFields() {
+        surnameTextField.clear();
+        nameTextField.clear();
+        middleNameTextField.clear();
+        birthDatePicker.getEditor().clear();
+        phoneNumberTextField.clear();
+        emailTextField.clear();
+    }
+
+    private void clearFilterFields() {
+        surnameFilterTextField.clear();
+        nameFilterTextField.clear();
+        middleNameFilterTextField.clear();
+        minBirthDateFilterDatePicker.getEditor().clear();
+        maxBirthDateFilterDatePicker.getEditor().clear();
+        phoneNumberFilterTextField.clear();
+        emailFilterTextField.clear();
     }
 
     @FXML
@@ -134,88 +316,4 @@ public class EmployeeCustomersController implements Initializable {
         ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
     }
 
-    @FXML
-    private void addToggleButtonClick() {
-        applyButton.setText("Добавить");
-        addToggleButton.setSelected(true);
-        updatingBox.setVisible(true);
-        filterBox.setVisible(false);
-        clearButton.setVisible(true);
-        updatingBoxFieldsIsEnabled(true);
-
-        clearUpdateFields();
-    }
-
-    @FXML
-    private void editToggleButtonClick() {
-        applyButton.setText("Применить");
-        editToggleButton.setSelected(true);
-        updatingBox.setVisible(true);
-        filterBox.setVisible(false);
-        clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(true);
-
-        clearUpdateFields();
-
-        // Если не выбрана ячейка, enabled = false
-    }
-
-    @FXML
-    private void deleteToggleButtonClick() {
-        applyButton.setText("Удалить");
-        deleteToggleButton.setSelected(true);
-        updatingBox.setVisible(true);
-        filterBox.setVisible(false);
-        clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(false);
-
-        clearUpdateFields();
-    }
-
-    private void updatingBoxFieldsIsEnabled(boolean isEnabled) {
-        surnameTextField.setDisable(!isEnabled);
-        nameTextField.setDisable(!isEnabled);
-        middleNameTextField.setDisable(!isEnabled);
-        birthDateDatePicker.setDisable(!isEnabled);
-        phoneNumberTextField.setDisable(!isEnabled);
-        emailTextField.setDisable(!isEnabled);
-    }
-
-    @FXML
-    private void filterToggleButtonClick() {
-        applyButton.setText("Показать");
-        filterToggleButton.setSelected(true);
-        updatingBox.setVisible(false);
-        filterBox.setVisible(true);
-        clearButton.setVisible(true);
-    }
-
-    @FXML
-    private void clearButtonClick() {
-        Toggle selectedToggle = actions.getSelectedToggle();
-        if (addToggleButton.equals(selectedToggle)) {
-            clearUpdateFields();
-        } else if (filterToggleButton.equals(selectedToggle)) {
-            clearFilterFields();
-        }
-    }
-
-    private void clearUpdateFields() {
-        surnameTextField.clear();
-        nameTextField.clear();
-        middleNameTextField.clear();
-        birthDateDatePicker.getEditor().clear();
-        phoneNumberTextField.clear();
-        emailTextField.clear();
-    }
-
-    private void clearFilterFields() {
-        surnameFilterTextField.clear();
-        nameFilterTextField.clear();
-        middleNameFilterTextField.clear();
-        minBirthDateFilterDatePicker.getEditor().clear();
-        maxBirthDateFilterDatePicker.getEditor().clear();
-        phoneNumberFilterTextField.clear();
-        emailFilterTextField.clear();
-    }
 }

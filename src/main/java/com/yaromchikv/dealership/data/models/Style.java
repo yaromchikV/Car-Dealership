@@ -1,29 +1,22 @@
 package com.yaromchikv.dealership.data.models;
 
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Style {
-    private int id;
-    private String name;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty name;
 
     public Style(int id, String name) {
-        this.id = id;
-        this.name = name;
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
     }
 
-    public int getId() {
+    public SimpleIntegerProperty idProperty() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
+    public SimpleStringProperty nameProperty() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

@@ -1,5 +1,7 @@
 package com.yaromchikv.dealership;
 
+import com.yaromchikv.dealership.connection.MyConnection;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,12 +12,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.yaromchikv.dealership.Constants.*;
+import static com.yaromchikv.dealership.utils.Constants.*;
 
-public class MainStage extends Application {
+public class Main extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    public static AccessLevel myAccessLevel = null;
 
     @Override
     public void start(Stage primaryStage) throws IOException {

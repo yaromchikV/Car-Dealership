@@ -1,9 +1,10 @@
-package com.yaromchikv.dealership;
+package com.yaromchikv.dealership.utils;
 
 public class Constants {
     public static final String APP_NAME = "Car Dealership";
+    public static final String ADMIN_USERNAME = "admin";
+    public static final String ADMIN_PASSWORD = "admin";
 
-    public static final String ADMIN_ACCOUNTS_DASHBOARD = "adminAccountsDashboard";
     public static final String ADMIN_EMPLOYEES_DASHBOARD = "adminEmployeesDashboard";
     public static final String ADMIN_POSITIONS_DASHBOARD = "adminPositionsDashboard";
     public static final String AUTH_SCREEN = "authScreen";

@@ -2,7 +2,7 @@ package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
-import com.yaromchikv.dealership.data.tableModels.TableStyle;
+import com.yaromchikv.dealership.data.models.Style;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,13 +11,13 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.yaromchikv.dealership.Constants.*;
+import static com.yaromchikv.dealership.utils.Constants.*;
 
 public class EmployeeStylesController implements Initializable {
 
-    public TableView<TableStyle> stylesTableView;
-    public TableColumn<TableStyle, Integer> idTableColumn;
-    public TableColumn<TableStyle, String> nameTableColumn;
+    public TableView<Style> stylesTableView;
+    public TableColumn<Style, Integer> idTableColumn;
+    public TableColumn<Style, String> nameTableColumn;
 
     public TextField nameTextField;
 
@@ -41,7 +41,7 @@ public class EmployeeStylesController implements Initializable {
         idTableColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 
-        ObservableList<TableStyle> resultList = repository.getTableStyles();
+        ObservableList<Style> resultList = repository.getTableStyles();
         stylesTableView.setItems(resultList);
     }
 
@@ -58,15 +58,101 @@ public class EmployeeStylesController implements Initializable {
     }
 
     private void applyAddButton() {
-        // TODO
+        String name = nameTextField.getText();
+
+        //language=SQL
+        String query = "INSERT INTO " + STYLES_TABLE + " VALUES (null, '" + name + "');";
+        repository.executeUpdate(query);
+
+        clearFields();
+        showStyles();
     }
 
     private void applyEditButton() {
-        // TODO
+        int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        String name = nameTextField.getText();
+
+        //language=SQL
+        String query = "UPDATE " + STYLES_TABLE + " SET " + NAME + " = '" + name + "', WHERE " + ID + " = " + id;
+        repository.executeUpdate(query);
+
+        clearFields();
+        showStyles();
     }
 
     private void applyDeleteButton() {
-        // TODO
+        int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+
+        //language=SQL
+        String query = "DELETE FROM " + STYLES_TABLE + " WHERE " + ID + " = " + id;
+        repository.executeUpdate(query);
+
+        clearFields();
+        showStyles();
+    }
+
+    @FXML
+    public void tableItemSelect() {
+        Style style = stylesTableView.getSelectionModel().getSelectedItem();
+        if (style != null)
+            fillFieldsIfCellIsSelected(style);
+    }
+
+    private void fillFieldsIfCellIsSelected(Style style) {
+        Toggle selectedToggle = actions.getSelectedToggle();
+        boolean isEdit = editToggleButton.equals(selectedToggle);
+        boolean isDelete = deleteToggleButton.equals(selectedToggle);
+        if (isEdit || isDelete) {
+            nameTextField.setText(style.nameProperty().getValue());
+            if (isEdit) nameTextField.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void addToggleButtonClick() {
+        applyButton.setText("Добавить");
+        addToggleButton.setSelected(true);
+        clearButton.setVisible(true);
+        nameTextField.setDisable(false);
+    }
+
+    @FXML
+    private void editToggleButtonClick() {
+        applyButton.setText("Применить");
+        editToggleButton.setSelected(true);
+        clearButton.setVisible(false);
+
+        Style style = stylesTableView.getSelectionModel().getSelectedItem();
+        if (style != null) {
+            nameTextField.setDisable(false);
+            fillFieldsIfCellIsSelected(style);
+        } else {
+            nameTextField.setDisable(true);
+            clearFields();
+        }
+    }
+
+    @FXML
+    private void deleteToggleButtonClick() {
+        applyButton.setText("Удалить");
+        deleteToggleButton.setSelected(true);
+        clearButton.setVisible(false);
+        nameTextField.setDisable(true);
+
+        Style style = stylesTableView.getSelectionModel().getSelectedItem();
+        if (style != null)
+            fillFieldsIfCellIsSelected(style);
+        else
+            clearFields();
+    }
+
+    @FXML
+    public void clearButtonClick() {
+        clearFields();
+    }
+
+    private void clearFields() {
+        nameTextField.clear();
     }
 
     @FXML
@@ -104,44 +190,4 @@ public class EmployeeStylesController implements Initializable {
         ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
     }
 
-    @FXML
-    private void addToggleButtonClick() {
-        applyButton.setText("Добавить");
-        addToggleButton.setSelected(true);
-        clearButton.setVisible(true);
-        nameTextField.setDisable(false);
-
-        clearFields();
-    }
-
-    @FXML
-    private void editToggleButtonClick() {
-        applyButton.setText("Применить");
-        editToggleButton.setSelected(true);
-        clearButton.setVisible(false);
-        nameTextField.setDisable(false);
-
-        clearFields();
-
-        // Если не выбрана ячейка, enabled = false
-    }
-
-    @FXML
-    private void deleteToggleButtonClick() {
-        applyButton.setText("Удалить");
-        deleteToggleButton.setSelected(true);
-        clearButton.setVisible(false);
-        nameTextField.setDisable(true);
-
-        clearFields();
-    }
-
-    @FXML
-    public void clearButtonClick() {
-        nameTextField.clear();
-    }
-
-    private void clearFields() {
-        nameTextField.clear();
-    }
 }

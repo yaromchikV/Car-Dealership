@@ -2,7 +2,7 @@ package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
-import com.yaromchikv.dealership.data.tableModels.TablePosition;
+import com.yaromchikv.dealership.data.models.Position;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,14 +11,14 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.yaromchikv.dealership.Constants.*;
+import static com.yaromchikv.dealership.utils.Constants.*;
 
 public class AdminPositionsController implements Initializable {
 
-    public TableView<TablePosition> positionsTableView;
-    public TableColumn<TablePosition, Integer> idTableColumn;
-    public TableColumn<TablePosition, String> nameTableColumn;
-    public TableColumn<TablePosition, Double> salaryTableColumn;
+    public TableView<Position> positionsTableView;
+    public TableColumn<Position, Integer> idTableColumn;
+    public TableColumn<Position, String> nameTableColumn;
+    public TableColumn<Position, Double> salaryTableColumn;
 
     public TextField nameTextField;
     public TextField salaryTextField;
@@ -44,7 +44,7 @@ public class AdminPositionsController implements Initializable {
         nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         salaryTableColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
 
-        ObservableList<TablePosition> resultList = repository.getTablePositions();
+        ObservableList<Position> resultList = repository.getTablePositions();
         positionsTableView.setItems(resultList);
     }
 
@@ -67,7 +67,7 @@ public class AdminPositionsController implements Initializable {
 
         //language=SQL
         String query = "INSERT INTO " + POSITIONS_TABLE + " VALUES (" +
-                null + ",'" + name + "'," + salary + ')';
+                null + ",'" + name + "'," + salary + ");";
         repository.executeUpdate(query);
 
         clearFields();
@@ -77,13 +77,12 @@ public class AdminPositionsController implements Initializable {
     private void applyEditButton() {
         int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
         String name = nameTextField.getText();
-        String salaryText = salaryTextField.getText();
-        double salary = Double.parseDouble(salaryText);
+        String salary = salaryTextField.getText();
 
         //language=SQL
         String query = "UPDATE " + POSITIONS_TABLE + " SET " +
                 NAME + " = '" + name + "'," +
-                SALARY + " = " + salary +
+                SALARY + " = " + Double.parseDouble(salary) +
                 " WHERE " + ID + " = " + id;
         repository.executeUpdate(query);
 
@@ -104,12 +103,12 @@ public class AdminPositionsController implements Initializable {
 
     @FXML
     public void tableItemSelect() {
-        TablePosition position = positionsTableView.getSelectionModel().getSelectedItem();
+        Position position = positionsTableView.getSelectionModel().getSelectedItem();
         if (position != null)
             fillFieldsIfCellIsSelected(position);
     }
 
-    private void fillFieldsIfCellIsSelected(TablePosition position) {
+    private void fillFieldsIfCellIsSelected(Position position) {
         Toggle selectedToggle = actions.getSelectedToggle();
         boolean isEdit = editToggleButton.equals(selectedToggle);
         boolean isDelete = deleteToggleButton.equals(selectedToggle);
@@ -136,7 +135,7 @@ public class AdminPositionsController implements Initializable {
         editToggleButton.setSelected(true);
         clearButton.setVisible(false);
 
-        TablePosition position = positionsTableView.getSelectionModel().getSelectedItem();
+        Position position = positionsTableView.getSelectionModel().getSelectedItem();
         if (position != null) {
             updatingBoxFieldsIsEnabled(true);
             fillFieldsIfCellIsSelected(position);
@@ -153,7 +152,7 @@ public class AdminPositionsController implements Initializable {
         clearButton.setVisible(false);
         updatingBoxFieldsIsEnabled(false);
 
-        TablePosition position = positionsTableView.getSelectionModel().getSelectedItem();
+        Position position = positionsTableView.getSelectionModel().getSelectedItem();
         if (position != null)
             fillFieldsIfCellIsSelected(position);
         else

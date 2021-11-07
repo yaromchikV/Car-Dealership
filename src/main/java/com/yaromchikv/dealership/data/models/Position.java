@@ -1,39 +1,29 @@
 package com.yaromchikv.dealership.data.models;
 
-import java.time.LocalDate;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Position {
-    private int id;
-    private String name;
-    private Double salary;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty name;
+    private final SimpleDoubleProperty salary;
 
     public Position(int id, String name, Double salary) {
-        this.id = id;
-        this.name = name;
-        this.salary = salary;
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.salary = new SimpleDoubleProperty(salary);
     }
 
-    public int getId() {
+    public SimpleIntegerProperty idProperty() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
+    public SimpleStringProperty nameProperty() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getSalary() {
+    public SimpleDoubleProperty salaryProperty() {
         return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
     }
 }

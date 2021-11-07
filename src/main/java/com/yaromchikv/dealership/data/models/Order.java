@@ -1,69 +1,64 @@
 package com.yaromchikv.dealership.data.models;
 
-import java.time.LocalDateTime;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Order {
-    private int id;
-    private LocalDateTime dateTime;
-    private int customerId;
-    private int carId;
-    private int employeeId;
-    private Boolean isCompleted;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty dateTime;
+    private final SimpleIntegerProperty customerId;
+    private final SimpleStringProperty customerFullName;
+    private final SimpleIntegerProperty carId;
+    private final SimpleStringProperty carName;
+    private final SimpleIntegerProperty employeeId;
+    private final SimpleStringProperty employeeFullName;
+    private final SimpleStringProperty status;
 
-    public Order(int id, LocalDateTime dateTime, int customerId, int carId, int employeeId, Boolean isCompleted) {
-        this.id = id;
-        this.dateTime = dateTime;
-        this.customerId = customerId;
-        this.carId = carId;
-        this.employeeId = employeeId;
-        this.isCompleted = isCompleted;
+    public Order(int id, String dateTime, int customerId, String customerFullName, int carId, String carName, int employeeId, String employeeFullName, String status) {
+        this.id = new SimpleIntegerProperty(id);
+        this.dateTime = new SimpleStringProperty(dateTime);
+        this.customerId = new SimpleIntegerProperty(customerId);
+        this.customerFullName = new SimpleStringProperty(customerFullName);
+        this.carId = new SimpleIntegerProperty(carId);
+        this.carName = new SimpleStringProperty(carName);
+        this.employeeId = new SimpleIntegerProperty(employeeId);
+        this.employeeFullName = new SimpleStringProperty(employeeFullName);
+        this.status = new SimpleStringProperty(status);
     }
 
-    public int getId() {
+    public SimpleIntegerProperty idProperty() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getDateTime() {
+    public SimpleStringProperty dateTimeProperty() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public int getCustomerId() {
+    public SimpleIntegerProperty customerIdProperty() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public SimpleStringProperty customerFullNameProperty() {
+        return customerFullName;
     }
 
-    public int getCarId() {
+    public SimpleIntegerProperty carIdProperty() {
         return carId;
     }
 
-    public void setCarId(int carId) {
-        this.carId = carId;
+    public SimpleStringProperty carNameProperty() {
+        return carName;
     }
 
-    public int getEmployeeId() {
+    public SimpleIntegerProperty employeeIdProperty() {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
+    public SimpleStringProperty employeeFullNameProperty() {
+        return employeeFullName;
     }
 
-    public Boolean getCompleted() {
-        return isCompleted;
-    }
-
-    public void setCompleted(Boolean completed) {
-        isCompleted = completed;
+    public SimpleStringProperty statusProperty() {
+        return status;
     }
 }

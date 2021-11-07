@@ -1,6 +1,8 @@
 package com.yaromchikv.dealership.сontrollers;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -10,7 +12,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.yaromchikv.dealership.Constants.ADMIN_EMPLOYEES_DASHBOARD;
+import static com.yaromchikv.dealership.utils.Constants.ADMIN_EMPLOYEES_DASHBOARD;
 
 public class AuthScreenController implements Initializable {
     
@@ -26,6 +28,7 @@ public class AuthScreenController implements Initializable {
     @FXML
     private void logInButtonClick() {
         ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        Main.myAccessLevel = AccessLevel.ADMIN;
     }
 
 }

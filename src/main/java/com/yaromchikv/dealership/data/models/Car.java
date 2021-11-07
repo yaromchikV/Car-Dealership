@@ -1,67 +1,47 @@
 package com.yaromchikv.dealership.data.models;
 
-public class Car {
-    private int id;
-    private int styleId;
-    private String make;
-    private String model;
-    private int year;
-    private double price;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
-    public Car(int id, int styleId, String make, String model, int year, double price) {
-        this.id = id;
-        this.styleId = styleId;
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.price = price;
+public class Car {
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty make;
+    private final SimpleStringProperty model;
+    private final SimpleStringProperty styleName;
+    private final SimpleIntegerProperty year;
+    private final SimpleDoubleProperty price;
+
+    public Car(int id, String make, String model, String styleName, int year, double price) {
+        this.id = new SimpleIntegerProperty(id);
+        this.make = new SimpleStringProperty(make);
+        this.model = new SimpleStringProperty(model);
+        this.styleName = new SimpleStringProperty(styleName);
+        this.year = new SimpleIntegerProperty(year);
+        this.price = new SimpleDoubleProperty(price);
     }
 
-    public int getId() {
+    public SimpleIntegerProperty idProperty() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public SimpleStringProperty styleNameProperty() {
+        return styleName;
     }
 
-    public int getStyleId() {
-        return styleId;
-    }
-
-    public void setStyleId(int styleId) {
-        this.styleId = styleId;
-    }
-
-    public String getMake() {
+    public SimpleStringProperty makeProperty() {
         return make;
     }
 
-    public void setMake(String make) {
-        this.make = make;
-    }
-
-    public String getModel() {
+    public SimpleStringProperty modelProperty() {
         return model;
     }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public int getYear() {
+    public SimpleIntegerProperty yearProperty() {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public double getPrice() {
+    public SimpleDoubleProperty priceProperty() {
         return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 }

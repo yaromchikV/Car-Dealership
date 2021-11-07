@@ -29,7 +29,8 @@
             </ImageView>
         </graphic>
     </Button>
-    <TableView fx:id="customersTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0">
+    <TableView fx:id="customersTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
+               onMouseClicked="#tableItemSelect">
         <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID" />
             <TableColumn fx:id="surnameTableColumn" prefWidth="150" text="Фамилия" />
@@ -199,7 +200,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="minBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0" />
+                <DatePicker fx:id="minBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0" editable="false"/>
                 <Label text="до">
                     <font>
                         <Font size="14.0" />
@@ -208,7 +209,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="maxBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0" />
+                <DatePicker fx:id="maxBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0" editable="false"/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Телефон:">
@@ -312,7 +313,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="birthDateDatePicker" prefHeight="30.0" prefWidth="346.0" />
+                <DatePicker fx:id="birthDatePicker" prefHeight="30.0" prefWidth="346.0" editable="false"/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Телефон:">

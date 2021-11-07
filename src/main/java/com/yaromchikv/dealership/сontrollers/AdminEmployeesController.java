@@ -2,8 +2,7 @@ package com.yaromchikv.dealership.сontrollers;
 
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
-import com.yaromchikv.dealership.data.tableModels.TableEmployee;
-import com.yaromchikv.dealership.data.tableModels.TablePosition;
+import com.yaromchikv.dealership.data.models.Employee;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,25 +13,24 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static com.yaromchikv.dealership.Constants.*;
+import static com.yaromchikv.dealership.utils.Constants.*;
 
 public class AdminEmployeesController implements Initializable {
 
-    public TableView<TableEmployee> employeesTableView;
-    public TableColumn<TableEmployee, Integer> idTableColumn;
-    public TableColumn<TableEmployee, String> surnameTableColumn;
-    public TableColumn<TableEmployee, String> nameTableColumn;
-    public TableColumn<TableEmployee, String> middleNameTableColumn;
-    public TableColumn<TableEmployee, String> birthDateTableColumn;
-    public TableColumn<TableEmployee, String> phoneNumberTableColumn;
-    public TableColumn<TableEmployee, String> positionTableColumn;
-    public TableColumn<TableEmployee, Double> salaryTableColumn;
-    public TableColumn<TableEmployee, String> startDateTableColumn;
-    public TableColumn<TableEmployee, String> usernameTableColumn;
-    public TableColumn<TableEmployee, String> passwordTableColumn;
+    public TableView<Employee> employeesTableView;
+    public TableColumn<Employee, Integer> idTableColumn;
+    public TableColumn<Employee, String> surnameTableColumn;
+    public TableColumn<Employee, String> nameTableColumn;
+    public TableColumn<Employee, String> middleNameTableColumn;
+    public TableColumn<Employee, String> birthDateTableColumn;
+    public TableColumn<Employee, String> phoneNumberTableColumn;
+    public TableColumn<Employee, String> positionTableColumn;
+    public TableColumn<Employee, Double> salaryTableColumn;
+    public TableColumn<Employee, String> startDateTableColumn;
+    public TableColumn<Employee, String> usernameTableColumn;
+    public TableColumn<Employee, String> passwordTableColumn;
 
     public VBox employeesButtonModule;
 
@@ -60,7 +58,7 @@ public class AdminEmployeesController implements Initializable {
     public DatePicker maxStartDateFilterDatePicker;
     public TextField usernameFilterTextField;
 
-    ObservableList<String> listOfPositionsNames;
+    private ObservableList<String> listOfPositionsNames;
 
     public Button applyButton;
     public Button clearButton;
@@ -104,7 +102,7 @@ public class AdminEmployeesController implements Initializable {
         usernameTableColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
         passwordTableColumn.setCellValueFactory(cellData -> cellData.getValue().passwordProperty());
 
-        ObservableList<TableEmployee> resultList = repository.getTableEmployees(null);
+        ObservableList<Employee> resultList = repository.getTableEmployees(null);
         employeesTableView.setItems(resultList);
     }
 
@@ -129,13 +127,14 @@ public class AdminEmployeesController implements Initializable {
         LocalDate birthDate = birthDatePicker.getValue();
         String phoneNumber = phoneNumberTextField.getText();
         String positionName = positionChoiceBox.getValue();
-        Integer positionId = repository.getPositionIdByPositionName(positionName).get(0);
         LocalDate startDate = startDatePicker.getValue();
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
         //language=SQL
-        String employeeQuery = "INSERT INTO " + EMPLOYEES_TABLE + " VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + positionId + ", '" + startDate + "');";
+        String employeeQuery = "INSERT INTO " + EMPLOYEES_TABLE + " VALUES (null, '" + surname + "', '" + name + "', '" +
+                middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + "(SELECT " + ID + " FROM " + POSITIONS_TABLE
+                + " WHERE " + NAME + " = '" + positionName + "' LIMIT 1)" + ", '" + startDate + "');";
         //language=SQL
         String accountQuery = "INSERT INTO " + ACCOUNTS_TABLE + " VALUES (last_insert_id(), '" + username + "', '" + password + "');";
 
@@ -153,7 +152,6 @@ public class AdminEmployeesController implements Initializable {
         LocalDate birthDate = birthDatePicker.getValue();
         String phoneNumber = phoneNumberTextField.getText();
         String positionName = positionChoiceBox.getValue();
-        Integer positionId = repository.getPositionIdByPositionName(positionName).get(0);
         LocalDate startDate = startDatePicker.getValue();
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
@@ -165,7 +163,8 @@ public class AdminEmployeesController implements Initializable {
                 MIDDLE_NAME + " = '" + middleName + "', " +
                 DATE_OF_BIRTH + " = '" + birthDate + "', " +
                 PHONE_NUMBER + " = '" + phoneNumber + "', " +
-                POSITION_ID + " = " + positionId + ", " +
+                POSITION_ID + " = " + "(SELECT " + ID + " FROM " + POSITIONS_TABLE + " WHERE " +
+                NAME + " = '" + positionName + "' LIMIT 1)" + ", " +
                 START_DATE + " = '" + startDate + "' " +
                 "WHERE " + ID + " = " + id + ";";
 
@@ -212,8 +211,8 @@ public class AdminEmployeesController implements Initializable {
         if (maxBirthDate != null)
             filterBuilder.append(' ' + DATE_OF_BIRTH + "<='").append(maxBirthDate).append("' AND");
         if (!phoneNumber.isEmpty()) filterBuilder.append(' ' + PHONE_NUMBER + "='").append(phoneNumber).append("' AND");
-        if (!Objects.equals(positionName, listOfPositionsNames.get(0)))
-            filterBuilder.append(' ' + POSITION + "='").append(positionName).append("' AND");
+        if (!positionName.equals(listOfPositionsNames.get(0)))
+            filterBuilder.append(" positions.NAME ='").append(positionName).append("' AND");
         if (minStartDate != null) filterBuilder.append(' ' + START_DATE + ">='").append(minStartDate).append("' AND");
         if (maxStartDate != null) filterBuilder.append(' ' + START_DATE + "<='").append(maxStartDate).append("' AND");
         if (!username.isEmpty()) filterBuilder.append(' ' + USERNAME + "='").append(username).append("' AND");
@@ -224,18 +223,18 @@ public class AdminEmployeesController implements Initializable {
             filter = filterBuilder.toString();
         }
 
-        ObservableList<TableEmployee> resultList = repository.getTableEmployees(filter);
+        ObservableList<Employee> resultList = repository.getTableEmployees(filter);
         employeesTableView.setItems(resultList);
     }
 
     @FXML
     public void tableItemSelect() {
-        TableEmployee employee = employeesTableView.getSelectionModel().getSelectedItem();
+        Employee employee = employeesTableView.getSelectionModel().getSelectedItem();
         if (employee != null)
             fillFieldsIfCellIsSelected(employee);
     }
 
-    private void fillFieldsIfCellIsSelected(TableEmployee employee) {
+    private void fillFieldsIfCellIsSelected(Employee employee) {
         Toggle selectedToggle = actions.getSelectedToggle();
         boolean isEdit = editToggleButton.equals(selectedToggle);
         boolean isDelete = deleteToggleButton.equals(selectedToggle);
@@ -246,9 +245,11 @@ public class AdminEmployeesController implements Initializable {
             nameTextField.setText(employee.nameProperty().getValue());
             middleNameTextField.setText(employee.middleNameProperty().getValue());
             birthDatePicker.setValue(LocalDate.parse(employee.dateOfBirthProperty().getValue(), formatter));
+            birthDatePicker.getEditor().setText(employee.dateOfBirthProperty().getValue());
             phoneNumberTextField.setText(employee.phoneNumberProperty().getValue());
             positionChoiceBox.setValue(employee.positionNameProperty().getValue());
             startDatePicker.setValue(LocalDate.parse(employee.startDateProperty().getValue(), formatter));
+            startDatePicker.getEditor().setText(employee.startDateProperty().getValue());
             usernameTextField.setText(employee.usernameProperty().getValue());
             passwordTextField.setText("");
             password2TextField.setText("");
@@ -275,9 +276,8 @@ public class AdminEmployeesController implements Initializable {
         updatingBox.setVisible(true);
         filterBox.setVisible(false);
         clearButton.setVisible(false);
-        updatingBoxFieldsIsEnabled(true);
 
-        TableEmployee employee = employeesTableView.getSelectionModel().getSelectedItem();
+        Employee employee = employeesTableView.getSelectionModel().getSelectedItem();
         if (employee != null) {
             updatingBoxFieldsIsEnabled(true);
             fillFieldsIfCellIsSelected(employee);
@@ -296,7 +296,7 @@ public class AdminEmployeesController implements Initializable {
         clearButton.setVisible(false);
         updatingBoxFieldsIsEnabled(false);
 
-        TableEmployee employee = employeesTableView.getSelectionModel().getSelectedItem();
+        Employee employee = employeesTableView.getSelectionModel().getSelectedItem();
         if (employee != null)
             fillFieldsIfCellIsSelected(employee);
         else

@@ -1,79 +1,52 @@
 package com.yaromchikv.dealership.data.models;
 
-import java.time.LocalDate;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Customer {
-    private int id;
-    private String surname;
-    private String name;
-    private String middleName;
-    private LocalDate dateOfBirth;
-    private String phoneNumber;
-    private String email;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty surname;
+    private final SimpleStringProperty name;
+    private final SimpleStringProperty middleName;
+    private final SimpleStringProperty dateOfBirth;
+    private final SimpleStringProperty phoneNumber;
+    private final SimpleStringProperty email;
 
-    public Customer(int id, String surname, String name, String middleName, LocalDate dateOfBirth, String phoneNumber, String email) {
-        this.id = id;
-        this.surname = surname;
-        this.name = name;
-        this.middleName = middleName;
-        this.dateOfBirth = dateOfBirth;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
+    public Customer(int id, String surname, String name, String middleName, String dateOfBirth, String phoneNumber, String email) {
+        this.id = new SimpleIntegerProperty(id);
+        this.surname = new SimpleStringProperty(surname);
+        this.name = new SimpleStringProperty(name);
+        this.middleName = new SimpleStringProperty(middleName);
+        this.dateOfBirth = new SimpleStringProperty(dateOfBirth);
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        this.email = new SimpleStringProperty(email);
     }
 
-    public int getId() {
+    public SimpleIntegerProperty idProperty() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getSurname() {
+    public SimpleStringProperty surnameProperty() {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getName() {
+    public SimpleStringProperty nameProperty() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMiddleName() {
+    public SimpleStringProperty middleNameProperty() {
         return middleName;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public LocalDate getDateOfBirth() {
+    public SimpleStringProperty dateOfBirthProperty() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getPhoneNumber() {
+    public SimpleStringProperty phoneNumberProperty() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
+    public SimpleStringProperty emailProperty() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }

@@ -1,89 +1,77 @@
 package com.yaromchikv.dealership.data.models;
 
-import java.time.LocalDate;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Employee {
-    private int id;
-    private String surname;
-    private String name;
-    private String middleName;
-    private LocalDate dateOfBirth;
-    private String phoneNumber;
-    private Integer positionId;
-    private LocalDate startDate;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty surname;
+    private final SimpleStringProperty name;
+    private final SimpleStringProperty middleName;
+    private final SimpleStringProperty dateOfBirth;
+    private final SimpleStringProperty phoneNumber;
+    private final SimpleStringProperty positionName;
+    private final SimpleDoubleProperty positionSalary;
+    private final SimpleStringProperty startDate;
+    private final SimpleStringProperty username;
+    private final SimpleStringProperty password;
 
-    public Employee(int id, String surname, String name, String middleName, LocalDate dateOfBirth, String phoneNumber, Integer positionId, LocalDate startDate) {
-        this.id = id;
-        this.surname = surname;
-        this.name = name;
-        this.middleName = middleName;
-        this.dateOfBirth = dateOfBirth;
-        this.phoneNumber = phoneNumber;
-        this.positionId = positionId;
-        this.startDate = startDate;
+    public Employee(int id, String surname, String name, String middleName, String dateOfBirth, String phoneNumber, String positionName, Double positionSalary, String startDate, String username, String password) {
+        this.id = new SimpleIntegerProperty(id);
+        this.surname = new SimpleStringProperty(surname);
+        this.name = new SimpleStringProperty(name);
+        this.middleName = new SimpleStringProperty(middleName);
+        this.dateOfBirth = new SimpleStringProperty(dateOfBirth);
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        this.positionName = new SimpleStringProperty(positionName);
+        this.positionSalary = new SimpleDoubleProperty(positionSalary);
+        this.startDate = new SimpleStringProperty(startDate);
+        this.username = new SimpleStringProperty(username);
+        this.password = new SimpleStringProperty(password);
     }
 
-    public int getId() {
+    public SimpleIntegerProperty idProperty() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getSurname() {
+    public SimpleStringProperty surnameProperty() {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getName() {
+    public SimpleStringProperty nameProperty() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMiddleName() {
+    public SimpleStringProperty middleNameProperty() {
         return middleName;
     }
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public LocalDate getDateOfBirth() {
+    public SimpleStringProperty dateOfBirthProperty() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getPhoneNumber() {
+    public SimpleStringProperty phoneNumberProperty() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public SimpleStringProperty positionNameProperty() {
+        return positionName;
     }
 
-    public Integer getPositionId() {
-        return positionId;
+    public SimpleDoubleProperty positionSalaryProperty() {
+        return positionSalary;
     }
 
-    public void setPositionId(Integer positionId) {
-        this.positionId = positionId;
-    }
-
-    public LocalDate getStartDate() {
+    public SimpleStringProperty startDateProperty() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public SimpleStringProperty usernameProperty() {
+        return username;
+    }
+
+    public SimpleStringProperty passwordProperty() {
+        return password;
     }
 }
