@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
+<?import com.yaromchikv.dealership.utils.controls.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yaromchikv.dealership.сontrollers.AuthScreenController">
-    <Button fx:id="logInButton" alignment="CENTER" defaultButton="true" layoutX="454.0" layoutY="543.0" mnemonicParsing="false" onAction="#logInButtonClick" prefHeight="43.0" prefWidth="184.0" text="Войти">
+<AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0"
+            prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.yaromchikv.dealership.сontrollers.AuthScreenController">
+    <Button fx:id="logInButton" alignment="CENTER" defaultButton="true" layoutX="454.0" layoutY="543.0"
+            mnemonicParsing="false" onAction="#logInButtonClick" prefHeight="43.0" prefWidth="184.0" text="Войти">
         <font>
-            <Font size="20.0" />
+            <Font size="20.0"/>
         </font>
     </Button>
-    <PasswordField fx:id="passwordField" layoutX="396.0" layoutY="463.0" prefHeight="38.0" prefWidth="300.0" promptText="Пароль">
+    <CustomPasswordField fx:id="passwordField" layoutX="396.0" layoutY="463.0" prefHeight="38.0" prefWidth="300.0"
+                         promptText="Пароль" maxLength="24">
         <font>
-            <Font size="18.0" />
+            <Font size="18.0"/>
         </font>
-    </PasswordField>
-    <TextField fx:id="usernameField" layoutX="396.0" layoutY="405.0" prefHeight="38.0" prefWidth="300.0" promptText="Логин">
+    </CustomPasswordField>
+    <CustomTextField fx:id="usernameField" layoutX="396.0" layoutY="405.0" prefHeight="38.0" prefWidth="300.0"
+                     promptText="Логин"
+                     maxLength="24" allowLetters="true" allowDigits="true">
         <font>
-            <Font size="18.0" />
+            <Font size="18.0"/>
         </font>
-    </TextField>
-    <ImageView fitHeight="203.0" fitWidth="466.0" layoutX="309.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
-        <Image url="@/images/logo.png" />
+    </CustomTextField>
+    <ImageView fitHeight="203.0" fitWidth="466.0" layoutX="309.0" layoutY="146.0" pickOnBounds="true"
+               preserveRatio="true">
+        <Image url="@/images/logo.png"/>
     </ImageView>
 </AnchorPane>

@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import com.yaromchikv.dealership.utils.controls.*?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
@@ -148,11 +148,12 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <TextField fx:id="makeTextField" prefHeight="30.0" prefWidth="380.0">
+                <CustomTextField fx:id="makeTextField" prefHeight="30.0" prefWidth="380.0"
+                        maxLength="24" allowLetters="true" allowDigits="true">
                     <font>
                         <Font size="14.0"/>
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Модель:">
@@ -163,11 +164,12 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <TextField fx:id="modelTextField" prefHeight="30.0" prefWidth="371.0">
+                <CustomTextField fx:id="modelTextField" prefHeight="30.0" prefWidth="371.0"
+                                 maxLength="24" allowLetters="true" allowDigits="true">
                     <font>
                         <Font size="14.0"/>
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Тип кузова:">
@@ -194,11 +196,12 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <TextField fx:id="yearTextField" prefHeight="30.0" prefWidth="366.0">
+                <CustomTextField fx:id="yearTextField" prefHeight="30.0" prefWidth="366.0"
+                                 maxLength="4" allowLetters="false" allowDigits="true">
                     <font>
                         <Font size="14.0"/>
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Цена:">
@@ -209,11 +212,12 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <TextField fx:id="priceTextField" prefHeight="30.0" prefWidth="412.0">
+                <CustomTextField fx:id="priceTextField" prefHeight="30.0" prefWidth="412.0"
+                                 maxLength="7" allowLetters="false" allowDigits="true" isDouble="true">
                     <font>
                         <Font size="14.0"/>
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
         </VBox>
     </HBox>
@@ -234,11 +238,12 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <TextField fx:id="makeFilterTextField" prefHeight="30.0" prefWidth="380.0">
+                <CustomTextField fx:id="makeFilterTextField" prefHeight="30.0" prefWidth="380.0"
+                                 maxLength="24" allowLetters="true" allowDigits="true">
                     <font>
                         <Font size="14.0"/>
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Модель:">
@@ -249,11 +254,12 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <TextField fx:id="modelFilterTextField" prefHeight="30.0" prefWidth="371.0">
+                <CustomTextField fx:id="modelFilterTextField" prefHeight="30.0" prefWidth="371.0"
+                                 maxLength="24" allowLetters="true" allowDigits="true">
                     <font>
                         <Font size="14.0"/>
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Тип кузова:">
@@ -319,7 +325,8 @@
                             <Insets bottom="5.0"/>
                         </HBox.margin>
                     </Label>
-                    <TextField fx:id="minPriceFilterTextField" prefHeight="29.6" prefWidth="100.0"/>
+                    <CustomTextField fx:id="minPriceFilterTextField" prefHeight="29.6" prefWidth="100.0"
+                                     maxLength="7" allowLetters="false" allowDigits="true"/>
                     <Label text="до">
                         <font>
                             <Font size="14.0"/>
@@ -328,7 +335,8 @@
                             <Insets bottom="5.0"/>
                         </HBox.margin>
                     </Label>
-                    <TextField fx:id="maxPriceFilterTextField" prefHeight="29.6" prefWidth="100.0"/>
+                    <CustomTextField fx:id="maxPriceFilterTextField" prefHeight="29.6" prefWidth="100.0"
+                                     maxLength="7" allowLetters="false" allowDigits="true"/>
                 </HBox>
             </HBox>
         </VBox>

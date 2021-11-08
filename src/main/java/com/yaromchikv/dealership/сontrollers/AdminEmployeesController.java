@@ -4,6 +4,7 @@ import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Employee;
 import com.yaromchikv.dealership.utils.Hash;
+import com.yaromchikv.dealership.utils.controls.CustomTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,28 +37,28 @@ public class AdminEmployeesController implements Initializable {
     public VBox employeesButtonModule;
 
     public HBox updatingBox;
-    public TextField surnameTextField;
-    public TextField nameTextField;
-    public TextField middleNameTextField;
+    public CustomTextField surnameTextField;
+    public CustomTextField nameTextField;
+    public CustomTextField middleNameTextField;
     public DatePicker birthDatePicker;
-    public TextField phoneNumberTextField;
+    public CustomTextField phoneNumberTextField;
     public ChoiceBox<String> positionChoiceBox;
     public DatePicker startDatePicker;
-    public TextField usernameTextField;
-    public TextField passwordTextField;
-    public TextField password2TextField;
+    public CustomTextField usernameTextField;
+    public CustomTextField passwordTextField;
+    public CustomTextField password2TextField;
 
     public HBox filterBox;
-    public TextField surnameFilterTextField;
-    public TextField nameFilterTextField;
-    public TextField middleNameFilterTextField;
+    public CustomTextField surnameFilterTextField;
+    public CustomTextField nameFilterTextField;
+    public CustomTextField middleNameFilterTextField;
     public DatePicker minBirthFilterDatePicker;
     public DatePicker maxBirthFilterDatePicker;
-    public TextField phoneNumberFilterTextField;
+    public CustomTextField phoneNumberFilterTextField;
     public ChoiceBox<String> positionFilterChoiceBox;
     public DatePicker minStartDateFilterDatePicker;
     public DatePicker maxStartDateFilterDatePicker;
-    public TextField usernameFilterTextField;
+    public CustomTextField usernameFilterTextField;
 
     private ObservableList<String> listOfPositionsNames;
 
@@ -134,15 +135,13 @@ public class AdminEmployeesController implements Initializable {
         int id = repository.getLastUserId() + 1;
         password = Hash.convert(id, password);
 
-        System.out.println("addId:" + id);
-
         //language=SQL
         String employeeQuery =
-                "INSERT INTO EMPLOYEES_TABLE " +
+                "INSERT INTO employees " +
                         "VALUES (" + id + ", '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + "(SELECT ID FROM POSITIONS_TABLE WHERE NAME = '" + positionName + "' LIMIT 1)," + "'" + startDate + "');";
         //language=SQL
         String accountQuery =
-                "INSERT INTO ACCOUNTS_TABLE " +
+                "INSERT INTO accounts " +
                         "VALUES (last_insert_id(), '" + username + "', '" + password + "');";
 
         repository.executeUpdate(employeeQuery);
@@ -164,7 +163,7 @@ public class AdminEmployeesController implements Initializable {
         String password = passwordTextField.getText();
 
         //language=SQL
-        String employeeQuery = "UPDATE EMPLOYEES_TABLE SET " +
+        String employeeQuery = "UPDATE employees SET " +
                 "SURNAME = '" + surname + "', " +
                 "NAME = '" + name + "', " +
                 "MIDDLE_NAME = '" + middleName + "', " +
@@ -175,7 +174,7 @@ public class AdminEmployeesController implements Initializable {
                 "WHERE ID = " + id + ";";
 
         //language=SQL
-        String accountQuery = "UPDATE ACCOUNTS_TABLE SET " +
+        String accountQuery = "UPDATE accounts SET " +
                 "USERNAME = '" + username + "', " +
                 "PASSWORD = '" + password + "' " +
                 "WHERE ID = " + id + ";";
@@ -189,7 +188,7 @@ public class AdminEmployeesController implements Initializable {
         int id = employeesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM EMPLOYEES_TABLE " +
+        String query = "DELETE FROM employees " +
                 "WHERE ID = " + id;
 
         repository.executeUpdate(query);
@@ -225,7 +224,7 @@ public class AdminEmployeesController implements Initializable {
         if (!username.isEmpty()) filterBuilder.append("USERNAME ='").append(username).append("' AND ");
 
         String filter = null;
-        if (filterBuilder.length() > 5) {
+        if (filterBuilder.length() > 6) {
             filterBuilder.setLength(filterBuilder.length() - 4);
             filter = filterBuilder.toString();
         }

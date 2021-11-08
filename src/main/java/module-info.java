@@ -13,4 +13,6 @@ module com.yaromchikv.dealership {
     opens com.yaromchikv.dealership.connection to javafx.fxml;
     exports com.yaromchikv.dealership.utils;
     opens com.yaromchikv.dealership.utils to javafx.fxml;
+    exports com.yaromchikv.dealership.utils.controls;
+    opens com.yaromchikv.dealership.utils.controls to javafx.fxml;
 }

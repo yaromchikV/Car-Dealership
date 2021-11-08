@@ -2,11 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import com.yaromchikv.dealership.utils.controls.*?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
@@ -142,11 +141,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="surnameFilterTextField" prefHeight="30.0" prefWidth="362.0">
+                <CustomTextField fx:id="surnameFilterTextField" prefHeight="30.0" prefWidth="362.0"
+                                 maxLength="24" allowLetters="true" allowDigits="false">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Имя:">
@@ -157,11 +157,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="nameFilterTextField" prefHeight="30.0" prefWidth="393.0">
+                <CustomTextField fx:id="nameFilterTextField" prefHeight="30.0" prefWidth="393.0"
+                                 maxLength="24" allowLetters="true" allowDigits="false">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Отчество:">
@@ -172,11 +173,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="middleNameFilterTextField" prefHeight="30.0" prefWidth="361.0">
+                <CustomTextField fx:id="middleNameFilterTextField" prefHeight="30.0" prefWidth="361.0"
+                                 maxLength="24" allowLetters="true" allowDigits="false">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="463.0">
@@ -200,7 +202,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="minBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0" editable="false"/>
+                <CustomDatePicker fx:id="minBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0" editable="false"/>
                 <Label text="до">
                     <font>
                         <Font size="14.0" />
@@ -209,7 +211,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="maxBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0" editable="false"/>
+                <CustomDatePicker fx:id="maxBirthDateFilterDatePicker" prefHeight="30.0" prefWidth="142.0" editable="false"/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Телефон:">
@@ -220,11 +222,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="phoneNumberFilterTextField" prefHeight="30.0" prefWidth="390.0">
+                <CustomTextField fx:id="phoneNumberFilterTextField" prefHeight="30.0" prefWidth="390.0"
+                                 maxLength="11" allowLetters="false" allowDigits="true">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="E-mail:">
@@ -235,11 +238,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="emailFilterTextField" prefHeight="30.0" prefWidth="406.0">
+                <CustomTextField fx:id="emailFilterTextField" prefHeight="30.0" prefWidth="406.0"
+                                 maxLength="36" isEmail="true">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
         </VBox>
     </HBox>
@@ -263,11 +267,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="surnameTextField" prefHeight="30.0" prefWidth="362.0">
+                <CustomTextField fx:id="surnameTextField" prefHeight="30.0" prefWidth="362.0"
+                                 maxLength="24" allowLetters="true" allowDigits="false">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Имя:">
@@ -278,11 +283,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="393.0">
+                <CustomTextField fx:id="nameTextField" prefHeight="30.0" prefWidth="393.0"
+                                 maxLength="24" allowLetters="true" allowDigits="false">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Отчество:">
@@ -293,11 +299,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="middleNameTextField" prefHeight="30.0" prefWidth="361.0">
+                <CustomTextField fx:id="middleNameTextField" prefHeight="30.0" prefWidth="361.0"
+                                 maxLength="24" allowLetters="true" allowDigits="false">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="463.0">
@@ -313,7 +320,7 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <DatePicker fx:id="birthDatePicker" prefHeight="30.0" prefWidth="346.0" editable="false"/>
+                <CustomDatePicker fx:id="birthDatePicker" prefHeight="30.0" prefWidth="346.0" editable="false"/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Телефон:">
@@ -324,11 +331,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="phoneNumberTextField" prefHeight="30.0" prefWidth="390.0">
+                <CustomTextField fx:id="phoneNumberTextField" prefHeight="30.0" prefWidth="390.0"
+                                 maxLength="11" allowLetters="false" allowDigits="true">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="E-mail:">
@@ -339,11 +347,12 @@
                         <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <TextField fx:id="emailTextField" prefHeight="30.0" prefWidth="406.0">
+                <CustomTextField fx:id="emailTextField" prefHeight="30.0" prefWidth="406.0"
+                                 maxLength="36" isEmail="true">
                     <font>
                         <Font size="14.0" />
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
         </VBox>
     </HBox>

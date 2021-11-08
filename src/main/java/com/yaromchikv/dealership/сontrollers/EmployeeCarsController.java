@@ -117,7 +117,7 @@ public class EmployeeCarsController implements Initializable {
         String price = priceTextField.getText();
 
         //language=SQL
-        String query = "INSERT INTO CARS_TABLE " +
+        String query = "INSERT INTO cars " +
                 "VALUES + (" + null + ", (SELECT ID FROM STYLES_TABLE WHERE NAME = '" + styleName + "' LIMIT 1), '" + make + "', '" + model + "', " + Integer.parseInt(year) + ", " + Double.parseDouble(price) + ");";
 
         System.out.println(query);
@@ -135,7 +135,7 @@ public class EmployeeCarsController implements Initializable {
         String price = priceTextField.getText();
 
         //language=SQL
-        String query = "UPDATE CARS_TABLE SET " +
+        String query = "UPDATE cars SET " +
                 "STYLE_ID = (SELECT ID FROM STYLES_TABLE WHERE NAME = '" + styleName + "' LIMIT 1), " +
                 "MAKE = '" + make + "', " +
                 "MODEL = '" + model + "', " +
@@ -151,7 +151,7 @@ public class EmployeeCarsController implements Initializable {
         int id = carsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM CARS_TABLE " +
+        String query = "DELETE FROM cars " +
                 "WHERE ID = " + id;
 
         repository.executeUpdate(query);
@@ -183,7 +183,7 @@ public class EmployeeCarsController implements Initializable {
             filterBuilder.append("PRICE <=").append(Double.parseDouble(maxPrice)).append(" AND ");
 
         String filter = null;
-        if (filterBuilder.length() > 5) {
+        if (filterBuilder.length() > 6) {
             filterBuilder.setLength(filterBuilder.length() - 4);
             filter = filterBuilder.toString();
         }

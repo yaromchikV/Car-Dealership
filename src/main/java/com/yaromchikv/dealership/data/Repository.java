@@ -129,7 +129,7 @@ public class Repository {
         try {
             //language=SQL
             String query = "SELECT ID " +
-                    "FROM ACCOUNTS_TABLE " +
+                    "FROM accounts " +
                     "WHERE USERNAME = '" + username + "';";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
@@ -151,7 +151,7 @@ public class Repository {
         try {
             //language=SQL
             String query = "SELECT ID " +
-                    "FROM ACCOUNTS_TABLE " +
+                    "FROM accounts " +
                     "ORDER BY ID DESC LIMIT 1";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
@@ -173,7 +173,7 @@ public class Repository {
         try {
             //language=SQL
             String query = "SELECT ID " +
-                    "FROM ACCOUNTS_TABLE " +
+                    "FROM accounts " +
                     "WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "';";
 
             Statement statement = connection.createStatement();

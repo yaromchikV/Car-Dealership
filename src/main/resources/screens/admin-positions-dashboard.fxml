@@ -5,15 +5,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import com.yaromchikv.dealership.utils.controls.*?>
 
 <AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0"
             prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
@@ -148,11 +149,12 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <TextField fx:id="nameTextField" prefHeight="30.0" prefWidth="359.0">
+                <CustomTextField fx:id="nameTextField" prefHeight="30.0" prefWidth="359.0"
+                                 maxLength="36" allowLetters="true" allowDigits="false">
                     <font>
                         <Font size="14.0"/>
                     </font>
-                </TextField>
+                </CustomTextField>
             </HBox>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="463.0">
@@ -169,11 +171,12 @@
                             <Insets bottom="5.0"/>
                         </padding>
                     </Label>
-                    <TextField fx:id="salaryTextField" prefHeight="30.0" prefWidth="387.0">
+                    <CustomTextField fx:id="salaryTextField" prefHeight="30.0" prefWidth="387.0"
+                                     maxLength="7" allowLetters="false" allowDigits="true" isDouble="true">
                         <font>
                             <Font size="14.0"/>
                         </font>
-                    </TextField>
+                    </CustomTextField>
                 </HBox>
             </HBox>
         </VBox>

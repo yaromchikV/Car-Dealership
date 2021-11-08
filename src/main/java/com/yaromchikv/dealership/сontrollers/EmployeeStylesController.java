@@ -61,7 +61,7 @@ public class EmployeeStylesController implements Initializable {
         String name = nameTextField.getText();
 
         //language=SQL
-        String query = "INSERT INTO STYLES_TABLE " +
+        String query = "INSERT INTO styles " +
                 "VALUES (null, '" + name + "');";
         repository.executeUpdate(query);
 
@@ -74,7 +74,7 @@ public class EmployeeStylesController implements Initializable {
         String name = nameTextField.getText();
 
         //language=SQL
-        String query = "UPDATE STYLES_TABLE SET " +
+        String query = "UPDATE styles SET " +
                 "NAME = '" + name + "', " +
                 "WHERE ID = " + id;
         repository.executeUpdate(query);
@@ -87,7 +87,7 @@ public class EmployeeStylesController implements Initializable {
         int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM STYLES_TABLE " +
+        String query = "DELETE FROM styles " +
                 "WHERE ID = " + id;
         repository.executeUpdate(query);
 

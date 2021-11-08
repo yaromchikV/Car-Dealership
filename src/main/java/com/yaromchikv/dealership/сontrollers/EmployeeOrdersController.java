@@ -99,7 +99,7 @@ public class EmployeeOrdersController implements Initializable {
         boolean isCompleted = completedRadioButton.isSelected();
 
         //language=SQL
-        String query = "INSERT INTO ORDERS_TABLE " +
+        String query = "INSERT INTO orders " +
                 "VALUES (null, NOW(), " + customerId + ", " + carId + ", " + employeeId + ", " + isCompleted + ");";
 
         repository.executeUpdate(query);
@@ -114,7 +114,7 @@ public class EmployeeOrdersController implements Initializable {
         boolean isCompleted = completedRadioButton.isSelected();
 
         //language=SQL
-        String query = "UPDATE ORDERS_TABLE SET " +
+        String query = "UPDATE orders SET " +
                 "CUSTOMER_ID = " + customerId + ", " +
                 "CAR_ID = " + carId + ", " +
                 "EMPLOYEE_ID = " + employeeId + ", " +
@@ -129,7 +129,7 @@ public class EmployeeOrdersController implements Initializable {
         int id = ordersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM ORDERS_TABLE " +
+        String query = "DELETE FROM orders " +
                 "WHERE ID = " + id;
 
         repository.executeUpdate(query);
@@ -156,7 +156,7 @@ public class EmployeeOrdersController implements Initializable {
         if (isCompleted != null) filterBuilder.append(' ' + IS_COMPLETED + '=').append(isCompleted).append(" AND ");
 
         String filter = null;
-        if (filterBuilder.length() > 5) {
+        if (filterBuilder.length() > 6) {
             filterBuilder.setLength(filterBuilder.length() - 4);
             filter = filterBuilder.toString();
         }

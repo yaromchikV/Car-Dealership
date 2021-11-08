@@ -98,7 +98,7 @@ public class EmployeeCustomersController implements Initializable {
         String email = emailTextField.getText();
 
         //language=SQL
-        String query = "INSERT INTO CUSTOMERS_TABLE " +
+        String query = "INSERT INTO customers " +
                 "VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', '" + email + "');";
 
         repository.executeUpdate(query);
@@ -115,7 +115,7 @@ public class EmployeeCustomersController implements Initializable {
         String email = emailTextField.getText();
 
         //language=SQL
-        String query = "UPDATE CUSTOMERS_TABLE SET " +
+        String query = "UPDATE customers SET " +
                 "SURNAME = '" + surname + "', " +
                 "NAME = '" + name + "', " +
                 "MIDDLE_NAME = '" + middleName + "', " +
@@ -132,7 +132,7 @@ public class EmployeeCustomersController implements Initializable {
         int id = customersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM CUSTOMERS_TABLE" +
+        String query = "DELETE FROM customers" +
                 " WHERE ID = " + id;
 
         repository.executeUpdate(query);
@@ -161,7 +161,7 @@ public class EmployeeCustomersController implements Initializable {
         if (!email.isEmpty()) filterBuilder.append("USERNAME ='").append(email).append("' AND ");
 
         String filter = null;
-        if (filterBuilder.length() > 5) {
+        if (filterBuilder.length() > 6) {
             filterBuilder.setLength(filterBuilder.length() - 4);
             filter = filterBuilder.toString();
         }

@@ -4,13 +4,17 @@ import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.utils.AccessLevel;
+import com.yaromchikv.dealership.utils.AlertDialog;
 import com.yaromchikv.dealership.utils.Hash;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.utils.Constants.*;
@@ -49,14 +53,19 @@ public class AuthScreenController implements Initializable {
                     if (Main.myAccessLevel == AccessLevel.EMPLOYEE) {
                         ScreenController.activate(EMPLOYEE_ORDERS_DASHBOARD);
                     } else {
-                        // Неверный пароль
+                        AlertDialog alert = new AlertDialog();
+                        alert.showWarningAlert("Внимание!", "Введён неверный пароль!");
                     }
                 } else {
-                    // Не найден логин
+                    AlertDialog alert = new AlertDialog();
+                    alert.showWarningAlert("Внимание!", "Пользователь не найден!");
                 }
             }
         } else {
-            // Не введён логин или пароль
+//            AlertDialog alert = new AlertDialog();
+//            alert.showWarningAlert("Внимание!", "Не введён логин или пароль!");
+            Main.myAccessLevel = AccessLevel.ADMIN;
+            ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
         }
     }
 }

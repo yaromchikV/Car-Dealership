@@ -3,6 +3,7 @@ package com.yaromchikv.dealership.сontrollers;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Position;
+import com.yaromchikv.dealership.utils.controls.CustomTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,8 +21,8 @@ public class AdminPositionsController implements Initializable {
     public TableColumn<Position, String> nameTableColumn;
     public TableColumn<Position, Double> salaryTableColumn;
 
-    public TextField nameTextField;
-    public TextField salaryTextField;
+    public CustomTextField nameTextField;
+    public CustomTextField salaryTextField;
 
     public ToggleGroup actions;
     public ToggleButton addToggleButton;
@@ -66,7 +67,7 @@ public class AdminPositionsController implements Initializable {
         double salary = Double.parseDouble(salaryText);
 
         //language=SQL
-        String query = "INSERT INTO POSITIONS_TABLE " +
+        String query = "INSERT INTO positions " +
                 "VALUES (" + null + ",'" + name + "'," + salary + ");";
         repository.executeUpdate(query);
 
@@ -80,7 +81,7 @@ public class AdminPositionsController implements Initializable {
         String salary = salaryTextField.getText();
 
         //language=SQL
-        String query = "UPDATE POSITIONS_TABLE SET " +
+        String query = "UPDATE positions SET " +
                 "NAME = '" + name + "'," +
                 "SALARY = " + Double.parseDouble(salary) +
                 " WHERE ID = " + id;
@@ -94,7 +95,7 @@ public class AdminPositionsController implements Initializable {
         int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM POSITIONS_TABLE " +
+        String query = "DELETE FROM positions " +
                 "WHERE ID = " + id;
         repository.executeUpdate(query);
 
