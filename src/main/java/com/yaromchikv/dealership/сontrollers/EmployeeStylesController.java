@@ -3,6 +3,7 @@ package com.yaromchikv.dealership.сontrollers;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Style;
+import com.yaromchikv.dealership.utils.AlertDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -67,6 +68,9 @@ public class EmployeeStylesController implements Initializable {
 
         clearFields();
         showStyles();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" добавлен.");
     }
 
     private void applyEditButton() {
@@ -81,18 +85,31 @@ public class EmployeeStylesController implements Initializable {
 
         clearFields();
         showStyles();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" обновлён.");
     }
 
     private void applyDeleteButton() {
-        int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        Style style = stylesTableView.getSelectionModel().getSelectedItem();
+        int id = style.idProperty().getValue();
+        String name = style.nameProperty().getValue();
 
-        //language=SQL
-        String query = "DELETE FROM styles " +
-                "WHERE ID = " + id;
-        repository.executeUpdate(query);
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Вы уверены?",
+                "Вы действительно хотите удалить тип кузова \"" + name + "\"?");
 
-        clearFields();
-        showStyles();
+        if (answer) {
+            //language=SQL
+            String query = "DELETE FROM styles " +
+                    "WHERE ID = " + id;
+            repository.executeUpdate(query);
+
+            clearFields();
+            showStyles();
+
+            alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" удалён.");
+        }
     }
 
     @FXML

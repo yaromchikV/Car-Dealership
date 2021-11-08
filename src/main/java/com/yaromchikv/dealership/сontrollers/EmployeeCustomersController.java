@@ -3,6 +3,8 @@ package com.yaromchikv.dealership.сontrollers;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Customer;
+import com.yaromchikv.dealership.data.models.Employee;
+import com.yaromchikv.dealership.utils.AlertDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -102,7 +104,11 @@ public class EmployeeCustomersController implements Initializable {
                 "VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', '" + email + "');";
 
         repository.executeUpdate(query);
+        clearUpdateFields();
         showCustomers();
+
+        AlertDialog alertDialog = new AlertDialog();
+        alertDialog.showInformationAlert("Изменения применены", "Клиент " + getFullname(surname, name, middleName) + " добавлен.");
     }
 
     private void applyEditButton() {
@@ -125,18 +131,38 @@ public class EmployeeCustomersController implements Initializable {
                 "WHERE ID = " + id + ";";
 
         repository.executeUpdate(query);
+        clearUpdateFields();
         showCustomers();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Данные клиента id" + id + " обновлены.");
     }
 
     private void applyDeleteButton() {
-        int id = customersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        Customer customer = customersTableView.getSelectionModel().getSelectedItem();
 
-        //language=SQL
-        String query = "DELETE FROM customers" +
-                " WHERE ID = " + id;
+        int id = customer.idProperty().getValue();
+        String fullname = getFullname(customer.surnameProperty().getValue(), customer.nameProperty().getValue(), customer.middleNameProperty().getValue());
 
-        repository.executeUpdate(query);
-        showCustomers();
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Вы уверены?",
+                "Вы действительно хотите удалить клиента " + fullname + "? Будут также удалены все его заказы.");
+
+        if (answer) {
+            //language=SQL
+            String query = "DELETE FROM customers" +
+                    " WHERE ID = " + id;
+
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showCustomers();
+
+            alert.showInformationAlert("Изменения применены", "Клиент " + fullname + " удалён.");
+        }
+    }
+
+    private String getFullname(String surname, String name, String middlName) {
+        return surname + ' ' + name.charAt(0) + ". " + middlName.charAt(0) + ".";
     }
 
     private void applyFilterButton() {

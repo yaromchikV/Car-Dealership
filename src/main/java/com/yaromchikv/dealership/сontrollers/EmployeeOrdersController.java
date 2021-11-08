@@ -3,6 +3,7 @@ package com.yaromchikv.dealership.сontrollers;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Order;
+import com.yaromchikv.dealership.utils.AlertDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -103,7 +104,11 @@ public class EmployeeOrdersController implements Initializable {
                 "VALUES (null, NOW(), " + customerId + ", " + carId + ", " + employeeId + ", " + isCompleted + ");";
 
         repository.executeUpdate(query);
+        clearUpdateFields();
         showOrders();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Заказ добавлен.");
     }
 
     private void applyEditButton() {
@@ -122,18 +127,32 @@ public class EmployeeOrdersController implements Initializable {
                 "WHERE ID = " + id + ";";
 
         repository.executeUpdate(query);
+        clearUpdateFields();
         showOrders();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Заказ " + id + " добавлен.");
     }
 
     private void applyDeleteButton() {
         int id = ordersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
-        //language=SQL
-        String query = "DELETE FROM orders " +
-                "WHERE ID = " + id;
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Вы уверены?",
+                "Вы действительно хотите удалить заказ" + id + "?");
 
-        repository.executeUpdate(query);
-        showOrders();
+        if (answer) {
+            //language=SQL
+            String query = "DELETE FROM orders " +
+                    "WHERE ID = " + id;
+
+            repository.executeUpdate(query);
+
+            clearUpdateFields();
+            showOrders();
+
+            alert.showInformationAlert("Изменения применены", "Заказ " + id + " удалён.");
+        }
     }
 
     private void applyFilterButton() {

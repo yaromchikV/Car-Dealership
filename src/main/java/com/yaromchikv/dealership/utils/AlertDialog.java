@@ -7,10 +7,8 @@ import java.util.Optional;
 
 public class AlertDialog {
 
-    Alert alert = new Alert(Alert.AlertType.NONE);
-
     public void showInformationAlert(String header, String content) {
-        alert.setAlertType(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Уведомление");
         alert.setHeaderText(header);
         alert.setContentText(content);
@@ -18,7 +16,7 @@ public class AlertDialog {
     }
 
     public void showWarningAlert(String header, String content) {
-        alert.setAlertType(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Уведомление");
         alert.setHeaderText(header);
         alert.setContentText(content);
@@ -26,7 +24,7 @@ public class AlertDialog {
     }
 
     public void showErrorAlert(String header, String content) {
-        alert.setAlertType(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Уведомление");
         alert.setHeaderText(header);
         alert.setContentText(content);
@@ -34,7 +32,7 @@ public class AlertDialog {
     }
 
     public boolean showConfirmationAlert(String header, String content) {
-        alert.setAlertType(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Уведомление");
         alert.setHeaderText(header);
         alert.setContentText(content);

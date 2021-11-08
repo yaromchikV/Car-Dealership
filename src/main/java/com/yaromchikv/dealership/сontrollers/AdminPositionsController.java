@@ -3,6 +3,7 @@ package com.yaromchikv.dealership.сontrollers;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Position;
+import com.yaromchikv.dealership.utils.AlertDialog;
 import com.yaromchikv.dealership.utils.controls.CustomTextField;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -73,6 +74,9 @@ public class AdminPositionsController implements Initializable {
 
         clearFields();
         showPositions();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Должность \"" + name + "\" добавлена.");
     }
 
     private void applyEditButton() {
@@ -89,18 +93,30 @@ public class AdminPositionsController implements Initializable {
 
         clearFields();
         showPositions();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Должность id" + id + " обновлена.");
     }
 
     private void applyDeleteButton() {
         int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        String name = positionsTableView.getSelectionModel().getSelectedItem().nameProperty().getValue();
 
-        //language=SQL
-        String query = "DELETE FROM positions " +
-                "WHERE ID = " + id;
-        repository.executeUpdate(query);
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Вы уверены?",
+                "Вы действительно хотите удалить должность \"" + name + "\"?");
 
-        clearFields();
-        showPositions();
+        if (answer) {
+            //language=SQL
+            String query = "DELETE FROM positions " +
+                    "WHERE ID = " + id;
+            repository.executeUpdate(query);
+
+            clearFields();
+            showPositions();
+
+            alert.showInformationAlert("Изменения применены", "Должность \"" + name + "\" удалена.");
+        }
     }
 
     @FXML

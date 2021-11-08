@@ -3,6 +3,7 @@ package com.yaromchikv.dealership.сontrollers;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Car;
+import com.yaromchikv.dealership.utils.AlertDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -123,7 +124,11 @@ public class EmployeeCarsController implements Initializable {
         System.out.println(query);
 
         repository.executeUpdate(query);
+        clearUpdateFields();
         showCars();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Автомобиль " + make + ' ' + model + " добавлен.");
     }
 
     private void applyEditButton() {
@@ -144,18 +149,34 @@ public class EmployeeCarsController implements Initializable {
                 "WHERE ID = " + id + ";";
 
         repository.executeUpdate(query);
+        clearUpdateFields();
         showCars();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Автомобиль id" + id + " обновлён.");
     }
 
     private void applyDeleteButton() {
-        int id = carsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        Car car = carsTableView.getSelectionModel().getSelectedItem();
+        int id = car.idProperty().getValue();
+        String make = car.makeProperty().getValue();
+        String model = car.modelProperty().getValue();
 
-        //language=SQL
-        String query = "DELETE FROM cars " +
-                "WHERE ID = " + id;
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Вы уверены?",
+                "Вы действительно хотите удалить автомобиль " + make + ' ' + model + "? Будут также удалены все заказы данного автомобиля.");
 
-        repository.executeUpdate(query);
-        showCars();
+        if (answer) {
+            //language=SQL
+            String query = "DELETE FROM cars " +
+                    "WHERE ID = " + id;
+
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showCars();
+
+            alert.showInformationAlert("Изменения применены", "Автомобиль " + make + ' ' + model + " удалён.");
+        }
     }
 
     private void applyFilterButton() {

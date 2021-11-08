@@ -3,6 +3,7 @@ package com.yaromchikv.dealership.сontrollers;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Employee;
+import com.yaromchikv.dealership.utils.AlertDialog;
 import com.yaromchikv.dealership.utils.Hash;
 import com.yaromchikv.dealership.utils.controls.CustomTextField;
 import javafx.collections.ObservableList;
@@ -147,7 +148,11 @@ public class AdminEmployeesController implements Initializable {
         repository.executeUpdate(employeeQuery);
         repository.executeUpdate(accountQuery);
 
+        clearUpdateFields();
         showEmployees();
+
+        AlertDialog alertDialog = new AlertDialog();
+        alertDialog.showInformationAlert("Изменения применены", "Сотрудник " + getFullname(surname, name, middleName) + " добавлен.");
     }
 
     private void applyEditButton() {
@@ -181,18 +186,39 @@ public class AdminEmployeesController implements Initializable {
 
         repository.executeUpdate(employeeQuery);
         repository.executeUpdate(accountQuery);
+
+        clearUpdateFields();
         showEmployees();
+
+        AlertDialog alert = new AlertDialog();
+        alert.showInformationAlert("Изменения применены", "Данные сотрудника id" + id + " обновлены.");
     }
 
     private void applyDeleteButton() {
-        int id = employeesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+        Employee employee = employeesTableView.getSelectionModel().getSelectedItem();
 
-        //language=SQL
-        String query = "DELETE FROM employees " +
-                "WHERE ID = " + id;
+        int id = employee.idProperty().getValue();
+        String fullname = getFullname(employee.surnameProperty().getValue(), employee.nameProperty().getValue(), employee.middleNameProperty().getValue());
 
-        repository.executeUpdate(query);
-        showEmployees();
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Вы уверены?",
+                "Вы действительно хотите удалить сотрудника " + fullname + "?");
+
+        if (answer) {
+            //language=SQL
+            String query = "DELETE FROM employees " +
+                    "WHERE ID = " + id;
+
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showEmployees();
+
+            alert.showInformationAlert("Изменения применены", "Сотрудник " + fullname + " удалён.");
+        }
+    }
+
+    private String getFullname(String surname, String name, String middlName) {
+        return surname + ' ' + name.charAt(0) + ". " + middlName.charAt(0) + ".";
     }
 
     private void applyFilterButton() {
