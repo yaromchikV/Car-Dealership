@@ -1,16 +1,13 @@
 package com.yaromchikv.dealership.сontrollers;
 
-import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Customer;
-import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -57,20 +54,12 @@ public class EmployeeCustomersController implements Initializable {
     public TextField phoneNumberFilterTextField;
     public TextField emailFilterTextField;
 
-    public VBox employeesButtonModule;
-    public Button positionsMenuButton;
-
     private Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         repository = new Repository();
         showCustomers();
-    }
-
-    public void setAdminDashboardsVisible(boolean isVisible) {
-        employeesButtonModule.setVisible(isVisible);
-        positionsMenuButton.setVisible(isVisible);
     }
 
     private void showCustomers() {
@@ -82,7 +71,7 @@ public class EmployeeCustomersController implements Initializable {
         phoneNumberTableColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
         emailTableColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
 
-        ObservableList<Customer> resultList = repository.getTableCustomers(null);
+        ObservableList<Customer> resultList = repository.getCustomers(null);
         customersTableView.setItems(resultList);
     }
 
@@ -109,7 +98,8 @@ public class EmployeeCustomersController implements Initializable {
         String email = emailTextField.getText();
 
         //language=SQL
-        String query = "INSERT INTO " + CUSTOMERS_TABLE + " VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', '" + email + "');";
+        String query = "INSERT INTO CUSTOMERS_TABLE " +
+                "VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', '" + email + "');";
 
         repository.executeUpdate(query);
         showCustomers();
@@ -125,14 +115,14 @@ public class EmployeeCustomersController implements Initializable {
         String email = emailTextField.getText();
 
         //language=SQL
-        String query = "UPDATE " + CUSTOMERS_TABLE + " SET " +
-                SURNAME + " = '" + surname + "', " +
-                NAME + " = '" + name + "', " +
-                MIDDLE_NAME + " = '" + middleName + "', " +
-                DATE_OF_BIRTH + " = '" + birthDate + "', " +
-                PHONE_NUMBER + " = '" + phoneNumber + "', " +
-                EMAIL + " = '" + email + "' " +
-                "WHERE " + ID + " = " + id + ";";
+        String query = "UPDATE CUSTOMERS_TABLE SET " +
+                "SURNAME = '" + surname + "', " +
+                "NAME = '" + name + "', " +
+                "MIDDLE_NAME = '" + middleName + "', " +
+                "DATE_OF_BIRTH = '" + birthDate + "', " +
+                "PHONE_NUMBER = '" + phoneNumber + "', " +
+                "EMAIL = '" + email + "' " +
+                "WHERE ID = " + id + ";";
 
         repository.executeUpdate(query);
         showCustomers();
@@ -142,7 +132,8 @@ public class EmployeeCustomersController implements Initializable {
         int id = customersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM " + CUSTOMERS_TABLE + " WHERE " + ID + " = " + id;
+        String query = "DELETE FROM CUSTOMERS_TABLE" +
+                " WHERE ID = " + id;
 
         repository.executeUpdate(query);
         showCustomers();
@@ -158,24 +149,24 @@ public class EmployeeCustomersController implements Initializable {
         String email = emailFilterTextField.getText();
 
         //language=SQL
-        StringBuilder filterBuilder = new StringBuilder("WHERE");
-        if (!surname.isEmpty()) filterBuilder.append(' ' + SURNAME + "='").append(surname).append("' AND");
-        if (!name.isEmpty()) filterBuilder.append(' ' + NAME + "='").append(name).append("' AND");
-        if (!middleName.isEmpty()) filterBuilder.append(' ' + MIDDLE_NAME + "='").append(middleName).append("' AND");
+        StringBuilder filterBuilder = new StringBuilder("WHERE ");
+        if (!surname.isEmpty()) filterBuilder.append("SURNAME ='").append(surname).append("' AND ");
+        if (!name.isEmpty()) filterBuilder.append("NAME ='").append(name).append("' AND ");
+        if (!middleName.isEmpty()) filterBuilder.append("MIDDLE_NAME ='").append(middleName).append("' AND ");
         if (minBirthDate != null)
-            filterBuilder.append(' ' + DATE_OF_BIRTH + ">='").append(minBirthDate).append("' AND");
+            filterBuilder.append("DATE_OF_BIRTH >='").append(minBirthDate).append("' AND ");
         if (maxBirthDate != null)
-            filterBuilder.append(' ' + DATE_OF_BIRTH + "<='").append(maxBirthDate).append("' AND");
-        if (!phoneNumber.isEmpty()) filterBuilder.append(' ' + PHONE_NUMBER + "='").append(phoneNumber).append("' AND");
-        if (!email.isEmpty()) filterBuilder.append(' ' + USERNAME + "='").append(email).append("' AND");
+            filterBuilder.append("DATE_OF_BIRTH <='").append(maxBirthDate).append("' AND ");
+        if (!phoneNumber.isEmpty()) filterBuilder.append("PHONE_NUMBER ='").append(phoneNumber).append("' AND ");
+        if (!email.isEmpty()) filterBuilder.append("USERNAME ='").append(email).append("' AND ");
 
         String filter = null;
         if (filterBuilder.length() > 5) {
-            filterBuilder.setLength(filterBuilder.length() - 3);
+            filterBuilder.setLength(filterBuilder.length() - 4);
             filter = filterBuilder.toString();
         }
 
-        ObservableList<Customer> resultList = repository.getTableCustomers(filter);
+        ObservableList<Customer> resultList = repository.getCustomers(filter);
         customersTableView.setItems(resultList);
     }
 

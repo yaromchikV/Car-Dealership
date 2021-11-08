@@ -44,7 +44,7 @@ public class AdminPositionsController implements Initializable {
         nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         salaryTableColumn.setCellValueFactory(cellData -> cellData.getValue().salaryProperty().asObject());
 
-        ObservableList<Position> resultList = repository.getTablePositions();
+        ObservableList<Position> resultList = repository.getPositions();
         positionsTableView.setItems(resultList);
     }
 
@@ -66,8 +66,8 @@ public class AdminPositionsController implements Initializable {
         double salary = Double.parseDouble(salaryText);
 
         //language=SQL
-        String query = "INSERT INTO " + POSITIONS_TABLE + " VALUES (" +
-                null + ",'" + name + "'," + salary + ");";
+        String query = "INSERT INTO POSITIONS_TABLE " +
+                "VALUES (" + null + ",'" + name + "'," + salary + ");";
         repository.executeUpdate(query);
 
         clearFields();
@@ -80,10 +80,10 @@ public class AdminPositionsController implements Initializable {
         String salary = salaryTextField.getText();
 
         //language=SQL
-        String query = "UPDATE " + POSITIONS_TABLE + " SET " +
-                NAME + " = '" + name + "'," +
-                SALARY + " = " + Double.parseDouble(salary) +
-                " WHERE " + ID + " = " + id;
+        String query = "UPDATE POSITIONS_TABLE SET " +
+                "NAME = '" + name + "'," +
+                "SALARY = " + Double.parseDouble(salary) +
+                " WHERE ID = " + id;
         repository.executeUpdate(query);
 
         clearFields();
@@ -94,7 +94,8 @@ public class AdminPositionsController implements Initializable {
         int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM " + POSITIONS_TABLE + " WHERE " + ID + " = " + id;
+        String query = "DELETE FROM POSITIONS_TABLE " +
+                "WHERE ID = " + id;
         repository.executeUpdate(query);
 
         clearFields();

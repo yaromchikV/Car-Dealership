@@ -1,15 +1,12 @@
 package com.yaromchikv.dealership.сontrollers;
 
-import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Style;
-import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,9 +29,6 @@ public class EmployeeStylesController implements Initializable {
     public Button applyButton;
     public Button clearButton;
 
-    public VBox employeesButtonModule;
-    public Button positionsMenuButton;
-
     private Repository repository;
 
     @Override
@@ -43,16 +37,11 @@ public class EmployeeStylesController implements Initializable {
         showStyles();
     }
 
-    public void setAdminDashboardsVisible(boolean isVisible) {
-        employeesButtonModule.setVisible(isVisible);
-        positionsMenuButton.setVisible(isVisible);
-    }
-
     private void showStyles() {
         idTableColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         nameTableColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 
-        ObservableList<Style> resultList = repository.getTableStyles();
+        ObservableList<Style> resultList = repository.getStyles();
         stylesTableView.setItems(resultList);
     }
 
@@ -72,7 +61,8 @@ public class EmployeeStylesController implements Initializable {
         String name = nameTextField.getText();
 
         //language=SQL
-        String query = "INSERT INTO " + STYLES_TABLE + " VALUES (null, '" + name + "');";
+        String query = "INSERT INTO STYLES_TABLE " +
+                "VALUES (null, '" + name + "');";
         repository.executeUpdate(query);
 
         clearFields();
@@ -84,7 +74,9 @@ public class EmployeeStylesController implements Initializable {
         String name = nameTextField.getText();
 
         //language=SQL
-        String query = "UPDATE " + STYLES_TABLE + " SET " + NAME + " = '" + name + "', WHERE " + ID + " = " + id;
+        String query = "UPDATE STYLES_TABLE SET " +
+                "NAME = '" + name + "', " +
+                "WHERE ID = " + id;
         repository.executeUpdate(query);
 
         clearFields();
@@ -95,7 +87,8 @@ public class EmployeeStylesController implements Initializable {
         int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM " + STYLES_TABLE + " WHERE " + ID + " = " + id;
+        String query = "DELETE FROM STYLES_TABLE " +
+                "WHERE ID = " + id;
         repository.executeUpdate(query);
 
         clearFields();

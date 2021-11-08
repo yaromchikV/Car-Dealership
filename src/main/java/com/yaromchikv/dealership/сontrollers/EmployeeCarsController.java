@@ -1,17 +1,14 @@
 package com.yaromchikv.dealership.сontrollers;
 
-import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Car;
-import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -54,9 +51,6 @@ public class EmployeeCarsController implements Initializable {
     public TextField minPriceFilterTextField;
     public TextField maxPriceFilterTextField;
 
-    public VBox employeesButtonModule;
-    public Button positionsMenuButton;
-
     private ObservableList<String> listOfCarsNames;
     private ObservableList<Integer> listOfYears;
 
@@ -69,13 +63,8 @@ public class EmployeeCarsController implements Initializable {
         showCars();
     }
 
-    public void setAdminDashboardsVisible(boolean isVisible) {
-        employeesButtonModule.setVisible(isVisible);
-        positionsMenuButton.setVisible(isVisible);
-    }
-
     private void initChoiceBoxes() {
-        listOfCarsNames = repository.getTableStyleNames();
+        listOfCarsNames = repository.getStyleNames();
         listOfCarsNames.add(0, "Не выбрано");
 
         listOfYears = FXCollections.observableArrayList();
@@ -102,7 +91,7 @@ public class EmployeeCarsController implements Initializable {
         yearTableColumn.setCellValueFactory(cellData -> cellData.getValue().yearProperty().asObject());
         priceTableColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
 
-        ObservableList<Car> resultList = repository.getTableCars(null);
+        ObservableList<Car> resultList = repository.getCars(null);
         carsTableView.setItems(resultList);
     }
 
@@ -128,9 +117,8 @@ public class EmployeeCarsController implements Initializable {
         String price = priceTextField.getText();
 
         //language=SQL
-        String query = "INSERT INTO " + CARS_TABLE + " VALUES " +
-                "(null, (SELECT " + ID + " FROM " + STYLES_TABLE + " WHERE " + NAME + " = '" + styleName + "' LIMIT 1), '" +
-                make + "', '" + model + "', " + Integer.parseInt(year) + ", " + Double.parseDouble(price) + ");";
+        String query = "INSERT INTO CARS_TABLE " +
+                "VALUES + (" + null + ", (SELECT ID FROM STYLES_TABLE WHERE NAME = '" + styleName + "' LIMIT 1), '" + make + "', '" + model + "', " + Integer.parseInt(year) + ", " + Double.parseDouble(price) + ");";
 
         System.out.println(query);
 
@@ -147,13 +135,13 @@ public class EmployeeCarsController implements Initializable {
         String price = priceTextField.getText();
 
         //language=SQL
-        String query = "UPDATE " + CARS_TABLE + " SET " +
-                STYLE_ID + " = (SELECT " + ID + " FROM " + STYLES_TABLE + " WHERE " + NAME + " = '" + styleName + "' LIMIT 1), " +
-                MAKE + " = '" + make + "', " +
-                MODEL + " = '" + model + "', " +
-                YEAR + " = " + year + ", " +
-                PRICE + " = " + price + " " +
-                "WHERE " + ID + " = " + id + ";";
+        String query = "UPDATE CARS_TABLE SET " +
+                "STYLE_ID = (SELECT ID FROM STYLES_TABLE WHERE NAME = '" + styleName + "' LIMIT 1), " +
+                "MAKE = '" + make + "', " +
+                "MODEL = '" + model + "', " +
+                "YEAR = " + year + ", " +
+                "PRICE = " + price + " " +
+                "WHERE ID = " + id + ";";
 
         repository.executeUpdate(query);
         showCars();
@@ -163,7 +151,8 @@ public class EmployeeCarsController implements Initializable {
         int id = carsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM " + CARS_TABLE + " WHERE " + ID + " = " + id;
+        String query = "DELETE FROM CARS_TABLE " +
+                "WHERE ID = " + id;
 
         repository.executeUpdate(query);
         showCars();
@@ -179,27 +168,27 @@ public class EmployeeCarsController implements Initializable {
         String maxPrice = maxPriceFilterTextField.getText();
 
         //language=SQL
-        StringBuilder filterBuilder = new StringBuilder("WHERE");
-        if (!make.isEmpty()) filterBuilder.append(' ' + MAKE + "='").append(make).append("' AND");
-        if (!model.isEmpty()) filterBuilder.append(' ' + MODEL + "='").append(model).append("' AND");
+        StringBuilder filterBuilder = new StringBuilder("WHERE ");
+        if (!make.isEmpty()) filterBuilder.append("MAKE ='").append(make).append("' AND ");
+        if (!model.isEmpty()) filterBuilder.append("MODEL ='").append(model).append("' AND ");
         if (!styleName.equals(listOfCarsNames.get(0)))
-            filterBuilder.append(" styles.NAME ='").append(styleName).append("' AND");
+            filterBuilder.append(" styles.NAME ='").append(styleName).append("' AND ");
         if (!minYear.equals(listOfYears.get(0)))
-            filterBuilder.append(' ' + YEAR + ">=").append(minYear).append(" AND");
+            filterBuilder.append("YEAR >=").append(minYear).append(" AND ");
         if (!maxYear.equals(listOfYears.get(listOfYears.size() - 1)))
-            filterBuilder.append(' ' + YEAR + "<=").append(maxYear).append(" AND");
+            filterBuilder.append("YEAR <=").append(maxYear).append(" AND ");
         if (!minPrice.isEmpty())
-            filterBuilder.append(' ' + PRICE + ">=").append(Double.parseDouble(minPrice)).append(" AND");
+            filterBuilder.append("PRICE >=").append(Double.parseDouble(minPrice)).append(" AND ");
         if (!maxPrice.isEmpty())
-            filterBuilder.append(' ' + PRICE + "<=").append(Double.parseDouble(maxPrice)).append(" AND");
+            filterBuilder.append("PRICE <=").append(Double.parseDouble(maxPrice)).append(" AND ");
 
         String filter = null;
         if (filterBuilder.length() > 5) {
-            filterBuilder.setLength(filterBuilder.length() - 3);
+            filterBuilder.setLength(filterBuilder.length() - 4);
             filter = filterBuilder.toString();
         }
 
-        ObservableList<Car> resultList = repository.getTableCars(filter);
+        ObservableList<Car> resultList = repository.getCars(filter);
         carsTableView.setItems(resultList);
     }
 

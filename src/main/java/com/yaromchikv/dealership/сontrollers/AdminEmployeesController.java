@@ -80,7 +80,7 @@ public class AdminEmployeesController implements Initializable {
     }
 
     private void initChoiceBoxes() {
-        listOfPositionsNames = repository.getTablePositionNames();
+        listOfPositionsNames = repository.getPositionNames();
         listOfPositionsNames.add(0, "Не выбрано");
 
         positionChoiceBox.setItems(listOfPositionsNames);
@@ -103,7 +103,7 @@ public class AdminEmployeesController implements Initializable {
         usernameTableColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
         passwordTableColumn.setCellValueFactory(cellData -> cellData.getValue().passwordProperty());
 
-        ObservableList<Employee> resultList = repository.getTableEmployees(null);
+        ObservableList<Employee> resultList = repository.getEmployees(null);
         employeesTableView.setItems(resultList);
     }
 
@@ -137,11 +137,13 @@ public class AdminEmployeesController implements Initializable {
         System.out.println("addId:" + id);
 
         //language=SQL
-        String employeeQuery = "INSERT INTO " + EMPLOYEES_TABLE + " VALUES (" + id + ", '" + surname + "', '" + name + "', '" +
-                middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + "(SELECT " + ID + " FROM " + POSITIONS_TABLE
-                + " WHERE " + NAME + " = '" + positionName + "' LIMIT 1)" + ", '" + startDate + "');";
+        String employeeQuery =
+                "INSERT INTO EMPLOYEES_TABLE " +
+                        "VALUES (" + id + ", '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + "(SELECT ID FROM POSITIONS_TABLE WHERE NAME = '" + positionName + "' LIMIT 1)," + "'" + startDate + "');";
         //language=SQL
-        String accountQuery = "INSERT INTO " + ACCOUNTS_TABLE + " VALUES (last_insert_id(), '" + username + "', '" + password + "');";
+        String accountQuery =
+                "INSERT INTO ACCOUNTS_TABLE " +
+                        "VALUES (last_insert_id(), '" + username + "', '" + password + "');";
 
         repository.executeUpdate(employeeQuery);
         repository.executeUpdate(accountQuery);
@@ -162,22 +164,21 @@ public class AdminEmployeesController implements Initializable {
         String password = passwordTextField.getText();
 
         //language=SQL
-        String employeeQuery = "UPDATE " + EMPLOYEES_TABLE + " SET " +
-                SURNAME + " = '" + surname + "', " +
-                NAME + " = '" + name + "', " +
-                MIDDLE_NAME + " = '" + middleName + "', " +
-                DATE_OF_BIRTH + " = '" + birthDate + "', " +
-                PHONE_NUMBER + " = '" + phoneNumber + "', " +
-                POSITION_ID + " = " + "(SELECT " + ID + " FROM " + POSITIONS_TABLE + " WHERE " +
-                NAME + " = '" + positionName + "' LIMIT 1)" + ", " +
-                START_DATE + " = '" + startDate + "' " +
-                "WHERE " + ID + " = " + id + ";";
+        String employeeQuery = "UPDATE EMPLOYEES_TABLE SET " +
+                "SURNAME = '" + surname + "', " +
+                "NAME = '" + name + "', " +
+                "MIDDLE_NAME = '" + middleName + "', " +
+                "DATE_OF_BIRTH = '" + birthDate + "', " +
+                "PHONE_NUMBER = '" + phoneNumber + "', " +
+                "POSITION_ID = " + "(SELECT ID FROM POSITIONS_TABLE WHERE NAME = '" + positionName + "' LIMIT 1)," +
+                "START_DATE = '" + startDate + "' " +
+                "WHERE ID = " + id + ";";
 
         //language=SQL
-        String accountQuery = "UPDATE " + ACCOUNTS_TABLE + " SET " +
-                USERNAME + " = '" + username + "', " +
-                PASSWORD + " = '" + password + "' " +
-                "WHERE " + ID + " = " + id + ";";
+        String accountQuery = "UPDATE ACCOUNTS_TABLE SET " +
+                "USERNAME = '" + username + "', " +
+                "PASSWORD = '" + password + "' " +
+                "WHERE ID = " + id + ";";
 
         repository.executeUpdate(employeeQuery);
         repository.executeUpdate(accountQuery);
@@ -188,7 +189,8 @@ public class AdminEmployeesController implements Initializable {
         int id = employeesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM " + EMPLOYEES_TABLE + " WHERE " + ID + " = " + id;
+        String query = "DELETE FROM EMPLOYEES_TABLE " +
+                "WHERE ID = " + id;
 
         repository.executeUpdate(query);
         showEmployees();
@@ -207,28 +209,28 @@ public class AdminEmployeesController implements Initializable {
         String username = usernameFilterTextField.getText();
 
         //language=SQL
-        StringBuilder filterBuilder = new StringBuilder("WHERE");
-        if (!surname.isEmpty()) filterBuilder.append(' ' + SURNAME + "='").append(surname).append("' AND");
-        if (!name.isEmpty()) filterBuilder.append(' ' + NAME + "='").append(name).append("' AND");
-        if (!middleName.isEmpty()) filterBuilder.append(' ' + MIDDLE_NAME + "='").append(middleName).append("' AND");
+        StringBuilder filterBuilder = new StringBuilder("WHERE ");
+        if (!surname.isEmpty()) filterBuilder.append("SURNAME ='").append(surname).append("' AND ");
+        if (!name.isEmpty()) filterBuilder.append("NAME ='").append(name).append("' AND ");
+        if (!middleName.isEmpty()) filterBuilder.append("MIDDLE_NAME ='").append(middleName).append("' AND ");
         if (minBirthDate != null)
-            filterBuilder.append(' ' + DATE_OF_BIRTH + ">='").append(minBirthDate).append("' AND");
+            filterBuilder.append("DATE_OF_BIRTH >='").append(minBirthDate).append("' AND ");
         if (maxBirthDate != null)
-            filterBuilder.append(' ' + DATE_OF_BIRTH + "<='").append(maxBirthDate).append("' AND");
-        if (!phoneNumber.isEmpty()) filterBuilder.append(' ' + PHONE_NUMBER + "='").append(phoneNumber).append("' AND");
+            filterBuilder.append("DATE_OF_BIRTH <='").append(maxBirthDate).append("' AND ");
+        if (!phoneNumber.isEmpty()) filterBuilder.append("PHONE_NUMBER ='").append(phoneNumber).append("' AND ");
         if (!positionName.equals(listOfPositionsNames.get(0)))
-            filterBuilder.append(" positions.NAME ='").append(positionName).append("' AND");
-        if (minStartDate != null) filterBuilder.append(' ' + START_DATE + ">='").append(minStartDate).append("' AND");
-        if (maxStartDate != null) filterBuilder.append(' ' + START_DATE + "<='").append(maxStartDate).append("' AND");
-        if (!username.isEmpty()) filterBuilder.append(' ' + USERNAME + "='").append(username).append("' AND");
+            filterBuilder.append("positions.NAME ='").append(positionName).append("' AND ");
+        if (minStartDate != null) filterBuilder.append("START_DATE >='").append(minStartDate).append("' AND ");
+        if (maxStartDate != null) filterBuilder.append("START_DATE <='").append(maxStartDate).append("' AND ");
+        if (!username.isEmpty()) filterBuilder.append("USERNAME ='").append(username).append("' AND ");
 
         String filter = null;
         if (filterBuilder.length() > 5) {
-            filterBuilder.setLength(filterBuilder.length() - 3);
+            filterBuilder.setLength(filterBuilder.length() - 4);
             filter = filterBuilder.toString();
         }
 
-        ObservableList<Employee> resultList = repository.getTableEmployees(filter);
+        ObservableList<Employee> resultList = repository.getEmployees(filter);
         employeesTableView.setItems(resultList);
     }
 

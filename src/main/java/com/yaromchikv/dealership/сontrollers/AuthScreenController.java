@@ -26,8 +26,6 @@ public class AuthScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         repository = new Repository();
-        usernameField.clear();
-        passwordField.clear();
     }
 
     @FXML
@@ -35,7 +33,8 @@ public class AuthScreenController implements Initializable {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        System.out.println(username + ' ' + password);
+        usernameField.clear();
+        passwordField.clear();
 
         if (!username.isEmpty() && !password.isEmpty()) {
             if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {

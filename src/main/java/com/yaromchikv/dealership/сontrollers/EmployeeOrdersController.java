@@ -1,16 +1,13 @@
 package com.yaromchikv.dealership.сontrollers;
 
-import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Order;
-import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -58,20 +55,12 @@ public class EmployeeOrdersController implements Initializable {
     public RadioButton completedFilterRadioButton;
     public RadioButton anyFilterRadioButton;
 
-    public VBox employeesButtonModule;
-    public Button positionsMenuButton;
-
     private Repository repository;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         repository = new Repository();
         showOrders();
-    }
-
-    public void setAdminDashboardsVisible(boolean isVisible) {
-        employeesButtonModule.setVisible(isVisible);
-        positionsMenuButton.setVisible(isVisible);
     }
 
     private void showOrders() {
@@ -85,7 +74,7 @@ public class EmployeeOrdersController implements Initializable {
         employeeNameTableColumn.setCellValueFactory(cellData -> cellData.getValue().employeeFullNameProperty());
         statusTableColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
-        ObservableList<Order> resultList = repository.getTableOrders(null);
+        ObservableList<Order> resultList = repository.getOrders(null);
         ordersTableView.setItems(resultList);
     }
 
@@ -110,8 +99,8 @@ public class EmployeeOrdersController implements Initializable {
         boolean isCompleted = completedRadioButton.isSelected();
 
         //language=SQL
-        String query = "INSERT INTO " + ORDERS_TABLE + " VALUES (null, NOW(), " +
-                customerId + ", " + carId + ", " + employeeId + ", " + isCompleted + ");";
+        String query = "INSERT INTO ORDERS_TABLE " +
+                "VALUES (null, NOW(), " + customerId + ", " + carId + ", " + employeeId + ", " + isCompleted + ");";
 
         repository.executeUpdate(query);
         showOrders();
@@ -125,12 +114,12 @@ public class EmployeeOrdersController implements Initializable {
         boolean isCompleted = completedRadioButton.isSelected();
 
         //language=SQL
-        String query = "UPDATE " + ORDERS_TABLE + " SET " +
-                CUSTOMER_ID + " = " + customerId + ", " +
-                CAR_ID + " = " + carId + ", " +
-                EMPLOYEE_ID + " = " + employeeId + ", " +
-                IS_COMPLETED + " = " + isCompleted + " " +
-                "WHERE " + ID + " = " + id + ";";
+        String query = "UPDATE ORDERS_TABLE SET " +
+                "CUSTOMER_ID = " + customerId + ", " +
+                "CAR_ID = " + carId + ", " +
+                "EMPLOYEE_ID = " + employeeId + ", " +
+                "IS_COMPLETED = " + isCompleted + " " +
+                "WHERE ID = " + id + ";";
 
         repository.executeUpdate(query);
         showOrders();
@@ -140,7 +129,8 @@ public class EmployeeOrdersController implements Initializable {
         int id = ordersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
 
         //language=SQL
-        String query = "DELETE FROM " + ORDERS_TABLE + " WHERE " + ID + " = " + id;
+        String query = "DELETE FROM ORDERS_TABLE " +
+                "WHERE ID = " + id;
 
         repository.executeUpdate(query);
         showOrders();
@@ -156,22 +146,22 @@ public class EmployeeOrdersController implements Initializable {
         else if (completedRadioButton.isSelected()) isCompleted = true;
 
         //language=SQL
-        StringBuilder filterBuilder = new StringBuilder("WHERE");
-        if (!make.isEmpty()) filterBuilder.append(' ' + MAKE + "='").append(make).append("' AND");
-        if (!model.isEmpty()) filterBuilder.append(' ' + MODEL + "='").append(model).append("' AND");
+        StringBuilder filterBuilder = new StringBuilder("WHERE ");
+        if (!make.isEmpty()) filterBuilder.append("MAKE ='").append(make).append("' AND ");
+        if (!model.isEmpty()) filterBuilder.append("MODEL ='").append(model).append("' AND ");
         if (!customerSurname.isEmpty())
-            filterBuilder.append(" customers.SURNAME ='").append(customerSurname).append("' AND");
+            filterBuilder.append(" customers.SURNAME ='").append(customerSurname).append("' AND ");
         if (!employeeSurname.isEmpty())
-            filterBuilder.append(" employees.SURNAME ='").append(employeeSurname).append("' AND");
-        if (isCompleted != null) filterBuilder.append(' ' + IS_COMPLETED + '=').append(isCompleted).append(" AND");
+            filterBuilder.append(" employees.SURNAME ='").append(employeeSurname).append("' AND ");
+        if (isCompleted != null) filterBuilder.append(' ' + IS_COMPLETED + '=').append(isCompleted).append(" AND ");
 
         String filter = null;
         if (filterBuilder.length() > 5) {
-            filterBuilder.setLength(filterBuilder.length() - 3);
+            filterBuilder.setLength(filterBuilder.length() - 4);
             filter = filterBuilder.toString();
         }
 
-        ObservableList<Order> resultList = repository.getTableOrders(filter);
+        ObservableList<Order> resultList = repository.getOrders(filter);
         ordersTableView.setItems(resultList);
     }
 
