@@ -178,6 +178,11 @@ public class EmployeeCarsController implements Initializable {
             errorMessages.add("Год выпуска не выбран.");
         if (priceTextField.getText().isEmpty())
             errorMessages.add("Цена отсутствует");
+        else try {
+            double price = Double.parseDouble(priceTextField.getText());
+        } catch (Exception ex) {
+            errorMessages.add("Цена введена некорректно.");
+        }
 
         if (errorMessages.size() != 0) {
             AlertDialog alert = new AlertDialog();
@@ -225,8 +230,8 @@ public class EmployeeCarsController implements Initializable {
         if (!styleName.equals(listOfStyleNames.get(0))) filter.add("styles.NAME ='" + styleName + "'");
         if (!minYear.equals(listOfYears.get(0))) filter.add("YEAR >='" + minYear + "'");
         if (!maxYear.equals(listOfYears.get(listOfYears.size() - 1))) filter.add("YEAR <='" + maxYear + "'");
-        if (!minPrice.isEmpty()) filter.add("PRICE >=" + minPrice + "");
-        if (!maxPrice.isEmpty()) filter.add("PRICE <=" + maxPrice + "");
+        if (!minPrice.isEmpty()) filter.add("PRICE >='" + minPrice + "'");
+        if (!maxPrice.isEmpty()) filter.add("PRICE <='" + maxPrice + "'");
 
         //language=SQL
         String filterString = null;

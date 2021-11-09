@@ -256,7 +256,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="emailFilterTextField" prefHeight="30.0" prefWidth="406.0"
-                                 maxLength="36" isEmail="true" promptText="Максимальная длина: 36">
+                                 maxLength="36" allowAt="true" allowDot="true" promptText="Максимальная длина: 36">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -365,7 +365,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="emailTextField" prefHeight="30.0" prefWidth="406.0"
-                                 maxLength="36" isEmail="true" promptText="Максимальная длина: 36">
+                                 maxLength="36" allowAt="true" allowDot="true" promptText="Максимальная длина: 36">
                     <font>
                         <Font size="14.0"/>
                     </font>

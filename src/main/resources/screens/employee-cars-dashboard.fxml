@@ -213,7 +213,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="priceTextField" prefHeight="30.0" prefWidth="412.0"
-                                 maxLength="7" allowLetters="false" allowDigits="true" isDouble="true"
+                                 maxLength="7" allowLetters="false" allowDigits="true" allowDot="true"
                                  promptText="Максимальное значение: 9999999">
                     <font>
                         <Font size="14.0"/>

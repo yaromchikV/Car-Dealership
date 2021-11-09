@@ -110,6 +110,11 @@ public class AdminPositionsController implements Initializable {
             errorMessages.add("Название должности отсутствует.");
         if (salaryTextField.getText().isEmpty())
             errorMessages.add("Зарплата отсутствует.");
+        else try {
+            double salary = Double.parseDouble(salaryTextField.getText());
+        } catch (Exception ex) {
+            errorMessages.add("Зарплата введена некорректно.");
+        }
 
         if (errorMessages.size() != 0) {
             AlertDialog alert = new AlertDialog();

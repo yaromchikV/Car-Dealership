@@ -176,7 +176,7 @@
                         </padding>
                     </Label>
                     <CustomTextField fx:id="salaryTextField" prefHeight="30.0" prefWidth="387.0"
-                                     maxLength="6" allowLetters="false" allowDigits="true" isDouble="true"
+                                     maxLength="6" allowLetters="false" allowDigits="true" allowDot="true"
                                      promptText="Максимальное значение: 999999">
                         <font>
                             <Font size="14.0"/>
