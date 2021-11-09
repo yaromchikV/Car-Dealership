@@ -105,6 +105,9 @@ public class AdminEmployeesController implements Initializable {
 
         ObservableList<Employee> resultList = repository.getEmployees(null);
         employeesTableView.setItems(resultList);
+
+        idTableColumn.setSortType(TableColumn.SortType.ASCENDING);
+        employeesTableView.getSortOrder().add(idTableColumn);
     }
 
     @FXML

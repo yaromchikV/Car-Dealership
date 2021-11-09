@@ -49,6 +49,9 @@ public class AdminPositionsController implements Initializable {
 
         ObservableList<Position> resultList = repository.getPositions();
         positionsTableView.setItems(resultList);
+
+        idTableColumn.setSortType(TableColumn.SortType.ASCENDING);
+        positionsTableView.getSortOrder().add(idTableColumn);
     }
 
     @FXML

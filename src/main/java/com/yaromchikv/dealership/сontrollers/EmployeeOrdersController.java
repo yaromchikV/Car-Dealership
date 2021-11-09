@@ -80,6 +80,9 @@ public class EmployeeOrdersController implements Initializable {
 
         ObservableList<Order> resultList = repository.getOrders(null);
         ordersTableView.setItems(resultList);
+
+        idTableColumn.setSortType(TableColumn.SortType.ASCENDING);
+        ordersTableView.getSortOrder().add(idTableColumn);
     }
 
     @FXML

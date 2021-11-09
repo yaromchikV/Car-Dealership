@@ -46,6 +46,9 @@ public class EmployeeStylesController implements Initializable {
 
         ObservableList<Style> resultList = repository.getStyles();
         stylesTableView.setItems(resultList);
+
+        idTableColumn.setSortType(TableColumn.SortType.ASCENDING);
+        stylesTableView.getSortOrder().add(idTableColumn);
     }
 
     @FXML

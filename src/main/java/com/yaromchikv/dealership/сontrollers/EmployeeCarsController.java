@@ -99,6 +99,9 @@ public class EmployeeCarsController implements Initializable {
 
         ObservableList<Car> resultList = repository.getCars(null);
         carsTableView.setItems(resultList);
+
+        idTableColumn.setSortType(TableColumn.SortType.ASCENDING);
+        carsTableView.getSortOrder().add(idTableColumn);
     }
 
     @FXML

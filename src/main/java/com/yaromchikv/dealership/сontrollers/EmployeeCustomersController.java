@@ -77,6 +77,9 @@ public class EmployeeCustomersController implements Initializable {
 
         ObservableList<Customer> resultList = repository.getCustomers(null);
         customersTableView.setItems(resultList);
+
+        idTableColumn.setSortType(TableColumn.SortType.ASCENDING);
+        customersTableView.getSortOrder().add(idTableColumn);
     }
 
     @FXML
