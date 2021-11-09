@@ -8,13 +8,10 @@ import com.yaromchikv.dealership.utils.AlertDialog;
 import com.yaromchikv.dealership.utils.Hash;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.utils.Constants.*;
@@ -37,9 +34,6 @@ public class AuthScreenController implements Initializable {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        usernameField.clear();
-        passwordField.clear();
-
         if (!username.isEmpty() && !password.isEmpty()) {
             if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
                 Main.myAccessLevel = AccessLevel.ADMIN;
@@ -48,9 +42,8 @@ public class AuthScreenController implements Initializable {
                 Integer id = repository.getIdByUsername(username);
                 if (id != null) {
                     password = Hash.convert(id, password);
-                    Main.myAccessLevel = repository.checkUsernameAndPassword(username, password);
-
-                    if (Main.myAccessLevel == AccessLevel.EMPLOYEE) {
+                    if (repository.checkUsernameAndPassword(username, password)) {
+                        Main.myAccessLevel = AccessLevel.EMPLOYEE;
                         ScreenController.activate(EMPLOYEE_ORDERS_DASHBOARD);
                     } else {
                         AlertDialog alert = new AlertDialog();
@@ -62,10 +55,11 @@ public class AuthScreenController implements Initializable {
                 }
             }
         } else {
-//            AlertDialog alert = new AlertDialog();
-//            alert.showWarningAlert("Внимание!", "Не введён логин или пароль!");
-            Main.myAccessLevel = AccessLevel.ADMIN;
-            ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Не введён логин или пароль!");
         }
+
+        usernameField.clear();
+        passwordField.clear();
     }
 }

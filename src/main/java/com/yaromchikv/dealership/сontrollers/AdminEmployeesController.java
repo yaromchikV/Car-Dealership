@@ -11,11 +11,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.utils.Constants.*;
@@ -34,8 +34,6 @@ public class AdminEmployeesController implements Initializable {
     public TableColumn<Employee, String> startDateTableColumn;
     public TableColumn<Employee, String> usernameTableColumn;
     public TableColumn<Employee, String> passwordTableColumn;
-
-    public VBox employeesButtonModule;
 
     public HBox updatingBox;
     public CustomTextField surnameTextField;
@@ -124,74 +122,122 @@ public class AdminEmployeesController implements Initializable {
     }
 
     private void applyAddButton() {
-        String surname = surnameTextField.getText();
-        String name = nameTextField.getText();
-        String middleName = middleNameTextField.getText();
-        LocalDate birthDate = birthDatePicker.getValue();
-        String phoneNumber = phoneNumberTextField.getText();
-        String positionName = positionChoiceBox.getValue();
-        LocalDate startDate = startDatePicker.getValue();
-        String username = usernameTextField.getText();
-        String password = passwordTextField.getText();
-        int id = repository.getLastUserId() + 1;
-        password = Hash.convert(id, password);
+        if (checkUpdatingFields()) {
+            String surname = surnameTextField.getText();
+            String name = nameTextField.getText();
+            String middleName = middleNameTextField.getText();
+            LocalDate birthDate = birthDatePicker.getValue();
+            String phoneNumber = phoneNumberTextField.getText();
+            String positionName = positionChoiceBox.getValue();
+            LocalDate startDate = startDatePicker.getValue();
+            String username = usernameTextField.getText();
+            String password = passwordTextField.getText();
+            int id = repository.getLastUserId() + 1;
 
-        //language=SQL
-        String employeeQuery =
-                "INSERT INTO employees " +
-                        "VALUES (" + id + ", '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + "(SELECT ID FROM POSITIONS_TABLE WHERE NAME = '" + positionName + "' LIMIT 1)," + "'" + startDate + "');";
-        //language=SQL
-        String accountQuery =
-                "INSERT INTO accounts " +
-                        "VALUES (last_insert_id(), '" + username + "', '" + password + "');";
+            password = Hash.convert(id, password);
 
-        repository.executeUpdate(employeeQuery);
-        repository.executeUpdate(accountQuery);
+            //language=SQL
+            String employeeQuery =
+                    "INSERT INTO employees " +
+                            "VALUES (" + null + ", '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', " + "(SELECT ID FROM positions WHERE NAME = '" + positionName + "' LIMIT 1)," + "'" + startDate + "');";
+            //language=SQL
+            String accountQuery =
+                    "INSERT INTO accounts " +
+                            "VALUES (last_insert_id(), '" + username + "', '" + password + "');";
 
-        clearUpdateFields();
-        showEmployees();
+            repository.executeUpdate(employeeQuery);
+            repository.executeUpdate(accountQuery);
 
-        AlertDialog alertDialog = new AlertDialog();
-        alertDialog.showInformationAlert("Изменения применены", "Сотрудник " + getFullname(surname, name, middleName) + " добавлен.");
+            clearUpdateFields();
+            showEmployees();
+
+            AlertDialog alertDialog = new AlertDialog();
+            alertDialog.showInformationAlert("Изменения применены", "Сотрудник " + getFullname(surname, name, middleName) + " добавлен.");
+        }
     }
 
     private void applyEditButton() {
-        int id = employeesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-        String surname = surnameTextField.getText();
-        String name = nameTextField.getText();
-        String middleName = middleNameTextField.getText();
-        LocalDate birthDate = birthDatePicker.getValue();
-        String phoneNumber = phoneNumberTextField.getText();
-        String positionName = positionChoiceBox.getValue();
-        LocalDate startDate = startDatePicker.getValue();
+        if (checkUpdatingFields()) {
+            int id = employeesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+            String surname = surnameTextField.getText();
+            String name = nameTextField.getText();
+            String middleName = middleNameTextField.getText();
+            LocalDate birthDate = birthDatePicker.getValue();
+            String phoneNumber = phoneNumberTextField.getText();
+            String positionName = positionChoiceBox.getValue();
+            LocalDate startDate = startDatePicker.getValue();
+            String username = usernameTextField.getText();
+            String password = passwordTextField.getText();
+
+            //language=SQL
+            String employeeQuery = "UPDATE employees SET " +
+                    "SURNAME = '" + surname + "', " +
+                    "NAME = '" + name + "', " +
+                    "MIDDLE_NAME = '" + middleName + "', " +
+                    "DATE_OF_BIRTH = '" + birthDate + "', " +
+                    "PHONE_NUMBER = '" + phoneNumber + "', " +
+                    "POSITION_ID = " + "(SELECT ID FROM positions WHERE NAME = '" + positionName + "' LIMIT 1)," +
+                    "START_DATE = '" + startDate + "' " +
+                    "WHERE ID = " + id + ";";
+
+            //language=SQL
+            String accountQuery = "UPDATE accounts SET " +
+                    "USERNAME = '" + username + "', " +
+                    "PASSWORD = '" + password + "' " +
+                    "WHERE ID = " + id + ";";
+
+            repository.executeUpdate(employeeQuery);
+            repository.executeUpdate(accountQuery);
+
+            clearUpdateFields();
+            showEmployees();
+
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Данные сотрудника id" + id + " обновлены.");
+        }
+    }
+
+    private boolean checkUpdatingFields() {
+        ArrayList<String> errorMessages = new ArrayList<>();
+
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
+        String password2 = password2TextField.getText();
 
-        //language=SQL
-        String employeeQuery = "UPDATE employees SET " +
-                "SURNAME = '" + surname + "', " +
-                "NAME = '" + name + "', " +
-                "MIDDLE_NAME = '" + middleName + "', " +
-                "DATE_OF_BIRTH = '" + birthDate + "', " +
-                "PHONE_NUMBER = '" + phoneNumber + "', " +
-                "POSITION_ID = " + "(SELECT ID FROM POSITIONS_TABLE WHERE NAME = '" + positionName + "' LIMIT 1)," +
-                "START_DATE = '" + startDate + "' " +
-                "WHERE ID = " + id + ";";
+        if (surnameTextField.getText().isEmpty())
+            errorMessages.add("Фамилия отсутствует.");
+        if (nameTextField.getText().isEmpty())
+            errorMessages.add("Имя отсутствует.");
+        if (middleNameTextField.getText().isEmpty())
+            errorMessages.add("Отчество отсутствует.");
+        if (birthDatePicker.getValue() == null)
+            errorMessages.add("Дата рождения не выбрана.");
+        if (phoneNumberTextField.getText().isEmpty())
+            errorMessages.add("Номер телефона отсутствует.");
+        if (positionChoiceBox.getValue().equals(listOfPositionsNames.get(0)))
+            errorMessages.add("Должность не выбрана.");
+        if (startDatePicker.getValue() == null)
+            errorMessages.add("Дата начала работы не выбрана.");
+        if (username.isEmpty())
+            errorMessages.add("Логин отсутствует.");
+        else if (username.length() < 4)
+            errorMessages.add("Логин слишком короткий.");
+        if (repository.getIdByUsername(username) != null)
+            errorMessages.add("Логин занят другим сотрудником.");
+        if (password.isEmpty())
+            errorMessages.add("Пароль отсутствует.");
+        if (!password.isEmpty() && password.length() < 6)
+            errorMessages.add("Пароль слишком короткий.");
+        if (password2.isEmpty())
+            errorMessages.add("Пароль не введён повторно.");
+        else if (!password.isEmpty() && !password.equals(password2))
+            errorMessages.add("Пароли не совпадают.");
 
-        //language=SQL
-        String accountQuery = "UPDATE accounts SET " +
-                "USERNAME = '" + username + "', " +
-                "PASSWORD = '" + password + "' " +
-                "WHERE ID = " + id + ";";
-
-        repository.executeUpdate(employeeQuery);
-        repository.executeUpdate(accountQuery);
-
-        clearUpdateFields();
-        showEmployees();
-
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Данные сотрудника id" + id + " обновлены.");
+        if (errorMessages.size() != 0) {
+            AlertDialog alert = new AlertDialog();
+            alert.showErrorAlert("Обнаружена одна или несколько ошибок!", String.join(" ", errorMessages));
+        }
+        return errorMessages.size() == 0;
     }
 
     private void applyDeleteButton() {
@@ -217,8 +263,8 @@ public class AdminEmployeesController implements Initializable {
         }
     }
 
-    private String getFullname(String surname, String name, String middlName) {
-        return surname + ' ' + name.charAt(0) + ". " + middlName.charAt(0) + ".";
+    private String getFullname(String surname, String name, String middleName) {
+        return surname + ' ' + name.charAt(0) + ". " + middleName.charAt(0) + ".";
     }
 
     private void applyFilterButton() {
@@ -233,29 +279,23 @@ public class AdminEmployeesController implements Initializable {
         LocalDate maxStartDate = maxStartDateFilterDatePicker.getValue();
         String username = usernameFilterTextField.getText();
 
+        ArrayList<String> filter = new ArrayList<>();
+        if (!surname.isEmpty()) filter.add("SURNAME ='" + surname + "'");
+        if (!name.isEmpty()) filter.add("NAME ='" + name + "'");
+        if (!middleName.isEmpty()) filter.add("MIDDLE_NAME ='" + middleName + "'");
+        if (minBirthDate != null) filter.add("DATE_OF_BIRTH >= ='" + minBirthDate + "'");
+        if (maxBirthDate != null) filter.add("DATE_OF_BIRTH <= ='" + maxBirthDate + "'");
+        if (!phoneNumber.isEmpty()) filter.add("PHONE_NUMBER ='" + phoneNumber + "'");
+        if (!positionName.equals(listOfPositionsNames.get(0))) filter.add("positions.NAME ='" + positionName + "'");
+        if (minStartDate != null) filter.add("START_DATE >= ='" + minStartDate + "'");
+        if (maxStartDate != null) filter.add("START_DATE <= ='" + maxStartDate + "'");
+        if (!username.isEmpty()) filter.add("USERNAME ='" + username + "'");
+
         //language=SQL
-        StringBuilder filterBuilder = new StringBuilder("WHERE ");
-        if (!surname.isEmpty()) filterBuilder.append("SURNAME ='").append(surname).append("' AND ");
-        if (!name.isEmpty()) filterBuilder.append("NAME ='").append(name).append("' AND ");
-        if (!middleName.isEmpty()) filterBuilder.append("MIDDLE_NAME ='").append(middleName).append("' AND ");
-        if (minBirthDate != null)
-            filterBuilder.append("DATE_OF_BIRTH >='").append(minBirthDate).append("' AND ");
-        if (maxBirthDate != null)
-            filterBuilder.append("DATE_OF_BIRTH <='").append(maxBirthDate).append("' AND ");
-        if (!phoneNumber.isEmpty()) filterBuilder.append("PHONE_NUMBER ='").append(phoneNumber).append("' AND ");
-        if (!positionName.equals(listOfPositionsNames.get(0)))
-            filterBuilder.append("positions.NAME ='").append(positionName).append("' AND ");
-        if (minStartDate != null) filterBuilder.append("START_DATE >='").append(minStartDate).append("' AND ");
-        if (maxStartDate != null) filterBuilder.append("START_DATE <='").append(maxStartDate).append("' AND ");
-        if (!username.isEmpty()) filterBuilder.append("USERNAME ='").append(username).append("' AND ");
+        String filterString = null;
+        if (!filter.isEmpty()) filterString = "WHERE " + String.join(" AND ", filter);
 
-        String filter = null;
-        if (filterBuilder.length() > 6) {
-            filterBuilder.setLength(filterBuilder.length() - 4);
-            filter = filterBuilder.toString();
-        }
-
-        ObservableList<Employee> resultList = repository.getEmployees(filter);
+        ObservableList<Employee> resultList = repository.getEmployees(filterString);
         employeesTableView.setItems(resultList);
     }
 
@@ -401,7 +441,10 @@ public class AdminEmployeesController implements Initializable {
 
     @FXML
     private void backButtonClick() {
-        ScreenController.activate(AUTH_SCREEN);
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Выйти из системы?", "Вы действительно хотите вернуться на экран авторизации?");
+        if (answer)
+            ScreenController.activate(AUTH_SCREEN);
     }
 
     @FXML

@@ -33,7 +33,6 @@ public class Constants {
     public static final String CUSTOMER_ID = "CUSTOMER_ID";
     public static final String CAR_ID = "CAR_ID";
     public static final String EMPLOYEE_ID = "EMPLOYEE_ID";
-    public static final String IS_COMPLETED = "IS_COMPLETED";
     public static final String SALARY = "SALARY";
     public static final String CUSTOMER_FULLNAME = "CUSTOMER_FULLNAME";
     public static final String EMPLOYEE_FULLNAME = "EMPLOYEE_FULLNAME";

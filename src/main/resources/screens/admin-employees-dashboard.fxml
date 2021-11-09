@@ -35,6 +35,9 @@
     </Button>
     <TableView fx:id="employeesTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
                onMouseClicked="#tableItemSelect">
+        <placeholder>
+            <Label text="Нет данных"/>
+        </placeholder>
         <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID"/>
             <TableColumn fx:id="surnameTableColumn" prefWidth="120" text="Фамилия"/>
@@ -104,7 +107,7 @@
                 </font>
             </Label>
         </VBox>
-        <VBox fx:id="employeesButtonModule" alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="130.0"
+        <VBox alignment="CENTER" disable="true" prefHeight="100.0" prefWidth="130.0"
               spacing="5.0">
             <Button fx:id="employeesMenuButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0">
                 <graphic>
@@ -158,7 +161,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="surnameTextField" prefHeight="30.0" prefWidth="362.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -174,7 +178,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="nameTextField" prefHeight="30.0" prefWidth="393.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -190,7 +195,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="middleNameTextField" prefHeight="30.0" prefWidth="361.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -217,7 +223,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="phoneNumberTextField" prefHeight="30.0" prefWidth="365.0"
-                                 maxLength="11" allowLetters="false" allowDigits="true">
+                                 maxLength="11" allowLetters="false" allowDigits="true" promptText="80*********">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -260,7 +266,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="usernameTextField" prefHeight="30.0" prefWidth="406.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true"
+                                 promptText="Минимальная длина: 4">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -276,7 +283,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="passwordTextField" prefHeight="30.0" prefWidth="397.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true"
+                                 promptText="Минимальная длина: 6">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -292,7 +300,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="password2TextField" prefHeight="30.0" prefWidth="326.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true"
+                                 promptText="Минимальная длина: 6">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -321,7 +330,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="surnameFilterTextField" prefHeight="30.0" prefWidth="362.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -337,7 +347,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="nameFilterTextField" prefHeight="30.0" prefWidth="393.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -353,7 +364,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="middleNameFilterTextField" prefHeight="30.0" prefWidth="361.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -376,7 +388,8 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomDatePicker fx:id="minBirthFilterDatePicker" prefHeight="30.0" prefWidth="129.0" editable="false"/>
+                <CustomDatePicker fx:id="minBirthFilterDatePicker" prefHeight="30.0" prefWidth="129.0"
+                                  editable="false"/>
                 <Label text="до">
                     <font>
                         <Font size="14.0"/>
@@ -385,7 +398,8 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomDatePicker fx:id="maxBirthFilterDatePicker" prefHeight="30.0" prefWidth="129.0" editable="false"/>
+                <CustomDatePicker fx:id="maxBirthFilterDatePicker" prefHeight="30.0" prefWidth="129.0"
+                                  editable="false"/>
             </HBox>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="463.0">
@@ -402,7 +416,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="phoneNumberFilterTextField" prefHeight="30.0" prefWidth="390.0"
-                                 maxLength="11" allowLetters="false" allowDigits="true">
+                                 maxLength="11" allowLetters="false" allowDigits="true" promptText="80*********">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -436,7 +450,8 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomDatePicker fx:id="minStartDateFilterDatePicker" prefHeight="30.0" prefWidth="127.0" editable="false"/>
+                <CustomDatePicker fx:id="minStartDateFilterDatePicker" prefHeight="30.0" prefWidth="127.0"
+                                  editable="false"/>
                 <Label text="до">
                     <font>
                         <Font size="14.0"/>
@@ -445,7 +460,8 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomDatePicker fx:id="maxStartDateFilterDatePicker" prefHeight="30.0" prefWidth="127.0" editable="false"/>
+                <CustomDatePicker fx:id="maxStartDateFilterDatePicker" prefHeight="30.0" prefWidth="127.0"
+                                  editable="false"/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Логин:">
@@ -457,7 +473,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="usernameFilterTextField" prefHeight="30.0" prefWidth="406.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>

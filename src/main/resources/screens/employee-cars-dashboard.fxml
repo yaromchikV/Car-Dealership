@@ -35,6 +35,9 @@
     </Button>
     <TableView fx:id="carsTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
                onMouseClicked="#tableItemSelect">
+        <placeholder>
+            <Label text="Нет данных"/>
+        </placeholder>
         <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID"/>
             <TableColumn fx:id="makeTableColumn" prefWidth="190" text="Марка"/>
@@ -98,7 +101,7 @@
                 </font>
             </Label>
         </VBox>
-        <VBox fx:id="employeesButtonModule" alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
+        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
             <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick"
                     prefHeight="100.0" prefWidth="100.0">
                 <graphic>
@@ -149,7 +152,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="makeTextField" prefHeight="30.0" prefWidth="380.0"
-                        maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -165,7 +169,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="modelTextField" prefHeight="30.0" prefWidth="371.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -196,12 +201,7 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomTextField fx:id="yearTextField" prefHeight="30.0" prefWidth="366.0"
-                                 maxLength="4" allowLetters="false" allowDigits="true">
-                    <font>
-                        <Font size="14.0"/>
-                    </font>
-                </CustomTextField>
+                <ChoiceBox fx:id="yearChoiceBox" prefHeight="30.0" prefWidth="366.0"/>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Цена:">
@@ -213,7 +213,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="priceTextField" prefHeight="30.0" prefWidth="412.0"
-                                 maxLength="7" allowLetters="false" allowDigits="true" isDouble="true">
+                                 maxLength="7" allowLetters="false" allowDigits="true" isDouble="true"
+                                 promptText="Максимальное значение: 9999999">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -239,7 +240,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="makeFilterTextField" prefHeight="30.0" prefWidth="380.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -255,7 +257,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="modelFilterTextField" prefHeight="30.0" prefWidth="371.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true"
+                                 promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -326,7 +329,8 @@
                         </HBox.margin>
                     </Label>
                     <CustomTextField fx:id="minPriceFilterTextField" prefHeight="29.6" prefWidth="100.0"
-                                     maxLength="7" allowLetters="false" allowDigits="true"/>
+                                     maxLength="7" allowLetters="false" allowDigits="true"
+                                     promptText="Максимальное значение: 9999999"/>
                     <Label text="до">
                         <font>
                             <Font size="14.0"/>
@@ -336,7 +340,8 @@
                         </HBox.margin>
                     </Label>
                     <CustomTextField fx:id="maxPriceFilterTextField" prefHeight="29.6" prefWidth="100.0"
-                                     maxLength="7" allowLetters="false" allowDigits="true"/>
+                                     maxLength="7" allowLetters="false" allowDigits="true"
+                                     promptText="Максимальное значение: 9999999"/>
                 </HBox>
             </HBox>
         </VBox>

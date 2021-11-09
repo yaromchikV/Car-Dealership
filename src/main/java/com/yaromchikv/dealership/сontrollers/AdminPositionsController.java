@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.utils.Constants.*;
@@ -63,39 +64,59 @@ public class AdminPositionsController implements Initializable {
     }
 
     private void applyAddButton() {
-        String name = nameTextField.getText();
-        String salaryText = salaryTextField.getText();
-        double salary = Double.parseDouble(salaryText);
+        if (checkFields()) {
+            String name = nameTextField.getText();
+            String salaryText = salaryTextField.getText();
+            double salary = Double.parseDouble(salaryText);
 
-        //language=SQL
-        String query = "INSERT INTO positions " +
-                "VALUES (" + null + ",'" + name + "'," + salary + ");";
-        repository.executeUpdate(query);
+            //language=SQL
+            String query = "INSERT INTO positions " +
+                    "VALUES (" + null + ",'" + name + "'," + salary + ");";
+            repository.executeUpdate(query);
 
-        clearFields();
-        showPositions();
+            clearFields();
+            showPositions();
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Должность \"" + name + "\" добавлена.");
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Должность \"" + name + "\" добавлена.");
+        }
     }
 
     private void applyEditButton() {
-        int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-        String name = nameTextField.getText();
-        String salary = salaryTextField.getText();
+        if (checkFields()) {
+            int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+            String name = nameTextField.getText();
+            String salary = salaryTextField.getText();
 
-        //language=SQL
-        String query = "UPDATE positions SET " +
-                "NAME = '" + name + "'," +
-                "SALARY = " + Double.parseDouble(salary) +
-                " WHERE ID = " + id;
-        repository.executeUpdate(query);
+            //language=SQL
+            String query = "UPDATE positions SET " +
+                    "NAME = '" + name + "'," +
+                    "SALARY = " + Double.parseDouble(salary) +
+                    " WHERE ID = " + id;
+            repository.executeUpdate(query);
 
-        clearFields();
-        showPositions();
+            clearFields();
+            showPositions();
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Должность id" + id + " обновлена.");
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Должность id" + id + " обновлена.");
+        }
+    }
+
+    private boolean checkFields() {
+        ArrayList<String> errorMessages = new ArrayList<>();
+
+        if (nameTextField.getText().isEmpty())
+            errorMessages.add("Название должности отсутствует.");
+        if (salaryTextField.getText().isEmpty())
+            errorMessages.add("Зарплата отсутствует.");
+
+        if (errorMessages.size() != 0) {
+            AlertDialog alert = new AlertDialog();
+            alert.showErrorAlert("Обнаружена одна или несколько ошибок!", String.join(" ", errorMessages));
+        }
+
+        return errorMessages.size() == 0;
     }
 
     private void applyDeleteButton() {
@@ -194,7 +215,10 @@ public class AdminPositionsController implements Initializable {
 
     @FXML
     private void backButtonClick() {
-        ScreenController.activate(AUTH_SCREEN);
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Выйти из системы?", "Вы действительно хотите вернуться на экран авторизации?");
+        if (answer)
+            ScreenController.activate(AUTH_SCREEN);
     }
 
     @FXML
@@ -221,4 +245,5 @@ public class AdminPositionsController implements Initializable {
     private void employeesMenuButtonClick() {
         ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
     }
+
 }

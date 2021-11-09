@@ -26,6 +26,9 @@
     </Button>
     <TableView fx:id="ordersTableView" layoutX="138.0" layoutY="13.0" onMouseClicked="#tableItemSelect"
                prefHeight="429.0" prefWidth="926.0">
+        <placeholder>
+            <Label text="Нет данных"/>
+        </placeholder>
         <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID"/>
             <TableColumn fx:id="timeTableColumn" prefWidth="160" text="Время заказа"/>
@@ -92,7 +95,7 @@
                 </font>
             </Label>
         </VBox>
-        <VBox fx:id="employeesButtonModule" alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
+        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
             <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick"
                     prefHeight="100.0" prefWidth="100.0">
                 <graphic>
@@ -146,7 +149,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="customerIdTextField" prefHeight="30.0" prefWidth="352.0"
-                                 maxLength="5" allowLetters="false" allowDigits="true">
+                                 maxLength="5" allowLetters="false" allowDigits="true" promptText="id">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -162,7 +165,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="carIdTextField" prefHeight="30.0" prefWidth="326.0"
-                                 maxLength="5" allowLetters="false" allowDigits="true">
+                                 maxLength="5" allowLetters="false" allowDigits="true" promptText="id">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -183,7 +186,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="employeeIdTextField" prefHeight="30.0" prefWidth="354.0"
-                                 maxLength="5" allowLetters="false" allowDigits="true">
+                                 maxLength="5" allowLetters="false" allowDigits="true" promptText="id">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -242,7 +245,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="customerSurnameFilterTextField" prefHeight="30.0" prefWidth="308.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -258,7 +261,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="carMakeFilterTextField" prefHeight="30.0" prefWidth="297.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -274,7 +277,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="carModelFilterTextField" prefHeight="30.0" prefWidth="289.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true">
+                                 maxLength="24" allowLetters="true" allowDigits="true" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -295,7 +298,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="employeeSurnameFilterTextField" prefHeight="30.0" prefWidth="310.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>

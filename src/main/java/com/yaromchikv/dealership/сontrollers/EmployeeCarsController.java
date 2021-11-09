@@ -1,8 +1,10 @@
 package com.yaromchikv.dealership.сontrollers;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Car;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import com.yaromchikv.dealership.utils.AlertDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.utils.Constants.*;
@@ -40,7 +43,7 @@ public class EmployeeCarsController implements Initializable {
     public TextField makeTextField;
     public TextField modelTextField;
     public ChoiceBox<String> styleChoiceBox;
-    public TextField yearTextField;
+    public ChoiceBox<Integer> yearChoiceBox;
     public TextField priceTextField;
 
     public HBox filterBox;
@@ -52,7 +55,7 @@ public class EmployeeCarsController implements Initializable {
     public TextField minPriceFilterTextField;
     public TextField maxPriceFilterTextField;
 
-    private ObservableList<String> listOfCarsNames;
+    private ObservableList<String> listOfStyleNames;
     private ObservableList<Integer> listOfYears;
 
     private Repository repository;
@@ -65,21 +68,23 @@ public class EmployeeCarsController implements Initializable {
     }
 
     private void initChoiceBoxes() {
-        listOfCarsNames = repository.getStyleNames();
-        listOfCarsNames.add(0, "Не выбрано");
+        listOfStyleNames = repository.getStyleNames();
+        listOfStyleNames.add(0, "Не выбрано");
 
         listOfYears = FXCollections.observableArrayList();
         for (int i = 2000; i < 2022; i++) {
             listOfYears.add(i);
         }
 
-        styleChoiceBox.setItems(listOfCarsNames);
-        styleFilterChoiceBox.setItems(listOfCarsNames);
+        styleChoiceBox.setItems(listOfStyleNames);
+        styleFilterChoiceBox.setItems(listOfStyleNames);
+        yearChoiceBox.setItems(listOfYears);
         minYearFilterChoiceBox.setItems(listOfYears);
         maxYearFilterChoiceBox.setItems(listOfYears);
 
-        styleChoiceBox.valueProperty().setValue(listOfCarsNames.get(0));
-        styleFilterChoiceBox.valueProperty().setValue(listOfCarsNames.get(0));
+        styleChoiceBox.valueProperty().setValue(listOfStyleNames.get(0));
+        styleFilterChoiceBox.valueProperty().setValue(listOfStyleNames.get(0));
+        yearChoiceBox.setValue(listOfYears.get(0));
         minYearFilterChoiceBox.setValue(listOfYears.get(0));
         maxYearFilterChoiceBox.setValue(listOfYears.get(listOfYears.size() - 1));
     }
@@ -111,49 +116,75 @@ public class EmployeeCarsController implements Initializable {
     }
 
     private void applyAddButton() {
-        String styleName = styleChoiceBox.getValue();
-        String make = makeTextField.getText();
-        String model = modelTextField.getText();
-        String year = yearTextField.getText();
-        String price = priceTextField.getText();
+        if (checkUpdatingFields()) {
+            String styleName = styleChoiceBox.getValue();
+            String make = makeTextField.getText();
+            String model = modelTextField.getText();
+            Integer year = yearChoiceBox.getValue();
+            String price = priceTextField.getText();
 
-        //language=SQL
-        String query = "INSERT INTO cars " +
-                "VALUES + (" + null + ", (SELECT ID FROM STYLES_TABLE WHERE NAME = '" + styleName + "' LIMIT 1), '" + make + "', '" + model + "', " + Integer.parseInt(year) + ", " + Double.parseDouble(price) + ");";
+            //language=SQL
+            String query = "INSERT INTO cars " +
+                    "VALUES + (" + null + ", (SELECT ID FROM styles WHERE NAME = '" + styleName + "' LIMIT 1), '" + make + "', '" + model + "', " + year + ", " + Double.parseDouble(price) + ");";
 
-        System.out.println(query);
+            System.out.println(query);
 
-        repository.executeUpdate(query);
-        clearUpdateFields();
-        showCars();
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showCars();
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Автомобиль " + make + ' ' + model + " добавлен.");
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Автомобиль " + make + ' ' + model + " добавлен.");
+        }
     }
 
     private void applyEditButton() {
-        int id = carsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-        String styleName = styleChoiceBox.getValue();
-        String make = makeTextField.getText();
-        String model = modelTextField.getText();
-        String year = yearTextField.getText();
-        String price = priceTextField.getText();
+        if (checkUpdatingFields()) {
+            int id = carsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+            String styleName = styleChoiceBox.getValue();
+            String make = makeTextField.getText();
+            String model = modelTextField.getText();
+            Integer year = yearChoiceBox.getValue();
+            String price = priceTextField.getText();
 
-        //language=SQL
-        String query = "UPDATE cars SET " +
-                "STYLE_ID = (SELECT ID FROM STYLES_TABLE WHERE NAME = '" + styleName + "' LIMIT 1), " +
-                "MAKE = '" + make + "', " +
-                "MODEL = '" + model + "', " +
-                "YEAR = " + year + ", " +
-                "PRICE = " + price + " " +
-                "WHERE ID = " + id + ";";
+            //language=SQL
+            String query = "UPDATE cars SET " +
+                    "STYLE_ID = (SELECT ID FROM styles WHERE NAME = '" + styleName + "' LIMIT 1), " +
+                    "MAKE = '" + make + "', " +
+                    "MODEL = '" + model + "', " +
+                    "YEAR = " + year + ", " +
+                    "PRICE = " + price + " " +
+                    "WHERE ID = " + id + ";";
 
-        repository.executeUpdate(query);
-        clearUpdateFields();
-        showCars();
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showCars();
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Автомобиль id" + id + " обновлён.");
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Автомобиль id" + id + " обновлён.");
+        }
+    }
+
+    private boolean checkUpdatingFields() {
+        ArrayList<String> errorMessages = new ArrayList<>();
+
+        if (makeTextField.getText().isEmpty())
+            errorMessages.add("Марка отсутствует");
+        if (modelTextField.getText().isEmpty())
+            errorMessages.add("Модель отсутствует");
+        if (styleChoiceBox.getValue().equals(listOfStyleNames.get(0)))
+            errorMessages.add("Тип кузова не выбран.");
+        if (yearChoiceBox.getValue().equals(listOfYears.get(0)))
+            errorMessages.add("Год выпуска не выбран.");
+        if (priceTextField.getText().isEmpty())
+            errorMessages.add("Цена отсутствует");
+
+        if (errorMessages.size() != 0) {
+            AlertDialog alert = new AlertDialog();
+            alert.showErrorAlert("Обнаружена одна или несколько ошибок!", String.join(" ", errorMessages));
+        }
+
+        return errorMessages.size() == 0;
     }
 
     private void applyDeleteButton() {
@@ -188,28 +219,20 @@ public class EmployeeCarsController implements Initializable {
         String minPrice = minPriceFilterTextField.getText();
         String maxPrice = maxPriceFilterTextField.getText();
 
+        ArrayList<String> filter = new ArrayList<>();
+        if (!make.isEmpty()) filter.add("MAKE ='" + make + "'");
+        if (!model.isEmpty()) filter.add("MODEL ='" + model + "'");
+        if (!styleName.equals(listOfStyleNames.get(0))) filter.add("styles.NAME ='" + styleName + "'");
+        if (!minYear.equals(listOfYears.get(0))) filter.add("YEAR >='" + minYear + "'");
+        if (!maxYear.equals(listOfYears.get(listOfYears.size() - 1))) filter.add("YEAR <='" + maxYear + "'");
+        if (!minPrice.isEmpty()) filter.add("PRICE >=" + minPrice + "");
+        if (!maxPrice.isEmpty()) filter.add("PRICE <=" + maxPrice + "");
+
         //language=SQL
-        StringBuilder filterBuilder = new StringBuilder("WHERE ");
-        if (!make.isEmpty()) filterBuilder.append("MAKE ='").append(make).append("' AND ");
-        if (!model.isEmpty()) filterBuilder.append("MODEL ='").append(model).append("' AND ");
-        if (!styleName.equals(listOfCarsNames.get(0)))
-            filterBuilder.append(" styles.NAME ='").append(styleName).append("' AND ");
-        if (!minYear.equals(listOfYears.get(0)))
-            filterBuilder.append("YEAR >=").append(minYear).append(" AND ");
-        if (!maxYear.equals(listOfYears.get(listOfYears.size() - 1)))
-            filterBuilder.append("YEAR <=").append(maxYear).append(" AND ");
-        if (!minPrice.isEmpty())
-            filterBuilder.append("PRICE >=").append(Double.parseDouble(minPrice)).append(" AND ");
-        if (!maxPrice.isEmpty())
-            filterBuilder.append("PRICE <=").append(Double.parseDouble(maxPrice)).append(" AND ");
+        String filterString = null;
+        if (!filter.isEmpty()) filterString = "WHERE " + String.join(" AND ", filter);
 
-        String filter = null;
-        if (filterBuilder.length() > 6) {
-            filterBuilder.setLength(filterBuilder.length() - 4);
-            filter = filterBuilder.toString();
-        }
-
-        ObservableList<Car> resultList = repository.getCars(filter);
+        ObservableList<Car> resultList = repository.getCars(filterString);
         carsTableView.setItems(resultList);
     }
 
@@ -228,7 +251,7 @@ public class EmployeeCarsController implements Initializable {
             makeTextField.setText(car.makeProperty().getValue());
             modelTextField.setText(car.modelProperty().getValue());
             styleChoiceBox.setValue(car.styleNameProperty().getValue());
-            yearTextField.setText(car.yearProperty().getValue().toString());
+            yearChoiceBox.setValue(car.yearProperty().getValue());
             priceTextField.setText(car.priceProperty().getValue().toString());
             if (isEdit) updatingBoxFieldsIsEnabled(true);
         }
@@ -284,7 +307,7 @@ public class EmployeeCarsController implements Initializable {
         makeTextField.setDisable(!isEnabled);
         modelTextField.setDisable(!isEnabled);
         styleChoiceBox.setDisable(!isEnabled);
-        yearTextField.setDisable(!isEnabled);
+        yearChoiceBox.setDisable(!isEnabled);
         priceTextField.setDisable(!isEnabled);
     }
 
@@ -310,15 +333,15 @@ public class EmployeeCarsController implements Initializable {
     private void clearUpdateFields() {
         makeTextField.clear();
         modelTextField.clear();
-        styleChoiceBox.valueProperty().setValue(listOfCarsNames.get(0));
-        yearTextField.clear();
+        styleChoiceBox.valueProperty().setValue(listOfStyleNames.get(0));
+        yearChoiceBox.valueProperty().setValue(listOfYears.get(0));
         priceTextField.clear();
     }
 
     private void clearFilterFields() {
         makeFilterTextField.clear();
         modelFilterTextField.clear();
-        styleFilterChoiceBox.valueProperty().setValue(listOfCarsNames.get(0));
+        styleFilterChoiceBox.valueProperty().setValue(listOfStyleNames.get(0));
         minYearFilterChoiceBox.setValue(listOfYears.get(0));
         maxYearFilterChoiceBox.setValue(listOfYears.get(listOfYears.size() - 1));
         minPriceFilterTextField.clear();
@@ -327,7 +350,10 @@ public class EmployeeCarsController implements Initializable {
 
     @FXML
     private void backButtonClick() {
-        ScreenController.activate(AUTH_SCREEN);
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Выйти из системы?", "Вы действительно хотите вернуться на экран авторизации?");
+        if (answer)
+            ScreenController.activate(AUTH_SCREEN);
     }
 
     @FXML
@@ -347,12 +373,21 @@ public class EmployeeCarsController implements Initializable {
 
     @FXML
     private void employeesMenuButtonClick() {
-        ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        if (Main.myAccessLevel == AccessLevel.ADMIN)
+            ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        else {
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Недостаточно прав доступа!");
+        }
     }
 
     @FXML
     public void positionsMenuButtonClick() {
-        ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+        if (Main.myAccessLevel == AccessLevel.ADMIN)
+            ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+        else {
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Недостаточно прав доступа!");
+        }
     }
-
 }

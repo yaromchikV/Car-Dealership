@@ -35,6 +35,9 @@
     </Button>
     <TableView fx:id="positionsTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
                onMouseClicked="#tableItemSelect">
+        <placeholder>
+            <Label text="Нет данных"/>
+        </placeholder>
         <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID"/>
             <TableColumn fx:id="nameTableColumn" prefWidth="450" text="Название"/>
@@ -96,7 +99,7 @@
                 </font>
             </Label>
         </VBox>
-        <VBox fx:id="employeesButtonModule" alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
+        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
             <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick"
                     prefHeight="100.0" prefWidth="100.0">
                 <graphic>
@@ -150,7 +153,8 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="nameTextField" prefHeight="30.0" prefWidth="359.0"
-                                 maxLength="36" allowLetters="true" allowDigits="false">
+                                 maxLength="36" allowLetters="true" allowDigits="false"
+                                 promptText="Максимальная длина: 36">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -172,7 +176,8 @@
                         </padding>
                     </Label>
                     <CustomTextField fx:id="salaryTextField" prefHeight="30.0" prefWidth="387.0"
-                                     maxLength="7" allowLetters="false" allowDigits="true" isDouble="true">
+                                     maxLength="6" allowLetters="false" allowDigits="true" isDouble="true"
+                                     promptText="Максимальное значение: 999999">
                         <font>
                             <Font size="14.0"/>
                         </font>

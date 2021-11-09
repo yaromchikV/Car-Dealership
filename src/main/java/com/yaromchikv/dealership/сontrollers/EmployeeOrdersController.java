@@ -1,8 +1,10 @@
 package com.yaromchikv.dealership.сontrollers;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Order;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import com.yaromchikv.dealership.utils.AlertDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.utils.Constants.*;
@@ -42,8 +45,8 @@ public class EmployeeOrdersController implements Initializable {
     public TextField customerIdTextField;
     public TextField carIdTextField;
     public TextField employeeIdTextField;
-    public RadioButton processingRadioButton;
     public ToggleGroup orderStatus;
+    public RadioButton processingRadioButton;
     public RadioButton completedRadioButton;
 
     public HBox filterBox;
@@ -94,44 +97,65 @@ public class EmployeeOrdersController implements Initializable {
     }
 
     private void applyAddButton() {
-        int customerId = Integer.parseInt(customerIdTextField.getText());
-        int carId = Integer.parseInt(carIdTextField.getText());
-        int employeeId = Integer.parseInt(employeeIdTextField.getText());
-        boolean isCompleted = completedRadioButton.isSelected();
+        if (checkUpdatingFields()) {
+            int customerId = Integer.parseInt(customerIdTextField.getText());
+            int carId = Integer.parseInt(carIdTextField.getText());
+            int employeeId = Integer.parseInt(employeeIdTextField.getText());
+            boolean isCompleted = completedRadioButton.isSelected();
 
-        //language=SQL
-        String query = "INSERT INTO orders " +
-                "VALUES (null, NOW(), " + customerId + ", " + carId + ", " + employeeId + ", " + isCompleted + ");";
+            //language=SQL
+            String query = "INSERT INTO orders " +
+                    "VALUES (null, NOW(), " + customerId + ", " + carId + ", " + employeeId + ", " + isCompleted + ");";
 
-        repository.executeUpdate(query);
-        clearUpdateFields();
-        showOrders();
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showOrders();
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Заказ добавлен.");
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Заказ добавлен.");
+        }
     }
 
     private void applyEditButton() {
-        int id = ordersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-        int customerId = Integer.parseInt(customerIdTextField.getText());
-        int carId = Integer.parseInt(carIdTextField.getText());
-        int employeeId = Integer.parseInt(employeeIdTextField.getText());
-        boolean isCompleted = completedRadioButton.isSelected();
+        if (checkUpdatingFields()) {
+            int id = ordersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+            int customerId = Integer.parseInt(customerIdTextField.getText());
+            int carId = Integer.parseInt(carIdTextField.getText());
+            int employeeId = Integer.parseInt(employeeIdTextField.getText());
+            boolean isCompleted = completedRadioButton.isSelected();
 
-        //language=SQL
-        String query = "UPDATE orders SET " +
-                "CUSTOMER_ID = " + customerId + ", " +
-                "CAR_ID = " + carId + ", " +
-                "EMPLOYEE_ID = " + employeeId + ", " +
-                "IS_COMPLETED = " + isCompleted + " " +
-                "WHERE ID = " + id + ";";
+            //language=SQL
+            String query = "UPDATE orders SET " +
+                    "CUSTOMER_ID = " + customerId + ", " +
+                    "CAR_ID = " + carId + ", " +
+                    "EMPLOYEE_ID = " + employeeId + ", " +
+                    "IS_COMPLETED = " + isCompleted + " " +
+                    "WHERE ID = " + id + ";";
 
-        repository.executeUpdate(query);
-        clearUpdateFields();
-        showOrders();
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showOrders();
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Заказ " + id + " добавлен.");
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Заказ " + id + " добавлен.");
+        }
+    }
+
+    private boolean checkUpdatingFields() {
+        ArrayList<String> errorMessages = new ArrayList<>();
+
+        if (customerIdTextField.getText().isEmpty())
+            errorMessages.add("ID клиента отсутствует.");
+        if (carIdTextField.getText().isEmpty())
+            errorMessages.add("ID автомобиля отсутствует.");
+        if (employeeIdTextField.getText().isEmpty())
+            errorMessages.add("ID сотрудника отсутствует.");
+
+        if (errorMessages.size() != 0) {
+            AlertDialog alert = new AlertDialog();
+            alert.showErrorAlert("Обнаружена одна или несколько ошибок!", String.join(" ", errorMessages));
+        }
+        return errorMessages.size() == 0;
     }
 
     private void applyDeleteButton() {
@@ -147,7 +171,6 @@ public class EmployeeOrdersController implements Initializable {
                     "WHERE ID = " + id;
 
             repository.executeUpdate(query);
-
             clearUpdateFields();
             showOrders();
 
@@ -161,26 +184,21 @@ public class EmployeeOrdersController implements Initializable {
         String customerSurname = customerSurnameFilterTextField.getText();
         String employeeSurname = employeeSurnameFilterTextField.getText();
         Boolean isCompleted = null;
-        if (processingRadioButton.isSelected()) isCompleted = false;
-        else if (completedRadioButton.isSelected()) isCompleted = true;
+        if (processingFilterRadioButton.isSelected()) isCompleted = false;
+        else if (completedFilterRadioButton.isSelected()) isCompleted = true;
+
+        ArrayList<String> filter = new ArrayList<>();
+        if (!make.isEmpty()) filter.add("MAKE ='" + make + "'");
+        if (!model.isEmpty()) filter.add("MODEL ='" + model + "'");
+        if (!customerSurname.isEmpty()) filter.add("customers.SURNAME ='" + customerSurname + "'");
+        if (!employeeSurname.isEmpty()) filter.add("employees.SURNAME ='" + employeeSurname + "'");
+        if (isCompleted != null) filter.add("IS_COMPLETED =" + isCompleted);
 
         //language=SQL
-        StringBuilder filterBuilder = new StringBuilder("WHERE ");
-        if (!make.isEmpty()) filterBuilder.append("MAKE ='").append(make).append("' AND ");
-        if (!model.isEmpty()) filterBuilder.append("MODEL ='").append(model).append("' AND ");
-        if (!customerSurname.isEmpty())
-            filterBuilder.append(" customers.SURNAME ='").append(customerSurname).append("' AND ");
-        if (!employeeSurname.isEmpty())
-            filterBuilder.append(" employees.SURNAME ='").append(employeeSurname).append("' AND ");
-        if (isCompleted != null) filterBuilder.append(' ' + IS_COMPLETED + '=').append(isCompleted).append(" AND ");
+        String filterString = null;
+        if (!filter.isEmpty()) filterString = "WHERE " + String.join(" AND ", filter);
 
-        String filter = null;
-        if (filterBuilder.length() > 6) {
-            filterBuilder.setLength(filterBuilder.length() - 4);
-            filter = filterBuilder.toString();
-        }
-
-        ObservableList<Order> resultList = repository.getOrders(filter);
+        ObservableList<Order> resultList = repository.getOrders(filterString);
         ordersTableView.setItems(resultList);
     }
 
@@ -296,7 +314,10 @@ public class EmployeeOrdersController implements Initializable {
 
     @FXML
     private void backButtonClick() {
-        ScreenController.activate(AUTH_SCREEN);
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Выйти из системы?", "Вы действительно хотите вернуться на экран авторизации?");
+        if (answer)
+            ScreenController.activate(AUTH_SCREEN);
     }
 
     @FXML
@@ -316,11 +337,21 @@ public class EmployeeOrdersController implements Initializable {
 
     @FXML
     private void employeesMenuButtonClick() {
-        ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        if (Main.myAccessLevel == AccessLevel.ADMIN)
+            ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        else {
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Недостаточно прав доступа!");
+        }
     }
 
     @FXML
     public void positionsMenuButtonClick() {
-        ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+        if (Main.myAccessLevel == AccessLevel.ADMIN)
+            ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+        else {
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Недостаточно прав доступа!");
+        }
     }
 }

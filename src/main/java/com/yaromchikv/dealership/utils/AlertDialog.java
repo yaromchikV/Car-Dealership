@@ -32,13 +32,13 @@ public class AlertDialog {
     }
 
     public boolean showConfirmationAlert(String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Уведомление");
         alert.setHeaderText(header);
         alert.setContentText(content);
 
-        ButtonType ok = new ButtonType("ОК");
-        ButtonType cancel = new ButtonType("Отменить");
+        ButtonType ok = new ButtonType("Да");
+        ButtonType cancel = new ButtonType("Отмена");
 
         alert.getButtonTypes().clear();
         alert.getButtonTypes().addAll(ok, cancel);

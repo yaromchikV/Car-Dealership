@@ -34,13 +34,16 @@
     </Button>
     <TableView fx:id="stylesTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
                onMouseClicked="#tableItemSelect">
+        <placeholder>
+            <Label text="Нет данных"/>
+        </placeholder>
         <columns>
             <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID"/>
             <TableColumn fx:id="nameTableColumn" prefWidth="880" text="Название"/>
         </columns>
     </TableView>
     <VBox layoutX="5.0" layoutY="14.0" prefHeight="400.0" prefWidth="130.0" spacing="10.0">
-        <Button fx:id="stylesMenuButton" disable="true" mnemonicParsing="false" onAction="#stylesMenuButtonClick"
+        <Button fx:id="stylesMenuButton" disable="true" mnemonicParsing="false"
                 prefHeight="90.0" prefWidth="130.0" text="Типы кузовов">
             <font>
                 <Font size="13.0"/>
@@ -94,7 +97,7 @@
                 </font>
             </Label>
         </VBox>
-        <VBox fx:id="employeesButtonModule" alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
+        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
             <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick"
                     prefHeight="100.0" prefWidth="100.0">
                 <graphic>
@@ -171,7 +174,7 @@
                     </padding>
                 </Label>
                 <CustomTextField fx:id="nameTextField" prefHeight="30.0" prefWidth="359.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false">
+                                 maxLength="24" allowLetters="true" allowDigits="false" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>

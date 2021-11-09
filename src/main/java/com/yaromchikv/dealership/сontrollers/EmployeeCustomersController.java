@@ -1,9 +1,10 @@
 package com.yaromchikv.dealership.сontrollers;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Customer;
-import com.yaromchikv.dealership.data.models.Employee;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import com.yaromchikv.dealership.utils.AlertDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.layout.HBox;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static com.yaromchikv.dealership.utils.Constants.*;
@@ -92,50 +94,77 @@ public class EmployeeCustomersController implements Initializable {
     }
 
     private void applyAddButton() {
-        String surname = surnameTextField.getText();
-        String name = nameTextField.getText();
-        String middleName = middleNameTextField.getText();
-        LocalDate birthDate = birthDatePicker.getValue();
-        String phoneNumber = phoneNumberTextField.getText();
-        String email = emailTextField.getText();
+        if (checkUpdatingFields()) {
+            String surname = surnameTextField.getText();
+            String name = nameTextField.getText();
+            String middleName = middleNameTextField.getText();
+            LocalDate birthDate = birthDatePicker.getValue();
+            String phoneNumber = phoneNumberTextField.getText();
+            String email = emailTextField.getText();
 
-        //language=SQL
-        String query = "INSERT INTO customers " +
-                "VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', '" + email + "');";
+            //language=SQL
+            String query = "INSERT INTO customers " +
+                    "VALUES (null, '" + surname + "', '" + name + "', '" + middleName + "', '" + birthDate + "', '" + phoneNumber + "', '" + email + "');";
 
-        repository.executeUpdate(query);
-        clearUpdateFields();
-        showCustomers();
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showCustomers();
 
-        AlertDialog alertDialog = new AlertDialog();
-        alertDialog.showInformationAlert("Изменения применены", "Клиент " + getFullname(surname, name, middleName) + " добавлен.");
+            AlertDialog alertDialog = new AlertDialog();
+            alertDialog.showInformationAlert("Изменения применены", "Клиент " + getFullname(surname, name, middleName) + " добавлен.");
+        }
     }
 
     private void applyEditButton() {
-        int id = customersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-        String surname = surnameTextField.getText();
-        String name = nameTextField.getText();
-        String middleName = middleNameTextField.getText();
-        LocalDate birthDate = birthDatePicker.getValue();
-        String phoneNumber = phoneNumberTextField.getText();
-        String email = emailTextField.getText();
+        if (checkUpdatingFields()) {
+            int id = customersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+            String surname = surnameTextField.getText();
+            String name = nameTextField.getText();
+            String middleName = middleNameTextField.getText();
+            LocalDate birthDate = birthDatePicker.getValue();
+            String phoneNumber = phoneNumberTextField.getText();
+            String email = emailTextField.getText();
 
-        //language=SQL
-        String query = "UPDATE customers SET " +
-                "SURNAME = '" + surname + "', " +
-                "NAME = '" + name + "', " +
-                "MIDDLE_NAME = '" + middleName + "', " +
-                "DATE_OF_BIRTH = '" + birthDate + "', " +
-                "PHONE_NUMBER = '" + phoneNumber + "', " +
-                "EMAIL = '" + email + "' " +
-                "WHERE ID = " + id + ";";
+            //language=SQL
+            String query = "UPDATE customers SET " +
+                    "SURNAME = '" + surname + "', " +
+                    "NAME = '" + name + "', " +
+                    "MIDDLE_NAME = '" + middleName + "', " +
+                    "DATE_OF_BIRTH = '" + birthDate + "', " +
+                    "PHONE_NUMBER = '" + phoneNumber + "', " +
+                    "EMAIL = '" + email + "' " +
+                    "WHERE ID = " + id + ";";
 
-        repository.executeUpdate(query);
-        clearUpdateFields();
-        showCustomers();
+            repository.executeUpdate(query);
+            clearUpdateFields();
+            showCustomers();
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Данные клиента id" + id + " обновлены.");
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Данные клиента id" + id + " обновлены.");
+        }
+    }
+
+    private boolean checkUpdatingFields() {
+        ArrayList<String> errorMessages = new ArrayList<>();
+
+        if (surnameTextField.getText().isEmpty())
+            errorMessages.add("Фамилия отсутствует.");
+        if (nameTextField.getText().isEmpty())
+            errorMessages.add("Имя отсутствует.");
+        if (middleNameTextField.getText().isEmpty())
+            errorMessages.add("Отчество отсутствует.");
+        if (birthDatePicker.getValue() == null)
+            errorMessages.add("Дата рождения не выбрана.");
+        if (phoneNumberTextField.getText().isEmpty())
+            errorMessages.add("Номер телефона отсутствует.");
+        if (emailTextField.getText().isEmpty())
+            errorMessages.add("Электронная почта отсутствует.");
+
+        if (errorMessages.size() != 0) {
+            AlertDialog alert = new AlertDialog();
+            alert.showErrorAlert("Обнаружена одна или несколько ошибок!", String.join(" ", errorMessages));
+        }
+        return errorMessages.size() == 0;
     }
 
     private void applyDeleteButton() {
@@ -161,8 +190,8 @@ public class EmployeeCustomersController implements Initializable {
         }
     }
 
-    private String getFullname(String surname, String name, String middlName) {
-        return surname + ' ' + name.charAt(0) + ". " + middlName.charAt(0) + ".";
+    private String getFullname(String surname, String name, String middleName) {
+        return surname + ' ' + name.charAt(0) + ". " + middleName.charAt(0) + ".";
     }
 
     private void applyFilterButton() {
@@ -174,25 +203,20 @@ public class EmployeeCustomersController implements Initializable {
         String phoneNumber = phoneNumberFilterTextField.getText();
         String email = emailFilterTextField.getText();
 
+        ArrayList<String> filter = new ArrayList<>();
+        if (!surname.isEmpty()) filter.add("SURNAME ='" + surname + "'");
+        if (!name.isEmpty()) filter.add("NAME ='" + name + "'");
+        if (!middleName.isEmpty()) filter.add("MIDDLE_NAME ='" + middleName + "'");
+        if (minBirthDate != null) filter.add("DATE_OF_BIRTH >= ='" + minBirthDate + "'");
+        if (maxBirthDate != null) filter.add("DATE_OF_BIRTH <= ='" + maxBirthDate + "'");
+        if (!phoneNumber.isEmpty()) filter.add("PHONE_NUMBER ='" + phoneNumber + "'");
+        if (!email.isEmpty()) filter.add("EMAIL ='" + email + "'");
+
         //language=SQL
-        StringBuilder filterBuilder = new StringBuilder("WHERE ");
-        if (!surname.isEmpty()) filterBuilder.append("SURNAME ='").append(surname).append("' AND ");
-        if (!name.isEmpty()) filterBuilder.append("NAME ='").append(name).append("' AND ");
-        if (!middleName.isEmpty()) filterBuilder.append("MIDDLE_NAME ='").append(middleName).append("' AND ");
-        if (minBirthDate != null)
-            filterBuilder.append("DATE_OF_BIRTH >='").append(minBirthDate).append("' AND ");
-        if (maxBirthDate != null)
-            filterBuilder.append("DATE_OF_BIRTH <='").append(maxBirthDate).append("' AND ");
-        if (!phoneNumber.isEmpty()) filterBuilder.append("PHONE_NUMBER ='").append(phoneNumber).append("' AND ");
-        if (!email.isEmpty()) filterBuilder.append("USERNAME ='").append(email).append("' AND ");
+        String filterString = null;
+        if (!filter.isEmpty()) filterString = "WHERE " + String.join(" AND ", filter);
 
-        String filter = null;
-        if (filterBuilder.length() > 6) {
-            filterBuilder.setLength(filterBuilder.length() - 4);
-            filter = filterBuilder.toString();
-        }
-
-        ObservableList<Customer> resultList = repository.getCustomers(filter);
+        ObservableList<Customer> resultList = repository.getCustomers(filterString);
         customersTableView.setItems(resultList);
     }
 
@@ -316,7 +340,10 @@ public class EmployeeCustomersController implements Initializable {
 
     @FXML
     private void backButtonClick() {
-        ScreenController.activate(AUTH_SCREEN);
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Выйти из системы?", "Вы действительно хотите вернуться на экран авторизации?");
+        if (answer)
+            ScreenController.activate(AUTH_SCREEN);
     }
 
     @FXML
@@ -336,12 +363,22 @@ public class EmployeeCustomersController implements Initializable {
 
     @FXML
     private void employeesMenuButtonClick() {
-        ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        if (Main.myAccessLevel == AccessLevel.ADMIN)
+            ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        else {
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Недостаточно прав доступа!");
+        }
     }
 
     @FXML
     public void positionsMenuButtonClick() {
-        ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+        if (Main.myAccessLevel == AccessLevel.ADMIN)
+            ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+        else {
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Недостаточно прав доступа!");
+        }
     }
 
 }

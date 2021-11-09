@@ -1,8 +1,10 @@
 package com.yaromchikv.dealership.сontrollers;
 
+import com.yaromchikv.dealership.Main;
 import com.yaromchikv.dealership.ScreenController;
 import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Style;
+import com.yaromchikv.dealership.utils.AccessLevel;
 import com.yaromchikv.dealership.utils.AlertDialog;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -59,35 +61,46 @@ public class EmployeeStylesController implements Initializable {
     }
 
     private void applyAddButton() {
-        String name = nameTextField.getText();
+        if (!nameTextField.getText().isEmpty()) {
+            String name = nameTextField.getText();
 
-        //language=SQL
-        String query = "INSERT INTO styles " +
-                "VALUES (null, '" + name + "');";
-        repository.executeUpdate(query);
+            //language=SQL
+            String query = "INSERT INTO styles " +
+                    "VALUES (null, '" + name + "');";
+            repository.executeUpdate(query);
 
-        clearFields();
-        showStyles();
+            clearFields();
+            showStyles();
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" добавлен.");
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" добавлен.");
+        } else {
+            AlertDialog alert = new AlertDialog();
+            alert.showErrorAlert("Обнаружена ошибка!", "Название должности отсутствует.");
+        }
     }
 
     private void applyEditButton() {
-        int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-        String name = nameTextField.getText();
+        if (!nameTextField.getText().isEmpty()) {
 
-        //language=SQL
-        String query = "UPDATE styles SET " +
-                "NAME = '" + name + "', " +
-                "WHERE ID = " + id;
-        repository.executeUpdate(query);
+            int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+            String name = nameTextField.getText();
 
-        clearFields();
-        showStyles();
+            //language=SQL
+            String query = "UPDATE styles SET " +
+                    "NAME = '" + name + "', " +
+                    "WHERE ID = " + id;
+            repository.executeUpdate(query);
 
-        AlertDialog alert = new AlertDialog();
-        alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" обновлён.");
+            clearFields();
+            showStyles();
+
+            AlertDialog alert = new AlertDialog();
+            alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" обновлён.");
+        } else {
+            AlertDialog alert = new AlertDialog();
+            alert.showErrorAlert("Обнаружена ошибка!", "Название должности отсутствует.");
+        }
     }
 
     private void applyDeleteButton() {
@@ -178,12 +191,10 @@ public class EmployeeStylesController implements Initializable {
 
     @FXML
     private void backButtonClick() {
-        ScreenController.activate(AUTH_SCREEN);
-    }
-
-    @FXML
-    private void stylesMenuButtonClick() {
-        ScreenController.activate(EMPLOYEE_STYLES_DASHBOARD);
+        AlertDialog alert = new AlertDialog();
+        boolean answer = alert.showConfirmationAlert("Выйти из системы?", "Вы действительно хотите вернуться на экран авторизации?");
+        if (answer)
+            ScreenController.activate(AUTH_SCREEN);
     }
 
     @FXML
@@ -203,12 +214,22 @@ public class EmployeeStylesController implements Initializable {
 
     @FXML
     private void employeesMenuButtonClick() {
-        ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        if (Main.myAccessLevel == AccessLevel.ADMIN)
+            ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
+        else {
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Недостаточно прав доступа!");
+        }
     }
 
     @FXML
     public void positionsMenuButtonClick() {
-        ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+        if (Main.myAccessLevel == AccessLevel.ADMIN)
+            ScreenController.activate(ADMIN_POSITIONS_DASHBOARD);
+        else {
+            AlertDialog alert = new AlertDialog();
+            alert.showWarningAlert("Внимание!", "Недостаточно прав доступа!");
+        }
     }
 
 }

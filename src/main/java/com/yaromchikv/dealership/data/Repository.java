@@ -2,7 +2,6 @@ package com.yaromchikv.dealership.data;
 
 import com.yaromchikv.dealership.connection.MyConnection;
 import com.yaromchikv.dealership.data.models.*;
-import com.yaromchikv.dealership.utils.AccessLevel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -167,8 +166,8 @@ public class Repository {
         return id;
     }
 
-    public AccessLevel checkUsernameAndPassword(String username, String password) {
-        AccessLevel accessLevel = null;
+    public boolean checkUsernameAndPassword(String username, String password) {
+        boolean hasAccess = false;
         Connection connection = MyConnection.connection;
         try {
             //language=SQL
@@ -179,14 +178,14 @@ public class Repository {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
-            if (rs == null) return null;
+            if (rs == null) return false;
             while (rs.next()) {
-                accessLevel = AccessLevel.EMPLOYEE;
+                hasAccess = true;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+            return false;
         }
-        return accessLevel;
+        return hasAccess;
     }
 }
