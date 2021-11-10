@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import com.yaromchikv.dealership.utils.controls.*?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0"
-            prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.yaromchikv.dealership.сontrollers.EmployeeCarsController">
     <Button fx:id="applyButton" defaultButton="true" layoutX="138.0" layoutY="701.0" mnemonicParsing="false"
             onAction="#applyButtonClick" prefHeight="40.0" prefWidth="926.0" text="Добавить">
@@ -33,8 +24,8 @@
             </ImageView>
         </graphic>
     </Button>
-    <TableView fx:id="carsTableView" layoutX="138.0" layoutY="13.0" prefHeight="429.0" prefWidth="926.0"
-               onMouseClicked="#tableItemSelect">
+    <TableView fx:id="carsTableView" layoutX="138.0" layoutY="13.0" onMouseClicked="#tableItemSelect" prefHeight="429.0"
+               prefWidth="926.0">
         <placeholder>
             <Label text="Нет данных"/>
         </placeholder>
@@ -134,7 +125,7 @@
             </ImageView>
         </graphic>
     </Button>
-    <HBox fx:id="updatingBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0">
+    <HBox fx:id="updatingBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0" visible="false">
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>
                 <Insets left="5.0"/>
@@ -151,9 +142,8 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomTextField fx:id="makeTextField" prefHeight="30.0" prefWidth="380.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true"
-                                 promptText="Максимальная длина: 24">
+                <CustomTextField fx:id="makeTextField" allowDigits="true" allowLetters="true" maxLength="24"
+                                 prefHeight="30.0" prefWidth="380.0" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -168,9 +158,8 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomTextField fx:id="modelTextField" prefHeight="30.0" prefWidth="371.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true"
-                                 promptText="Максимальная длина: 24">
+                <CustomTextField fx:id="modelTextField" allowDigits="true" allowLetters="true" maxLength="24"
+                                 prefHeight="30.0" prefWidth="371.0" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -201,7 +190,11 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <ChoiceBox fx:id="yearChoiceBox" prefHeight="30.0" prefWidth="366.0"/>
+                <Spinner fx:id="yearSpinner" prefHeight="30.0" prefWidth="366.0">
+                    <valueFactory>
+                        <SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="2021" max="2021" min="1990"/>
+                    </valueFactory>
+                </Spinner>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Цена:">
@@ -212,9 +205,9 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomTextField fx:id="priceTextField" prefHeight="30.0" prefWidth="412.0"
-                                 maxLength="7" allowLetters="false" allowDigits="true" allowDot="true"
-                                 promptText="Максимальное значение: 9999999">
+                <CustomTextField fx:id="priceTextField" allowDigits="true" allowDot="true" allowLetters="false"
+                                 maxLength="7" prefHeight="30.0" prefWidth="412.0"
+                                 promptText="Максимальная: 9999999">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -222,7 +215,7 @@
             </HBox>
         </VBox>
     </HBox>
-    <HBox fx:id="filterBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0" visible="false">
+    <HBox fx:id="filterBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0">
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>
                 <Insets left="5.0"/>
@@ -239,9 +232,8 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomTextField fx:id="makeFilterTextField" prefHeight="30.0" prefWidth="380.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true"
-                                 promptText="Максимальная длина: 24">
+                <CustomTextField fx:id="makeFilterTextField" allowDigits="true" allowLetters="true" maxLength="24"
+                                 prefHeight="30.0" prefWidth="380.0" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -256,9 +248,8 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <CustomTextField fx:id="modelFilterTextField" prefHeight="30.0" prefWidth="371.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true"
-                                 promptText="Максимальная длина: 24">
+                <CustomTextField fx:id="modelFilterTextField" allowDigits="true" allowLetters="true" maxLength="24"
+                                 prefHeight="30.0" prefWidth="371.0" promptText="Максимальная длина: 24">
                     <font>
                         <Font size="14.0"/>
                     </font>
@@ -298,7 +289,11 @@
                             <Insets bottom="5.0"/>
                         </HBox.margin>
                     </Label>
-                    <ChoiceBox fx:id="minYearFilterChoiceBox" prefHeight="29.6" prefWidth="100.0"/>
+                    <Spinner fx:id="minYearFilterSpinner" prefHeight="29.6" prefWidth="152.0">
+                        <valueFactory>
+                            <SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="1990" max="2021" min="1990"/>
+                        </valueFactory>
+                    </Spinner>
                     <Label text="до">
                         <font>
                             <Font size="14.0"/>
@@ -307,7 +302,11 @@
                             <Insets bottom="5.0"/>
                         </HBox.margin>
                     </Label>
-                    <ChoiceBox fx:id="maxYearFilterChoiceBox" prefHeight="29.6" prefWidth="100.0"/>
+                    <Spinner fx:id="maxYearFilterSpinner" prefHeight="29.6" prefWidth="152.0">
+                        <valueFactory>
+                            <SpinnerValueFactory.IntegerSpinnerValueFactory initialValue="2021" max="2021" min="1990"/>
+                        </valueFactory>
+                    </Spinner>
                 </HBox>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
@@ -319,7 +318,7 @@
                         <Insets bottom="5.0"/>
                     </padding>
                 </Label>
-                <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="366.0" spacing="10.0">
+                <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="410.0" spacing="10.0">
                     <Label text="от">
                         <font>
                             <Font size="14.0"/>
@@ -328,9 +327,9 @@
                             <Insets bottom="5.0"/>
                         </HBox.margin>
                     </Label>
-                    <CustomTextField fx:id="minPriceFilterTextField" prefHeight="29.6" prefWidth="100.0"
-                                     maxLength="7" allowLetters="false" allowDigits="true"
-                                     promptText="Максимальное значение: 9999999"/>
+                    <CustomTextField fx:id="minPriceFilterTextField" allowDigits="true" allowLetters="false"
+                                     maxLength="7" prefHeight="29.6" prefWidth="174.0"
+                                     promptText="Максимальная: 9999999"/>
                     <Label text="до">
                         <font>
                             <Font size="14.0"/>
@@ -339,9 +338,9 @@
                             <Insets bottom="5.0"/>
                         </HBox.margin>
                     </Label>
-                    <CustomTextField fx:id="maxPriceFilterTextField" prefHeight="29.6" prefWidth="100.0"
-                                     maxLength="7" allowLetters="false" allowDigits="true"
-                                     promptText="Максимальное значение: 9999999"/>
+                    <CustomTextField fx:id="maxPriceFilterTextField" allowDigits="true" allowLetters="false"
+                                     maxLength="7" prefHeight="29.6" prefWidth="174.0"
+                                     promptText="Максимальная: 9999999"/>
                 </HBox>
             </HBox>
         </VBox>

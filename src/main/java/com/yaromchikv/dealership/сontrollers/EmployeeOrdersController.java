@@ -147,12 +147,22 @@ public class EmployeeOrdersController implements Initializable {
     private boolean checkUpdatingFields() {
         ArrayList<String> errorMessages = new ArrayList<>();
 
-        if (customerIdTextField.getText().isEmpty())
+        String customerIdText = customerIdTextField.getText();
+        String carIdText = carIdTextField.getText();
+        String employeeIdText = employeeIdTextField.getText();
+
+        if (customerIdText.isEmpty())
             errorMessages.add("ID клиента отсутствует.");
+        if (!repository.findIdByQuery("customers", Integer.parseInt(customerIdText)))
+            errorMessages.add("Клиент " + customerIdText + " не найден.");
         if (carIdTextField.getText().isEmpty())
             errorMessages.add("ID автомобиля отсутствует.");
+        if (!repository.findIdByQuery("cars", Integer.parseInt(carIdText)))
+            errorMessages.add("Автомобиль " + carIdText + " не найден.");
         if (employeeIdTextField.getText().isEmpty())
             errorMessages.add("ID сотрудника отсутствует.");
+        if (!repository.findIdByQuery("employees", Integer.parseInt(employeeIdText)))
+            errorMessages.add("Сотрудник " + employeeIdText + " не найден.");
 
         if (errorMessages.size() != 0) {
             AlertDialog alert = new AlertDialog();
@@ -182,10 +192,10 @@ public class EmployeeOrdersController implements Initializable {
     }
 
     private void applyFilterButton() {
-        String make = carMakeFilterTextField.getText();
-        String model = carModelFilterTextField.getText();
-        String customerSurname = customerSurnameFilterTextField.getText();
-        String employeeSurname = employeeSurnameFilterTextField.getText();
+        String make = carMakeFilterTextField.getText().trim().replaceAll(" +", " ");
+        String model = carModelFilterTextField.getText().trim().replaceAll(" +", " ");
+        String customerSurname = customerSurnameFilterTextField.getText().trim().replaceAll(" +", " ");
+        String employeeSurname = employeeSurnameFilterTextField.getText().trim().replaceAll(" +", " ");
         Boolean isCompleted = null;
         if (processingFilterRadioButton.isSelected()) isCompleted = false;
         else if (completedFilterRadioButton.isSelected()) isCompleted = true;

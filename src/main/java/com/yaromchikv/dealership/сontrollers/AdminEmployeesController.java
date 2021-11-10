@@ -126,16 +126,20 @@ public class AdminEmployeesController implements Initializable {
 
     private void applyAddButton() {
         if (checkUpdatingFields()) {
-            String surname = surnameTextField.getText();
-            String name = nameTextField.getText();
-            String middleName = middleNameTextField.getText();
+            String surname = surnameTextField.getText().trim().replaceAll(" +", " ");
+            String name = nameTextField.getText().trim().replaceAll(" +", " ");
+            String middleName = middleNameTextField.getText().trim().replaceAll(" +", " ");
             LocalDate birthDate = birthDatePicker.getValue();
             String phoneNumber = phoneNumberTextField.getText();
             String positionName = positionChoiceBox.getValue();
             LocalDate startDate = startDatePicker.getValue();
-            String username = usernameTextField.getText();
+            String username = usernameTextField.getText().trim().replaceAll(" +", " ");
             String password = passwordTextField.getText();
-            int id = repository.getLastUserId() + 1;
+
+            //language=SQL
+            String query = "SELECT ID FROM accounts ORDER BY ID DESC LIMIT 1";
+            Integer id = repository.getIdByQuery(query);
+            if (id == null) id = 1;
 
             password = Hash.convert(id, password);
 
@@ -162,14 +166,14 @@ public class AdminEmployeesController implements Initializable {
     private void applyEditButton() {
         if (checkUpdatingFields()) {
             int id = employeesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-            String surname = surnameTextField.getText();
-            String name = nameTextField.getText();
-            String middleName = middleNameTextField.getText();
+            String surname = surnameTextField.getText().trim().replaceAll(" +", " ");
+            String name = nameTextField.getText().trim().replaceAll(" +", " ");
+            String middleName = middleNameTextField.getText().trim().replaceAll(" +", " ");
             LocalDate birthDate = birthDatePicker.getValue();
             String phoneNumber = phoneNumberTextField.getText();
             String positionName = positionChoiceBox.getValue();
             LocalDate startDate = startDatePicker.getValue();
-            String username = usernameTextField.getText();
+            String username = usernameTextField.getText().trim().replaceAll(" +", " ");
             String password = passwordTextField.getText();
 
             //language=SQL
@@ -203,15 +207,19 @@ public class AdminEmployeesController implements Initializable {
     private boolean checkUpdatingFields() {
         ArrayList<String> errorMessages = new ArrayList<>();
 
-        String username = usernameTextField.getText();
+        String oldUsername = "";
+        Employee employee = employeesTableView.getSelectionModel().getSelectedItem();
+        if (employee != null) oldUsername = employee.usernameProperty().getValue();
+
+        String newUsername = usernameTextField.getText().trim().replaceAll(" +", " ");
         String password = passwordTextField.getText();
         String password2 = password2TextField.getText();
 
-        if (surnameTextField.getText().isEmpty())
+        if (surnameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Фамилия отсутствует.");
-        if (nameTextField.getText().isEmpty())
+        if (nameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Имя отсутствует.");
-        if (middleNameTextField.getText().isEmpty())
+        if (middleNameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Отчество отсутствует.");
         if (birthDatePicker.getValue() == null)
             errorMessages.add("Дата рождения не выбрана.");
@@ -221,11 +229,13 @@ public class AdminEmployeesController implements Initializable {
             errorMessages.add("Должность не выбрана.");
         if (startDatePicker.getValue() == null)
             errorMessages.add("Дата начала работы не выбрана.");
-        if (username.isEmpty())
+        if (newUsername.isEmpty())
             errorMessages.add("Логин отсутствует.");
-        else if (username.length() < 4)
+        else if (newUsername.length() < 4)
             errorMessages.add("Логин слишком короткий.");
-        if (repository.getIdByUsername(username) != null)
+        //language=SQL
+        String query = "SELECT ID FROM accounts WHERE USERNAME = '" + newUsername + "'";
+        if (!oldUsername.equals(newUsername) && repository.getIdByQuery(query) != null)
             errorMessages.add("Логин занят другим сотрудником.");
         if (password.isEmpty())
             errorMessages.add("Пароль отсутствует.");
@@ -271,16 +281,16 @@ public class AdminEmployeesController implements Initializable {
     }
 
     private void applyFilterButton() {
-        String surname = surnameFilterTextField.getText();
-        String name = nameFilterTextField.getText();
-        String middleName = middleNameFilterTextField.getText();
+        String surname = surnameFilterTextField.getText().trim().replaceAll(" +", " ");
+        String name = nameFilterTextField.getText().trim().replaceAll(" +", " ");
+        String middleName = middleNameFilterTextField.getText().trim().replaceAll(" +", " ");
         LocalDate minBirthDate = minBirthFilterDatePicker.getValue();
         LocalDate maxBirthDate = maxBirthFilterDatePicker.getValue();
         String phoneNumber = phoneNumberFilterTextField.getText();
         String positionName = positionFilterChoiceBox.getValue();
         LocalDate minStartDate = minStartDateFilterDatePicker.getValue();
         LocalDate maxStartDate = maxStartDateFilterDatePicker.getValue();
-        String username = usernameFilterTextField.getText();
+        String username = usernameFilterTextField.getText().trim().replaceAll(" +", " ");
 
         ArrayList<String> filter = new ArrayList<>();
         if (!surname.isEmpty()) filter.add("SURNAME ='" + surname + "'");
@@ -289,7 +299,7 @@ public class AdminEmployeesController implements Initializable {
         if (minBirthDate != null) filter.add("DATE_OF_BIRTH >= ='" + minBirthDate + "'");
         if (maxBirthDate != null) filter.add("DATE_OF_BIRTH <= ='" + maxBirthDate + "'");
         if (!phoneNumber.isEmpty()) filter.add("PHONE_NUMBER ='" + phoneNumber + "'");
-        if (!positionName.equals(listOfPositionsNames.get(0))) filter.add("positions.NAME ='" + positionName + "'");
+        if (!positionName.equals(listOfPositionsNames.get(0))) filter.add("POSITION ='" + positionName + "'");
         if (minStartDate != null) filter.add("START_DATE >= ='" + minStartDate + "'");
         if (maxStartDate != null) filter.add("START_DATE <= ='" + maxStartDate + "'");
         if (!username.isEmpty()) filter.add("USERNAME ='" + username + "'");

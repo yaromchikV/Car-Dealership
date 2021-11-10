@@ -14,7 +14,7 @@ public class CustomTextField extends TextField {
         this.textProperty().addListener((ov, oldValue, newValue) -> {
             StringBuilder regex = new StringBuilder("[");
             if (allowDigits) regex.append("0-9");
-            if (allowLetters) regex.append("A-Za-zА-Яа-я");
+            if (allowLetters) regex.append("A-Za-zА-Яа-я ");
             if (allowDot) regex.append(".");
             if (allowAt) regex.append("@");
             regex.append("]*");

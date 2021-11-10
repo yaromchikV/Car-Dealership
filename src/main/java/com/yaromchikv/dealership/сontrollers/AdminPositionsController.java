@@ -68,7 +68,7 @@ public class AdminPositionsController implements Initializable {
 
     private void applyAddButton() {
         if (checkFields()) {
-            String name = nameTextField.getText();
+            String name = nameTextField.getText().trim().replaceAll(" +", " ");
             String salaryText = salaryTextField.getText();
             double salary = Double.parseDouble(salaryText);
 
@@ -88,7 +88,7 @@ public class AdminPositionsController implements Initializable {
     private void applyEditButton() {
         if (checkFields()) {
             int id = positionsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-            String name = nameTextField.getText();
+            String name = nameTextField.getText().trim().replaceAll(" +", " ");
             String salary = salaryTextField.getText();
 
             //language=SQL
@@ -109,7 +109,7 @@ public class AdminPositionsController implements Initializable {
     private boolean checkFields() {
         ArrayList<String> errorMessages = new ArrayList<>();
 
-        if (nameTextField.getText().isEmpty())
+        if (nameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Название должности отсутствует.");
         if (salaryTextField.getText().isEmpty())
             errorMessages.add("Зарплата отсутствует.");

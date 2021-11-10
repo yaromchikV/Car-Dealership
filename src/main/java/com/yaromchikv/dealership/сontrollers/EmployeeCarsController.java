@@ -43,20 +43,19 @@ public class EmployeeCarsController implements Initializable {
     public TextField makeTextField;
     public TextField modelTextField;
     public ChoiceBox<String> styleChoiceBox;
-    public ChoiceBox<Integer> yearChoiceBox;
+    public Spinner<Integer> yearSpinner;
     public TextField priceTextField;
 
     public HBox filterBox;
     public TextField makeFilterTextField;
     public TextField modelFilterTextField;
     public ChoiceBox<String> styleFilterChoiceBox;
-    public ChoiceBox<Integer> minYearFilterChoiceBox;
-    public ChoiceBox<Integer> maxYearFilterChoiceBox;
+    public Spinner<Integer> minYearFilterSpinner;
+    public Spinner<Integer> maxYearFilterSpinner;
     public TextField minPriceFilterTextField;
     public TextField maxPriceFilterTextField;
 
     private ObservableList<String> listOfStyleNames;
-    private ObservableList<Integer> listOfYears;
 
     private Repository repository;
 
@@ -71,22 +70,11 @@ public class EmployeeCarsController implements Initializable {
         listOfStyleNames = repository.getStyleNames();
         listOfStyleNames.add(0, "Не выбрано");
 
-        listOfYears = FXCollections.observableArrayList();
-        for (int i = 2000; i < 2022; i++) {
-            listOfYears.add(i);
-        }
-
         styleChoiceBox.setItems(listOfStyleNames);
         styleFilterChoiceBox.setItems(listOfStyleNames);
-        yearChoiceBox.setItems(listOfYears);
-        minYearFilterChoiceBox.setItems(listOfYears);
-        maxYearFilterChoiceBox.setItems(listOfYears);
 
         styleChoiceBox.valueProperty().setValue(listOfStyleNames.get(0));
         styleFilterChoiceBox.valueProperty().setValue(listOfStyleNames.get(0));
-        yearChoiceBox.setValue(listOfYears.get(0));
-        minYearFilterChoiceBox.setValue(listOfYears.get(0));
-        maxYearFilterChoiceBox.setValue(listOfYears.get(listOfYears.size() - 1));
     }
 
     private void showCars() {
@@ -121,14 +109,14 @@ public class EmployeeCarsController implements Initializable {
     private void applyAddButton() {
         if (checkUpdatingFields()) {
             String styleName = styleChoiceBox.getValue();
-            String make = makeTextField.getText();
-            String model = modelTextField.getText();
-            Integer year = yearChoiceBox.getValue();
+            String make = makeTextField.getText().trim().replaceAll(" +", " ");
+            String model = modelTextField.getText().trim().replaceAll(" +", " ");
+            Integer year = yearSpinner.getValue();
             String price = priceTextField.getText();
 
             //language=SQL
             String query = "INSERT INTO cars " +
-                    "VALUES + (" + null + ", (SELECT ID FROM styles WHERE NAME = '" + styleName + "' LIMIT 1), '" + make + "', '" + model + "', " + year + ", " + Double.parseDouble(price) + ");";
+                    "VALUES (" + null + ", (SELECT ID FROM styles WHERE NAME = '" + styleName + "' LIMIT 1), '" + make + "', '" + model + "', " + year + ", " + Double.parseDouble(price) + ");";
 
             System.out.println(query);
 
@@ -145,9 +133,9 @@ public class EmployeeCarsController implements Initializable {
         if (checkUpdatingFields()) {
             int id = carsTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
             String styleName = styleChoiceBox.getValue();
-            String make = makeTextField.getText();
-            String model = modelTextField.getText();
-            Integer year = yearChoiceBox.getValue();
+            String make = makeTextField.getText().trim().replaceAll(" +", " ");
+            String model = modelTextField.getText().trim().replaceAll(" +", " ");
+            Integer year = yearSpinner.getValue();
             String price = priceTextField.getText();
 
             //language=SQL
@@ -171,14 +159,12 @@ public class EmployeeCarsController implements Initializable {
     private boolean checkUpdatingFields() {
         ArrayList<String> errorMessages = new ArrayList<>();
 
-        if (makeTextField.getText().isEmpty())
+        if (makeTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Марка отсутствует");
-        if (modelTextField.getText().isEmpty())
+        if (modelTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Модель отсутствует");
         if (styleChoiceBox.getValue().equals(listOfStyleNames.get(0)))
             errorMessages.add("Тип кузова не выбран.");
-        if (yearChoiceBox.getValue().equals(listOfYears.get(0)))
-            errorMessages.add("Год выпуска не выбран.");
         if (priceTextField.getText().isEmpty())
             errorMessages.add("Цена отсутствует");
         else try {
@@ -219,26 +205,25 @@ public class EmployeeCarsController implements Initializable {
     }
 
     private void applyFilterButton() {
-        String make = makeFilterTextField.getText();
-        String model = modelFilterTextField.getText();
+        String make = makeFilterTextField.getText().trim().replaceAll(" +", " ");
+        String model = modelFilterTextField.getText().trim().replaceAll(" +", " ");
         String styleName = styleFilterChoiceBox.getValue();
-        Integer minYear = minYearFilterChoiceBox.getValue();
-        Integer maxYear = maxYearFilterChoiceBox.getValue();
+        Integer minYear = minYearFilterSpinner.getValue();
+        Integer maxYear = maxYearFilterSpinner.getValue();
         String minPrice = minPriceFilterTextField.getText();
         String maxPrice = maxPriceFilterTextField.getText();
 
         ArrayList<String> filter = new ArrayList<>();
         if (!make.isEmpty()) filter.add("MAKE ='" + make + "'");
         if (!model.isEmpty()) filter.add("MODEL ='" + model + "'");
-        if (!styleName.equals(listOfStyleNames.get(0))) filter.add("styles.NAME ='" + styleName + "'");
-        if (!minYear.equals(listOfYears.get(0))) filter.add("YEAR >='" + minYear + "'");
-        if (!maxYear.equals(listOfYears.get(listOfYears.size() - 1))) filter.add("YEAR <='" + maxYear + "'");
+        if (!styleName.equals(listOfStyleNames.get(0))) filter.add("STYLE ='" + styleName + "'");
+        filter.add("YEAR >='" + minYear + "'");
+        filter.add("YEAR <='" + maxYear + "'");
         if (!minPrice.isEmpty()) filter.add("PRICE >='" + minPrice + "'");
         if (!maxPrice.isEmpty()) filter.add("PRICE <='" + maxPrice + "'");
 
         //language=SQL
-        String filterString = null;
-        if (!filter.isEmpty()) filterString = "WHERE " + String.join(" AND ", filter);
+        String filterString = "WHERE " + String.join(" AND ", filter);
 
         ObservableList<Car> resultList = repository.getCars(filterString);
         carsTableView.setItems(resultList);
@@ -259,7 +244,7 @@ public class EmployeeCarsController implements Initializable {
             makeTextField.setText(car.makeProperty().getValue());
             modelTextField.setText(car.modelProperty().getValue());
             styleChoiceBox.setValue(car.styleNameProperty().getValue());
-            yearChoiceBox.setValue(car.yearProperty().getValue());
+            yearSpinner.getValueFactory().setValue(car.yearProperty().getValue());
             priceTextField.setText(car.priceProperty().getValue().toString());
             if (isEdit) updatingBoxFieldsIsEnabled(true);
         }
@@ -315,7 +300,7 @@ public class EmployeeCarsController implements Initializable {
         makeTextField.setDisable(!isEnabled);
         modelTextField.setDisable(!isEnabled);
         styleChoiceBox.setDisable(!isEnabled);
-        yearChoiceBox.setDisable(!isEnabled);
+        yearSpinner.setDisable(!isEnabled);
         priceTextField.setDisable(!isEnabled);
     }
 
@@ -342,7 +327,7 @@ public class EmployeeCarsController implements Initializable {
         makeTextField.clear();
         modelTextField.clear();
         styleChoiceBox.valueProperty().setValue(listOfStyleNames.get(0));
-        yearChoiceBox.valueProperty().setValue(listOfYears.get(0));
+        yearSpinner.getValueFactory().setValue(2021);
         priceTextField.clear();
     }
 
@@ -350,8 +335,8 @@ public class EmployeeCarsController implements Initializable {
         makeFilterTextField.clear();
         modelFilterTextField.clear();
         styleFilterChoiceBox.valueProperty().setValue(listOfStyleNames.get(0));
-        minYearFilterChoiceBox.setValue(listOfYears.get(0));
-        maxYearFilterChoiceBox.setValue(listOfYears.get(listOfYears.size() - 1));
+        minYearFilterSpinner.getValueFactory().setValue(1990);
+        maxYearFilterSpinner.getValueFactory().setValue(2021);
         minPriceFilterTextField.clear();
         maxPriceFilterTextField.clear();
     }

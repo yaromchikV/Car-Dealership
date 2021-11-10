@@ -68,7 +68,12 @@ public class Repository {
     public ObservableList<Order> getOrders(String filter) {
         if (filter == null) filter = "";
         //language=SQL
-        String query = "SELECT * FROM ordersView " + filter;
+        String query = "SELECT orders.ID, DATE_FORMAT(orders.DATE_TIME, '%d.%m.%Y %H:%i:%S') AS DATE_TIME, orders.CUSTOMER_ID, CONCAT(customers.SURNAME,' ', SUBSTRING(customers.NAME, 1, 1), '. ', SUBSTRING(customers.MIDDLE_NAME, 1, 1), '.') AS CUSTOMER_FULLNAME, orders.CAR_ID, CONCAT_WS(' ', cars.MAKE, cars.MODEL) as CAR_NAME, orders.EMPLOYEE_ID, CONCAT(employees.SURNAME,' ', SUBSTRING(employees.NAME, 1, 1), '. ', SUBSTRING(employees.MIDDLE_NAME, 1, 1), '.') AS EMPLOYEE_FULLNAME, IF (orders.IS_COMPLETED = 1, 'Завершён', 'В обработке') AS STATUS " +
+                "FROM orders " +
+                "JOIN customers ON orders.CUSTOMER_ID = customers.ID " +
+                "JOIN cars ON orders.CAR_ID = cars.ID " +
+                "JOIN employees ON orders.EMPLOYEE_ID = employees.ID "
+                + filter;
         return getByQuery(query, rs -> new Order(rs.getInt(ID), rs.getString(DATE_TIME), rs.getInt(CUSTOMER_ID), rs.getString(CUSTOMER_FULLNAME), rs.getInt(CAR_ID), rs.getString(CAR_NAME), rs.getInt(EMPLOYEE_ID), rs.getString(EMPLOYEE_FULLNAME), rs.getString(STATUS)));
     }
 
@@ -100,14 +105,10 @@ public class Repository {
         }
     }
 
-    public Integer getIdByUsername(String username) {
+    public Integer getIdByQuery(String query) {
         Integer id = null;
         Connection connection = MyConnection.connection;
         try {
-            //language=SQL
-            String query = "SELECT ID " +
-                    "FROM accounts " +
-                    "WHERE USERNAME = '" + username + "'";
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
@@ -122,26 +123,25 @@ public class Repository {
         return id;
     }
 
-    public Integer getLastUserId() {
-        Integer id = null;
+    public boolean findIdByQuery(String tableName, Integer id) {
+        boolean result = false;
         Connection connection = MyConnection.connection;
         try {
             //language=SQL
-            String query = "SELECT ID " +
-                    "FROM accounts " +
-                    "ORDER BY ID DESC LIMIT 1";
+            String query = "SELECT count(ID) > 0 AS RESULT " +
+                    "FROM " + tableName + " WHERE ID = " + id;
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
-            if (rs == null) return null;
+            if (rs == null) return false;
             while (rs.next()) {
-                id = rs.getInt(ID);
+                result = rs.getBoolean("RESULT");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+            return false;
         }
-        return id;
+        return result;
     }
 
     public boolean checkUsernameAndPassword(String username, String password) {

@@ -64,8 +64,8 @@ public class EmployeeStylesController implements Initializable {
     }
 
     private void applyAddButton() {
-        if (!nameTextField.getText().isEmpty()) {
-            String name = nameTextField.getText();
+        String name = nameTextField.getText().trim().replaceAll(" +", " ");
+        if (!name.isEmpty()) {
 
             //language=SQL
             String query = "INSERT INTO styles " +
@@ -84,10 +84,9 @@ public class EmployeeStylesController implements Initializable {
     }
 
     private void applyEditButton() {
-        if (!nameTextField.getText().isEmpty()) {
-
+        String name = nameTextField.getText().trim().replaceAll(" +", " ");
+        if (!name.isEmpty()) {
             int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-            String name = nameTextField.getText();
 
             //language=SQL
             String query = "UPDATE styles SET " +

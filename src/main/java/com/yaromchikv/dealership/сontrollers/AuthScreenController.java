@@ -39,7 +39,9 @@ public class AuthScreenController implements Initializable {
                 Main.myAccessLevel = AccessLevel.ADMIN;
                 ScreenController.activate(ADMIN_EMPLOYEES_DASHBOARD);
             } else {
-                Integer id = repository.getIdByUsername(username);
+                //language=SQL
+                String query = "SELECT ID FROM accounts WHERE USERNAME = '" + username + "'";
+                Integer id = repository.getIdByQuery(query);
                 if (id != null) {
                     password = Hash.convert(id, password);
                     if (repository.checkUsernameAndPassword(username, password)) {

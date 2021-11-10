@@ -1,5 +1,7 @@
 package com.yaromchikv.dealership.connection;
 
+import javafx.application.Application;
+
 import java.sql.*;
 import java.util.ResourceBundle;
 

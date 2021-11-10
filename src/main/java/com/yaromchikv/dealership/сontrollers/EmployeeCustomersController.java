@@ -98,12 +98,12 @@ public class EmployeeCustomersController implements Initializable {
 
     private void applyAddButton() {
         if (checkUpdatingFields()) {
-            String surname = surnameTextField.getText();
-            String name = nameTextField.getText();
-            String middleName = middleNameTextField.getText();
+            String surname = surnameTextField.getText().trim().replaceAll(" +", " ");
+            String name = nameTextField.getText().trim().replaceAll(" +", " ");
+            String middleName = middleNameTextField.getText().trim().replaceAll(" +", " ");
             LocalDate birthDate = birthDatePicker.getValue();
             String phoneNumber = phoneNumberTextField.getText();
-            String email = emailTextField.getText();
+            String email = emailTextField.getText().trim().replaceAll(" +", " ");
 
             //language=SQL
             String query = "INSERT INTO customers " +
@@ -121,12 +121,12 @@ public class EmployeeCustomersController implements Initializable {
     private void applyEditButton() {
         if (checkUpdatingFields()) {
             int id = customersTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
-            String surname = surnameTextField.getText();
-            String name = nameTextField.getText();
-            String middleName = middleNameTextField.getText();
+            String surname = surnameTextField.getText().trim().replaceAll(" +", " ");
+            String name = nameTextField.getText().trim().replaceAll(" +", " ");
+            String middleName = middleNameTextField.getText().trim().replaceAll(" +", " ");
             LocalDate birthDate = birthDatePicker.getValue();
             String phoneNumber = phoneNumberTextField.getText();
-            String email = emailTextField.getText();
+            String email = emailTextField.getText().trim().replaceAll(" +", " ");
 
             //language=SQL
             String query = "UPDATE customers SET " +
@@ -150,17 +150,17 @@ public class EmployeeCustomersController implements Initializable {
     private boolean checkUpdatingFields() {
         ArrayList<String> errorMessages = new ArrayList<>();
 
-        if (surnameTextField.getText().isEmpty())
+        if (surnameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Фамилия отсутствует.");
-        if (nameTextField.getText().isEmpty())
+        if (nameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Имя отсутствует.");
-        if (middleNameTextField.getText().isEmpty())
+        if (middleNameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Отчество отсутствует.");
         if (birthDatePicker.getValue() == null)
             errorMessages.add("Дата рождения не выбрана.");
         if (phoneNumberTextField.getText().isEmpty())
             errorMessages.add("Номер телефона отсутствует.");
-        if (emailTextField.getText().isEmpty())
+        if (emailTextField.getText().trim().replaceAll(" +", " ").isEmpty())
             errorMessages.add("Электронная почта отсутствует.");
 
         if (errorMessages.size() != 0) {
@@ -198,13 +198,13 @@ public class EmployeeCustomersController implements Initializable {
     }
 
     private void applyFilterButton() {
-        String surname = surnameFilterTextField.getText();
-        String name = nameFilterTextField.getText();
-        String middleName = middleNameFilterTextField.getText();
+        String surname = surnameFilterTextField.getText().trim().replaceAll(" +", " ");
+        String name = nameFilterTextField.getText().trim().replaceAll(" +", " ");
+        String middleName = middleNameFilterTextField.getText().trim().replaceAll(" +", " ");
         LocalDate minBirthDate = minBirthDateFilterDatePicker.getValue();
         LocalDate maxBirthDate = maxBirthDateFilterDatePicker.getValue();
         String phoneNumber = phoneNumberFilterTextField.getText();
-        String email = emailFilterTextField.getText();
+        String email = emailFilterTextField.getText().trim().replaceAll(" +", " ");
 
         ArrayList<String> filter = new ArrayList<>();
         if (!surname.isEmpty()) filter.add("SURNAME ='" + surname + "'");
