@@ -24,6 +24,7 @@ public class Repository {
         Connection connection = MyConnection.connection;
         try {
             Statement statement = connection.createStatement();
+            System.out.println(query);
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
                 T t = converter.convert(rs);
@@ -40,7 +41,7 @@ public class Repository {
         //language=SQL
         String query = "SELECT * FROM employeesView " +
                 filter;
-        return getByQuery(query, rs -> new Employee(rs.getInt(ID), rs.getString(SURNAME), rs.getString(SURNAME), rs.getString(MIDDLE_NAME), rs.getString(DATE_OF_BIRTH), rs.getString(PHONE_NUMBER), rs.getString(POSITION), rs.getDouble(SALARY), rs.getString(START_DATE), rs.getString(USERNAME), rs.getString(PASSWORD)));
+        return getByQuery(query, rs -> new Employee(rs.getInt(ID), rs.getString(SURNAME), rs.getString(NAME), rs.getString(MIDDLE_NAME), rs.getString(DATE_OF_BIRTH), rs.getString(PHONE_NUMBER), rs.getString(POSITION), rs.getDouble(SALARY), rs.getString(START_DATE), rs.getString(USERNAME), rs.getString(PASSWORD)));
     }
 
     public ObservableList<Position> getPositions() {
@@ -85,7 +86,7 @@ public class Repository {
 
     public ObservableList<String> getPositionNames() {
         //language=SQL
-        String query = "SELECT NAME FROM positions";
+        String query = "SELECT NAME FROM positions ORDER BY ID ASC";
         return getByQuery(query, rs -> rs.getString(NAME));
     }
 
@@ -99,6 +100,7 @@ public class Repository {
         Connection connection = MyConnection.connection;
         try {
             Statement statement = connection.createStatement();
+            System.out.println(query);
             statement.executeUpdate(query);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -110,6 +112,7 @@ public class Repository {
         Connection connection = MyConnection.connection;
         try {
             Statement statement = connection.createStatement();
+            System.out.println(query);
             ResultSet rs = statement.executeQuery(query);
 
             if (rs == null) return null;
@@ -131,6 +134,7 @@ public class Repository {
             String query = "SELECT count(ID) > 0 AS RESULT " +
                     "FROM " + tableName + " WHERE ID = " + id;
             Statement statement = connection.createStatement();
+            System.out.println(query);
             ResultSet rs = statement.executeQuery(query);
 
             if (rs == null) return false;
@@ -154,6 +158,7 @@ public class Repository {
                     "WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
 
             Statement statement = connection.createStatement();
+            System.out.println(query);
             ResultSet rs = statement.executeQuery(query);
 
             if (rs == null) return false;

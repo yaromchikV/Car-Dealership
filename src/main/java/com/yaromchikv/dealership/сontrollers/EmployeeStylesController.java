@@ -64,8 +64,8 @@ public class EmployeeStylesController implements Initializable {
     }
 
     private void applyAddButton() {
-        String name = nameTextField.getText().trim().replaceAll(" +", " ");
-        if (!name.isEmpty()) {
+        if (checkField()) {
+            String name = nameTextField.getText().trim().replaceAll(" +", " ");
 
             //language=SQL
             String query = "INSERT INTO styles " +
@@ -77,16 +77,13 @@ public class EmployeeStylesController implements Initializable {
 
             AlertDialog alert = new AlertDialog();
             alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" добавлен.");
-        } else {
-            AlertDialog alert = new AlertDialog();
-            alert.showErrorAlert("Обнаружена ошибка!", "Название должности отсутствует.");
         }
     }
 
     private void applyEditButton() {
-        String name = nameTextField.getText().trim().replaceAll(" +", " ");
-        if (!name.isEmpty()) {
+        if (checkField()) {
             int id = stylesTableView.getSelectionModel().getSelectedItem().idProperty().getValue();
+            String name = nameTextField.getText().trim().replaceAll(" +", " ");
 
             //language=SQL
             String query = "UPDATE styles SET " +
@@ -99,10 +96,24 @@ public class EmployeeStylesController implements Initializable {
 
             AlertDialog alert = new AlertDialog();
             alert.showInformationAlert("Изменения применены", "Тип кузова \"" + name + "\" обновлён.");
-        } else {
-            AlertDialog alert = new AlertDialog();
-            alert.showErrorAlert("Обнаружена ошибка!", "Название должности отсутствует.");
         }
+    }
+
+    private boolean checkField() {
+        String name = nameTextField.getText().trim().replaceAll(" +", " ");
+
+        String errorMessage = "";
+        if (name.isEmpty())
+            errorMessage = "Название должности отсутствует. ";
+        if (repository.getIdByQuery("SELECT ID FROM styles WHERE NAME = " + name) != null)
+            errorMessage = "Такая должность уже существует. ";
+
+        if (!errorMessage.isEmpty()) {
+            AlertDialog alert = new AlertDialog();
+            alert.showErrorAlert("Обнаружена ошибка!", String.join(" ", errorMessage));
+        }
+
+        return errorMessage.isEmpty();
     }
 
     private void applyDeleteButton() {

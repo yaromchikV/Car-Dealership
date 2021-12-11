@@ -1,83 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.yaromchikv.dealership.utils.controls.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<?import com.yaromchikv.dealership.utils.controls.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0"
-            prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.yaromchikv.dealership.сontrollers.EmployeeOrdersController">
-    <Button fx:id="applyButton" defaultButton="true" layoutX="138.0" layoutY="701.0" mnemonicParsing="false"
-            onAction="#applyButtonClick" prefHeight="40.0" prefWidth="926.0" text="Добавить">
+<AnchorPane id="employees" maxHeight="760.0" maxWidth="1080.0" minHeight="760.0" minWidth="1080.0" prefHeight="760.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.yaromchikv.dealership.сontrollers.EmployeeOrdersController">
+    <Button fx:id="applyButton" defaultButton="true" layoutX="138.0" layoutY="701.0" mnemonicParsing="false" onAction="#applyButtonClick" prefHeight="40.0" prefWidth="926.0" text="Добавить">
         <font>
-            <Font size="15.0"/>
+            <Font size="15.0" />
         </font>
     </Button>
-    <Button fx:id="backButton" layoutX="22.0" layoutY="701.0" mnemonicParsing="false" onAction="#backButtonClick"
-            prefHeight="40.0" prefWidth="40.0">
+    <Button fx:id="backButton" layoutX="22.0" layoutY="701.0" mnemonicParsing="false" onAction="#backButtonClick" prefHeight="40.0" prefWidth="40.0">
         <graphic>
             <ImageView fitHeight="26.0" fitWidth="26.0">
-                <Image url="@/images/back-icon.png"/>
+                <Image url="@/images/back-icon.png" />
             </ImageView>
         </graphic>
     </Button>
-    <TableView fx:id="ordersTableView" layoutX="138.0" layoutY="13.0" onMouseClicked="#tableItemSelect"
-               prefHeight="429.0" prefWidth="926.0">
+    <TableView fx:id="ordersTableView" layoutX="138.0" layoutY="13.0" onMouseClicked="#tableItemSelect" prefHeight="429.0" prefWidth="926.0">
         <placeholder>
-            <Label text="Нет данных"/>
+            <Label text="Нет данных" />
         </placeholder>
         <columns>
-            <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID"/>
-            <TableColumn fx:id="timeTableColumn" prefWidth="160" text="Время заказа"/>
-            <TableColumn fx:id="customerIdTableColumn" prefWidth="60" text="ID клиента"/>
-            <TableColumn fx:id="customerTableColumn" prefWidth="150" text="Клиент"/>
-            <TableColumn fx:id="carIdTableColumn" prefWidth="60" text="ID автомобиля"/>
-            <TableColumn fx:id="carTableColumn" prefWidth="150" text="Автомобиль"/>
-            <TableColumn fx:id="employeeIdTableColumn" prefWidth="60" text="ID сотрудника"/>
-            <TableColumn fx:id="employeeNameTableColumn" prefWidth="150" text="Сотрудник"/>
-            <TableColumn fx:id="statusTableColumn" prefWidth="90" text="Статус"/>
+            <TableColumn fx:id="idTableColumn" prefWidth="40" text="ID" />
+            <TableColumn fx:id="timeTableColumn" prefWidth="160" text="Время заказа" />
+            <TableColumn fx:id="customerIdTableColumn" prefWidth="60" text="ID клиента" />
+            <TableColumn fx:id="customerTableColumn" prefWidth="150" text="Клиент" />
+            <TableColumn fx:id="carIdTableColumn" prefWidth="60" text="ID автомобиля" />
+            <TableColumn fx:id="carTableColumn" prefWidth="150" text="Автомобиль" />
+            <TableColumn fx:id="employeeIdTableColumn" prefWidth="60" text="ID сотрудника" />
+            <TableColumn fx:id="employeeNameTableColumn" prefWidth="150" text="Сотрудник" />
+            <TableColumn fx:id="statusTableColumn" prefWidth="90" text="Статус" />
         </columns>
     </TableView>
     <VBox layoutX="5.0" layoutY="14.0" prefHeight="400.0" prefWidth="130.0" spacing="10.0">
-        <Button fx:id="stylesMenuButton" mnemonicParsing="false" onAction="#stylesMenuButtonClick" prefHeight="90.0"
-                prefWidth="130.0" text="Типы кузовов">
+        <Button fx:id="stylesMenuButton" mnemonicParsing="false" onAction="#stylesMenuButtonClick" prefHeight="90.0" prefWidth="130.0" text="Типы кузовов">
             <font>
-                <Font size="13.0"/>
+                <Font size="13.0" />
             </font>
             <VBox.margin>
-                <Insets left="12.0" right="12.0"/>
+                <Insets left="12.0" right="12.0" />
             </VBox.margin>
         </Button>
         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-            <Button fx:id="carsMenuButton" mnemonicParsing="false" onAction="#carsMenuButtonClick" prefHeight="100.0"
-                    prefWidth="100.0">
+            <Button fx:id="carsMenuButton" mnemonicParsing="false" onAction="#carsMenuButtonClick" prefHeight="100.0" prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
-                        <Image url="@/images/icon-car.png"/>
+                        <Image url="@/images/icon-car.png" />
                     </ImageView>
                 </graphic>
             </Button>
             <Label text="Автомобили">
                 <font>
-                    <Font size="14.0"/>
+                    <Font size="14.0" />
                 </font>
             </Label>
         </VBox>
         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-            <Button fx:id="customersMenuButton" mnemonicParsing="false" onAction="#customersMenuButtonClick"
-                    prefHeight="100.0" prefWidth="100.0">
+            <Button fx:id="customersMenuButton" mnemonicParsing="false" onAction="#customersMenuButtonClick" prefHeight="100.0" prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
-                        <Image url="@/images/icon-customer.png"/>
+                        <Image url="@/images/icon-customer.png" />
                     </ImageView>
                 </graphic>
             </Button>
             <Label text="Клиенты">
                 <font>
-                    <Font size="14.0"/>
+                    <Font size="14.0" />
                 </font>
             </Label>
         </VBox>
@@ -85,140 +77,133 @@
             <Button fx:id="ordersMenuButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
-                        <Image url="@/images/icon-order.png"/>
+                        <Image url="@/images/icon-order.png" />
                     </ImageView>
                 </graphic>
             </Button>
             <Label text="Заказы">
                 <font>
-                    <Font size="14.0"/>
+                    <Font size="14.0" />
                 </font>
             </Label>
         </VBox>
         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="130.0" spacing="5.0">
-            <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick"
-                    prefHeight="100.0" prefWidth="100.0">
+            <Button fx:id="employeesMenuButton" mnemonicParsing="false" onAction="#employeesMenuButtonClick" prefHeight="100.0" prefWidth="100.0">
                 <graphic>
                     <ImageView fitHeight="90.0" fitWidth="90.0">
-                        <Image url="@/images/icon-employee.png"/>
+                        <Image url="@/images/icon-employee.png" />
                     </ImageView>
                 </graphic>
             </Button>
             <Label text="Сотрудники">
                 <font>
-                    <Font size="14.0"/>
+                    <Font size="14.0" />
                 </font>
             </Label>
         </VBox>
-        <Button fx:id="positionsMenuButton" mnemonicParsing="false" onAction="#positionsMenuButtonClick"
-                prefHeight="90.0" prefWidth="105.0" text="Должности">
+        <Button fx:id="positionsMenuButton" mnemonicParsing="false" onAction="#positionsMenuButtonClick" prefHeight="90.0" prefWidth="105.0" text="Должности">
             <font>
-                <Font size="13.0"/>
+                <Font size="13.0" />
             </font>
             <VBox.margin>
-                <Insets left="15.0" right="15.0"/>
+                <Insets left="15.0" right="15.0" />
             </VBox.margin>
         </Button>
     </VBox>
-    <Button fx:id="clearButton" layoutX="1018.0" layoutY="456.0" mnemonicParsing="false" onAction="#clearButtonClick"
-            prefHeight="35.0" prefWidth="35.0">
+    <Button fx:id="clearButton" layoutX="1018.0" layoutY="456.0" mnemonicParsing="false" onAction="#clearButtonClick" prefHeight="35.0" prefWidth="35.0">
         <graphic>
             <ImageView fitHeight="27.0" fitWidth="27.0">
-                <Image url="@/images/broomstick_icon.png"/>
+                <Image url="@/images/broomstick_icon.png" />
             </ImageView>
         </graphic>
     </Button>
     <HBox fx:id="updatingBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0">
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>
-                <Insets left="5.0"/>
+                <Insets left="5.0" />
             </HBox.margin>
             <padding>
-                <Insets right="25.0"/>
+                <Insets right="25.0" />
             </padding>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <VBox.margin>
-                    <Insets/>
+                    <Insets />
                 </VBox.margin>
                 <Label text="ID клиента:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <CustomTextField fx:id="customerIdTextField" prefHeight="30.0" prefWidth="352.0"
-                                 maxLength="5" allowLetters="false" allowDigits="true" promptText="id">
+                <CustomTextField fx:id="customerIdTextField" allowDigits="true" allowLetters="false" maxLength="5" prefHeight="30.0" prefWidth="352.0" promptText="id">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                 </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="ID автомобиля:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <CustomTextField fx:id="carIdTextField" prefHeight="30.0" prefWidth="326.0"
-                                 maxLength="5" allowLetters="false" allowDigits="true" promptText="id">
+                <CustomTextField fx:id="carIdTextField" allowDigits="true" allowLetters="false" maxLength="5" prefHeight="30.0" prefWidth="326.0" promptText="id">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                 </CustomTextField>
             </HBox>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>
-                <Insets right="5.0"/>
+                <Insets right="5.0" />
             </HBox.margin>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="389.0" spacing="10.0">
                 <Label text="ID сотрудника:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <CustomTextField fx:id="employeeIdTextField" prefHeight="30.0" prefWidth="354.0"
-                                 maxLength="5" allowLetters="false" allowDigits="true" promptText="id">
+                <CustomTextField fx:id="employeeIdTextField" allowDigits="true" allowLetters="false" maxLength="5" prefHeight="30.0" prefWidth="354.0" promptText="id">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                 </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Статус заказа:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
                 <RadioButton fx:id="processingRadioButton" mnemonicParsing="false" selected="true" text="В обработке">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <HBox.margin>
-                        <Insets bottom="2.0"/>
+                        <Insets bottom="2.0" />
                     </HBox.margin>
                     <toggleGroup>
-                        <ToggleGroup fx:id="orderStatus"/>
+                        <ToggleGroup fx:id="orderStatus" />
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton fx:id="completedRadioButton" mnemonicParsing="false" text="Завершён"
-                             toggleGroup="$orderStatus">
+                <RadioButton fx:id="completedRadioButton" mnemonicParsing="false" text="Завершён" toggleGroup="$orderStatus">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <HBox.margin>
-                        <Insets bottom="2.0"/>
+                        <Insets bottom="2.0" />
                     </HBox.margin>
                 </RadioButton>
             </HBox>
@@ -227,148 +212,165 @@
     <HBox fx:id="filterBox" layoutX="138.0" layoutY="500.0" prefHeight="180.0" prefWidth="926.0" visible="false">
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>
-                <Insets left="5.0"/>
+                <Insets left="5.0" />
             </HBox.margin>
             <padding>
-                <Insets right="25.0"/>
+                <Insets right="25.0" />
             </padding>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <VBox.margin>
-                    <Insets/>
+                    <Insets />
                 </VBox.margin>
                 <Label text="Фамилия клиента:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <CustomTextField fx:id="customerSurnameFilterTextField" prefHeight="30.0" prefWidth="308.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false" promptText="Максимальная длина: 24">
+                <CustomTextField fx:id="customerSurnameFilterTextField" allowDigits="false" allowLetters="true" maxLength="24" prefHeight="30.0" prefWidth="308.0" promptText="Максимальная длина: 24">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                 </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Марка автомобиля:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <CustomTextField fx:id="carMakeFilterTextField" prefHeight="30.0" prefWidth="297.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true" promptText="Максимальная длина: 24">
+                <CustomTextField fx:id="carMakeFilterTextField" allowDigits="true" allowLetters="true" maxLength="24" prefHeight="30.0" prefWidth="297.0" promptText="Максимальная длина: 24">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                 </CustomTextField>
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Модель автомобиля:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <CustomTextField fx:id="carModelFilterTextField" prefHeight="30.0" prefWidth="289.0"
-                                 maxLength="24" allowLetters="true" allowDigits="true" promptText="Максимальная длина: 24">
+                <CustomTextField fx:id="carModelFilterTextField" allowDigits="true" allowLetters="true" maxLength="24" prefHeight="30.0" prefWidth="289.0" promptText="Максимальная длина: 24">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                 </CustomTextField>
             </HBox>
         </VBox>
         <VBox prefHeight="200.0" prefWidth="463.0">
             <HBox.margin>
-                <Insets right="5.0"/>
+                <Insets right="5.0" />
             </HBox.margin>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="389.0" spacing="10.0">
                 <Label text="Фамилия сотрудника:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <CustomTextField fx:id="employeeSurnameFilterTextField" prefHeight="30.0" prefWidth="310.0"
-                                 maxLength="24" allowLetters="true" allowDigits="false" promptText="Максимальная длина: 24">
+                <CustomTextField fx:id="employeeSurnameFilterTextField" allowDigits="false" allowLetters="true" maxLength="24" prefHeight="30.0" prefWidth="310.0" promptText="Максимальная длина: 24">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                 </CustomTextField>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="389.0" spacing="10.0">
+                <Label text="Дата заказа: ">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0" />
+                    </padding>
+                </Label>
+                <Label layoutX="10.0" layoutY="17.0" text="от">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0" />
+                    </padding>
+                </Label>
+                <CustomDatePicker fx:id="minOrderDateFilterDatePicker" prefHeight="30.0" prefWidth="152.0" />
+                <Label layoutX="210.0" layoutY="17.0" text="до">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0" />
+                    </padding>
+                </Label>
+                <CustomDatePicker fx:id="maxOrderDateFilterDatePicker" layoutX="102.0" layoutY="15.0" prefHeight="30.0" prefWidth="152.0" />
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="387.0" spacing="10.0">
                 <Label text="Статус заказа:">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <padding>
-                        <Insets bottom="5.0"/>
+                        <Insets bottom="5.0" />
                     </padding>
                 </Label>
-                <RadioButton fx:id="processingFilterRadioButton" mnemonicParsing="false" selected="true"
-                             text="В обработке">
+                <RadioButton fx:id="processingFilterRadioButton" mnemonicParsing="false" selected="true" text="В обработке">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <HBox.margin>
-                        <Insets bottom="2.0"/>
+                        <Insets bottom="2.0" />
                     </HBox.margin>
                     <toggleGroup>
-                        <ToggleGroup fx:id="orderStatusFilter"/>
+                        <ToggleGroup fx:id="orderStatusFilter" />
                     </toggleGroup>
                 </RadioButton>
-                <RadioButton fx:id="completedFilterRadioButton" mnemonicParsing="false" text="Завершён"
-                             toggleGroup="$orderStatusFilter">
+                <RadioButton fx:id="completedFilterRadioButton" mnemonicParsing="false" text="Завершён" toggleGroup="$orderStatusFilter">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                     <HBox.margin>
-                        <Insets bottom="2.0"/>
+                        <Insets bottom="2.0" />
                     </HBox.margin>
                 </RadioButton>
-                <RadioButton fx:id="anyFilterRadioButton" mnemonicParsing="false" text="Любой"
-                             toggleGroup="$orderStatusFilter">
+                <RadioButton fx:id="anyFilterRadioButton" mnemonicParsing="false" text="Любой" toggleGroup="$orderStatusFilter">
                     <font>
-                        <Font size="14.0"/>
+                        <Font size="14.0" />
                     </font>
                 </RadioButton>
             </HBox>
         </VBox>
     </HBox>
     <HBox layoutX="138.0" layoutY="452.0" prefHeight="30.0" prefWidth="554.0" spacing="10.0">
-        <ToggleButton fx:id="addToggleButton" mnemonicParsing="false" onAction="#addToggleButtonClick" prefHeight="26.0"
-                      prefWidth="128.0" selected="true" text="Добавить">
+        <ToggleButton fx:id="addToggleButton" mnemonicParsing="false" onAction="#addToggleButtonClick" prefHeight="26.0" prefWidth="128.0" selected="true" text="Добавить">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
             <toggleGroup>
-                <ToggleGroup fx:id="actions"/>
+                <ToggleGroup fx:id="actions" />
             </toggleGroup>
         </ToggleButton>
-        <ToggleButton fx:id="editToggleButton" mnemonicParsing="false" onAction="#editToggleButtonClick"
-                      prefHeight="26.0" prefWidth="128.0" text="Редактировать" toggleGroup="$actions">
+        <ToggleButton fx:id="editToggleButton" mnemonicParsing="false" onAction="#editToggleButtonClick" prefHeight="26.0" prefWidth="128.0" text="Редактировать" toggleGroup="$actions">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </ToggleButton>
-        <ToggleButton fx:id="deleteToggleButton" mnemonicParsing="false" onAction="#deleteToggleButtonClick"
-                      prefHeight="26.0" prefWidth="128.0" text="Удалить" toggleGroup="$actions">
+        <ToggleButton fx:id="deleteToggleButton" mnemonicParsing="false" onAction="#deleteToggleButtonClick" prefHeight="26.0" prefWidth="128.0" text="Удалить" toggleGroup="$actions">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </ToggleButton>
-        <ToggleButton fx:id="filterToggleButton" mnemonicParsing="false" onAction="#filterToggleButtonClick"
-                      prefHeight="26.0" prefWidth="128.0" text="Фильтр" toggleGroup="$actions">
+        <ToggleButton fx:id="filterToggleButton" mnemonicParsing="false" onAction="#filterToggleButtonClick" prefHeight="26.0" prefWidth="128.0" text="Фильтр" toggleGroup="$actions">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </ToggleButton>
     </HBox>

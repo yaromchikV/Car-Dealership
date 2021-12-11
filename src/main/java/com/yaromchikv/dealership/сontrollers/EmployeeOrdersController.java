@@ -6,6 +6,7 @@ import com.yaromchikv.dealership.data.Repository;
 import com.yaromchikv.dealership.data.models.Order;
 import com.yaromchikv.dealership.utils.AccessLevel;
 import com.yaromchikv.dealership.utils.AlertDialog;
+import com.yaromchikv.dealership.utils.controls.CustomDatePicker;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -58,6 +60,8 @@ public class EmployeeOrdersController implements Initializable {
     public ToggleGroup orderStatusFilter;
     public RadioButton completedFilterRadioButton;
     public RadioButton anyFilterRadioButton;
+    public CustomDatePicker minOrderDateFilterDatePicker;
+    public CustomDatePicker maxOrderDateFilterDatePicker;
 
     private Repository repository;
 
@@ -152,17 +156,17 @@ public class EmployeeOrdersController implements Initializable {
         String employeeIdText = employeeIdTextField.getText();
 
         if (customerIdText.isEmpty())
-            errorMessages.add("ID клиента отсутствует.");
+            errorMessages.add("ID клиента отсутствует. ");
         if (!repository.findIdByQuery("customers", Integer.parseInt(customerIdText)))
-            errorMessages.add("Клиент " + customerIdText + " не найден.");
+            errorMessages.add("Клиент " + customerIdText + " не найден. ");
         if (carIdTextField.getText().isEmpty())
-            errorMessages.add("ID автомобиля отсутствует.");
+            errorMessages.add("ID автомобиля отсутствует. ");
         if (!repository.findIdByQuery("cars", Integer.parseInt(carIdText)))
-            errorMessages.add("Автомобиль " + carIdText + " не найден.");
+            errorMessages.add("Автомобиль " + carIdText + " не найден. ");
         if (employeeIdTextField.getText().isEmpty())
-            errorMessages.add("ID сотрудника отсутствует.");
+            errorMessages.add("ID сотрудника отсутствует. ");
         if (!repository.findIdByQuery("employees", Integer.parseInt(employeeIdText)))
-            errorMessages.add("Сотрудник " + employeeIdText + " не найден.");
+            errorMessages.add("Сотрудник " + employeeIdText + " не найден. ");
 
         if (errorMessages.size() != 0) {
             AlertDialog alert = new AlertDialog();
@@ -176,7 +180,7 @@ public class EmployeeOrdersController implements Initializable {
 
         AlertDialog alert = new AlertDialog();
         boolean answer = alert.showConfirmationAlert("Вы уверены?",
-                "Вы действительно хотите удалить заказ" + id + "?");
+                "Вы действительно хотите удалить заказ " + id + "?");
 
         if (answer) {
             //language=SQL
@@ -199,6 +203,8 @@ public class EmployeeOrdersController implements Initializable {
         Boolean isCompleted = null;
         if (processingFilterRadioButton.isSelected()) isCompleted = false;
         else if (completedFilterRadioButton.isSelected()) isCompleted = true;
+        LocalDate minOrderDate = minOrderDateFilterDatePicker.getValue();
+        LocalDate maxOrderDate = maxOrderDateFilterDatePicker.getValue();
 
         ArrayList<String> filter = new ArrayList<>();
         if (!make.isEmpty()) filter.add("MAKE ='" + make + "'");
@@ -206,6 +212,8 @@ public class EmployeeOrdersController implements Initializable {
         if (!customerSurname.isEmpty()) filter.add("customers.SURNAME ='" + customerSurname + "'");
         if (!employeeSurname.isEmpty()) filter.add("employees.SURNAME ='" + employeeSurname + "'");
         if (isCompleted != null) filter.add("IS_COMPLETED =" + isCompleted);
+        if (minOrderDate != null) filter.add("CAST(orders.DATE_TIME AS DATE) >= '" + minOrderDate + "'");
+        if (maxOrderDate != null) filter.add("CAST(orders.DATE_TIME AS DATE) <= '" + maxOrderDate + "'");
 
         //language=SQL
         String filterString = null;
@@ -323,6 +331,10 @@ public class EmployeeOrdersController implements Initializable {
         employeeSurnameFilterTextField.clear();
         carModelFilterTextField.clear();
         anyFilterRadioButton.setSelected(true);
+        minOrderDateFilterDatePicker.getEditor().clear();
+        minOrderDateFilterDatePicker.setValue(null);
+        maxOrderDateFilterDatePicker.getEditor().clear();
+        maxOrderDateFilterDatePicker.setValue(null);
     }
 
     @FXML

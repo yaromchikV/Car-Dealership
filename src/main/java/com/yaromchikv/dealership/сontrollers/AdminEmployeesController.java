@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import static com.yaromchikv.dealership.utils.Constants.*;
 
@@ -139,9 +140,13 @@ public class AdminEmployeesController implements Initializable {
             //language=SQL
             String query = "SELECT ID FROM accounts ORDER BY ID DESC LIMIT 1";
             Integer id = repository.getIdByQuery(query);
-            if (id == null) id = 1;
+            if (id == null) id = 1; else id++;
 
             password = Hash.convert(id, password);
+
+            System.out.println(id);
+            System.out.println(username);
+            System.out.println(password);
 
             //language=SQL
             String employeeQuery =
@@ -216,35 +221,35 @@ public class AdminEmployeesController implements Initializable {
         String password2 = password2TextField.getText();
 
         if (surnameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Фамилия отсутствует.");
+            errorMessages.add("Фамилия отсутствует. ");
         if (nameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Имя отсутствует.");
+            errorMessages.add("Имя отсутствует. ");
         if (middleNameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Отчество отсутствует.");
+            errorMessages.add("Отчество отсутствует. ");
         if (birthDatePicker.getValue() == null)
-            errorMessages.add("Дата рождения не выбрана.");
+            errorMessages.add("Дата рождения не выбрана. ");
         if (phoneNumberTextField.getText().isEmpty())
-            errorMessages.add("Номер телефона отсутствует.");
+            errorMessages.add("Номер телефона отсутствует. ");
         if (positionChoiceBox.getValue().equals(listOfPositionsNames.get(0)))
-            errorMessages.add("Должность не выбрана.");
+            errorMessages.add("Должность не выбрана. ");
         if (startDatePicker.getValue() == null)
-            errorMessages.add("Дата начала работы не выбрана.");
+            errorMessages.add("Дата начала работы не выбрана. ");
         if (newUsername.isEmpty())
-            errorMessages.add("Логин отсутствует.");
+            errorMessages.add("Логин отсутствует. ");
         else if (newUsername.length() < 4)
-            errorMessages.add("Логин слишком короткий.");
+            errorMessages.add("Логин слишком короткий. ");
         //language=SQL
         String query = "SELECT ID FROM accounts WHERE USERNAME = '" + newUsername + "'";
         if (!oldUsername.equals(newUsername) && repository.getIdByQuery(query) != null)
-            errorMessages.add("Логин занят другим сотрудником.");
+            errorMessages.add("Логин занят другим сотрудником. ");
         if (password.isEmpty())
-            errorMessages.add("Пароль отсутствует.");
+            errorMessages.add("Пароль отсутствует. ");
         if (!password.isEmpty() && password.length() < 6)
-            errorMessages.add("Пароль слишком короткий.");
+            errorMessages.add("Пароль слишком короткий. ");
         if (password2.isEmpty())
-            errorMessages.add("Пароль не введён повторно.");
+            errorMessages.add("Пароль не введён повторно. ");
         else if (!password.isEmpty() && !password.equals(password2))
-            errorMessages.add("Пароли не совпадают.");
+            errorMessages.add("Пароли не совпадают. ");
 
         if (errorMessages.size() != 0) {
             AlertDialog alert = new AlertDialog();
@@ -296,12 +301,12 @@ public class AdminEmployeesController implements Initializable {
         if (!surname.isEmpty()) filter.add("SURNAME ='" + surname + "'");
         if (!name.isEmpty()) filter.add("NAME ='" + name + "'");
         if (!middleName.isEmpty()) filter.add("MIDDLE_NAME ='" + middleName + "'");
-        if (minBirthDate != null) filter.add("DATE_OF_BIRTH >= ='" + minBirthDate + "'");
-        if (maxBirthDate != null) filter.add("DATE_OF_BIRTH <= ='" + maxBirthDate + "'");
+        if (minBirthDate != null) filter.add("DATE_OF_BIRTH >= '" + minBirthDate + "'");
+        if (maxBirthDate != null) filter.add("DATE_OF_BIRTH <= '" + maxBirthDate + "'");
         if (!phoneNumber.isEmpty()) filter.add("PHONE_NUMBER ='" + phoneNumber + "'");
         if (!positionName.equals(listOfPositionsNames.get(0))) filter.add("POSITION ='" + positionName + "'");
-        if (minStartDate != null) filter.add("START_DATE >= ='" + minStartDate + "'");
-        if (maxStartDate != null) filter.add("START_DATE <= ='" + maxStartDate + "'");
+        if (minStartDate != null) filter.add("START_DATE >= '" + minStartDate + "'");
+        if (maxStartDate != null) filter.add("START_DATE <= '" + maxStartDate + "'");
         if (!username.isEmpty()) filter.add("USERNAME ='" + username + "'");
 
         //language=SQL

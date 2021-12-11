@@ -151,17 +151,17 @@ public class EmployeeCustomersController implements Initializable {
         ArrayList<String> errorMessages = new ArrayList<>();
 
         if (surnameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Фамилия отсутствует.");
+            errorMessages.add("Фамилия отсутствует. ");
         if (nameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Имя отсутствует.");
+            errorMessages.add("Имя отсутствует. ");
         if (middleNameTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Отчество отсутствует.");
+            errorMessages.add("Отчество отсутствует. ");
         if (birthDatePicker.getValue() == null)
-            errorMessages.add("Дата рождения не выбрана.");
+            errorMessages.add("Дата рождения не выбрана. ");
         if (phoneNumberTextField.getText().isEmpty())
-            errorMessages.add("Номер телефона отсутствует.");
+            errorMessages.add("Номер телефона отсутствует. ");
         if (emailTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Электронная почта отсутствует.");
+            errorMessages.add("Электронная почта отсутствует. ");
 
         if (errorMessages.size() != 0) {
             AlertDialog alert = new AlertDialog();
@@ -210,8 +210,8 @@ public class EmployeeCustomersController implements Initializable {
         if (!surname.isEmpty()) filter.add("SURNAME ='" + surname + "'");
         if (!name.isEmpty()) filter.add("NAME ='" + name + "'");
         if (!middleName.isEmpty()) filter.add("MIDDLE_NAME ='" + middleName + "'");
-        if (minBirthDate != null) filter.add("DATE_OF_BIRTH >= ='" + minBirthDate + "'");
-        if (maxBirthDate != null) filter.add("DATE_OF_BIRTH <= ='" + maxBirthDate + "'");
+        if (minBirthDate != null) filter.add("DATE_OF_BIRTH >= '" + minBirthDate + "'");
+        if (maxBirthDate != null) filter.add("DATE_OF_BIRTH <= '" + maxBirthDate + "'");
         if (!phoneNumber.isEmpty()) filter.add("PHONE_NUMBER ='" + phoneNumber + "'");
         if (!email.isEmpty()) filter.add("EMAIL ='" + email + "'");
 
@@ -327,6 +327,7 @@ public class EmployeeCustomersController implements Initializable {
         nameTextField.clear();
         middleNameTextField.clear();
         birthDatePicker.getEditor().clear();
+        birthDatePicker.setValue(null);
         phoneNumberTextField.clear();
         emailTextField.clear();
     }
@@ -336,7 +337,9 @@ public class EmployeeCustomersController implements Initializable {
         nameFilterTextField.clear();
         middleNameFilterTextField.clear();
         minBirthDateFilterDatePicker.getEditor().clear();
+        minBirthDateFilterDatePicker.setValue(null);
         maxBirthDateFilterDatePicker.getEditor().clear();
+        maxBirthDateFilterDatePicker.setValue(null);
         phoneNumberFilterTextField.clear();
         emailFilterTextField.clear();
     }

@@ -58,7 +58,7 @@ public class AuthScreenController implements Initializable {
             }
         } else {
             AlertDialog alert = new AlertDialog();
-            alert.showWarningAlert("Внимание!", "Не введён логин или пароль!");
+            alert.showWarningAlert("Внимание!", "Не введён логин и/или пароль!");
         }
 
         usernameField.clear();

@@ -160,17 +160,17 @@ public class EmployeeCarsController implements Initializable {
         ArrayList<String> errorMessages = new ArrayList<>();
 
         if (makeTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Марка отсутствует");
+            errorMessages.add("Марка отсутствует. ");
         if (modelTextField.getText().trim().replaceAll(" +", " ").isEmpty())
-            errorMessages.add("Модель отсутствует");
+            errorMessages.add("Модель отсутствует. ");
         if (styleChoiceBox.getValue().equals(listOfStyleNames.get(0)))
-            errorMessages.add("Тип кузова не выбран.");
+            errorMessages.add("Тип кузова не выбран. ");
         if (priceTextField.getText().isEmpty())
-            errorMessages.add("Цена отсутствует");
+            errorMessages.add("Цена отсутствует. ");
         else try {
             double price = Double.parseDouble(priceTextField.getText());
         } catch (Exception ex) {
-            errorMessages.add("Цена введена некорректно.");
+            errorMessages.add("Цена введена некорректно. ");
         }
 
         if (errorMessages.size() != 0) {
